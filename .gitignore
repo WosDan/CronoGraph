@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+.pytest_cache/
+.ruff_cache/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+*.local
+
+# Environment & OS
+.env
+.DS_Store
+Thumbs.db
+
+# Generated runtime results (keep directory structure)
+DB/results/*.json
+DB/generated/*.json
+!DB/results/.gitkeep
+!DB/generated/.gitkeep
