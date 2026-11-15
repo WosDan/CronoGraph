@@ -16,7 +16,7 @@ $$\Delta F_i(t) = \sum_{j \in N(i)} H_{ij} \Big[ P\big(|d(t) - d_j|\big) - P\big
 
 Implementado en `backend/app/optimization/random_restarts.py`:
 1. El **reinicio 0** parte exactamente del calendario inicial $x^{(0)}$ (si es factible).
-2. Los reinicios $1, \dots, R-1$ construyen soluciones iniciales factibles aleatorias dentro de $D_i$ mediante una heurística constructiva ordenada por mínimo tamaño de dominio y mayor grado de conflicto.
+2. Los reinicios $1, \dots, R-1$ construyen soluciones iniciales factibles aleatorias dentro de $D_i$ mediante una heurística constructiva **DSatur / MRV guiada por centralidad**: prioriza los parciales con mayor centralidad de intermediación ($C_B$), mayor centralidad de grado ponderado ($C_D^{(w)}$), menor número de franjas autorizadas disponibles ($|D_i|$) y mayor grado de conflicto ($|N(i)|$).
 3. Cada reinicio desciende mediante búsqueda local hasta un óptimo local.
 4. **Política de no empeoramiento**: si el calendario inicial $x^{(0)}$ es factible, el algoritmo garantiza explícitamente $F(x^*) \le F(x^{(0)})$.
 

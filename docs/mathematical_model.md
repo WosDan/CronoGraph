@@ -67,3 +67,23 @@ sujeto a las siguientes restricciones duras (obligatorias):
 3. **No solapamiento estudiantil**: si $A_{ij} > 0$ y $d(x_i) = d(x_j)$, sus intervalos horarios de evaluación efectiva no pueden intersectarse.
 4. **No solapamiento docente**: si $\text{teacher}_i = \text{teacher}_j$ y $d(x_i) = d(x_j)$, sus intervalos horarios no pueden intersectarse.
 5. **No solapamiento de aula**: si ambos parciales especifican aula asignada en la misma fecha y hora, el aula no puede repetirse simultáneamente.
+
+---
+
+## 6. Medidas de centralidad sobre el grafo de conflictos $G_C$
+
+Para identificar estructuralmente qué evaluaciones concentran mayor acoplamiento estudiantil o actúan como puentes críticos entre programas y grupos, el backend calcula tres métricas sobre $G_C = (E, \mathcal{A})$ mediante `NetworkX`:
+
+1. **Centralidad de Grado Ponderado normalizada ($C_D^{(w)}(i)$)**:
+   $$S_i = \sum_{j \in N(i)} H_{ij}, \qquad C_D^{(w)}(i) = \frac{S_i}{\max_{k \in E} S_k}$$
+   Mide la presión estructural total que el parcial $i$ ejerce sobre sus vecinos antes de considerar la distancia temporal.
+
+2. **Centralidad de Intermediación ($C_B(i)$)**:
+   Calculada con `nx.betweenness_centrality(G_C, weight="h_ij", normalized=True)`:
+   $$C_B(i) = \frac{2}{(|E|-1)(|E|-2)} \sum_{s \neq i \neq t} \frac{\sigma_{st}(i)}{\sigma_{st}}$$
+   Identifica las evaluaciones "cuello de botella" que sirven de puente entre distintos subgrupos de estudiantes; reprogramarlas produce efectos en cascada sobre múltiples pares del calendario.
+
+3. **Centralidad de Cercanía ($C_C(i)$)**:
+   Calculada con `nx.closeness_centrality(G_C)`:
+   $$C_C(i) = \frac{|E| - 1}{\sum_{j \neq i} \text{dist}(i, j)}$$
+   Cuantifica qué tan cerca se encuentra el parcial $i$ del resto de la red de conflictos.
