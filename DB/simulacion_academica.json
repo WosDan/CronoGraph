@@ -1,0 +1,5490 @@
+{
+  "metadata": {
+    "name": "Simulación Académica CronoGraph (Semilla 42)",
+    "description": "Conjunto de datos sintético y reproducible con 120 estudiantes ficticios, 15 asignaturas, 12 docentes y 20 parciales programados en un periodo de 3 semanas con sesiones habituales de clase y espacios de sábado explícitamente autorizados.",
+    "seed": 42,
+    "is_synthetic": true,
+    "generated_at": "2026-11-15T02:46:12.994792+00:00",
+    "semester": "2026-2",
+    "exam_window_start": "2026-11-16",
+    "exam_window_end": "2026-12-05"
+  },
+  "teachers": [
+    {
+      "id": "DOC-01",
+      "name": "Prof. Ficticio Dr. Carlos Méndez",
+      "department": "Matemáticas",
+      "email": "doc-01@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-02",
+      "name": "Prof. Ficticia Dra. Beatriz Salazar",
+      "department": "Ciencias de la Computación",
+      "email": "doc-02@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-03",
+      "name": "Prof. Ficticio MSc. Ricardo Patiño",
+      "department": "Ingeniería de Sistemas",
+      "email": "doc-03@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-04",
+      "name": "Prof. Ficticia Dra. Helena Cárdenas",
+      "department": "Estadística",
+      "email": "doc-04@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-05",
+      "name": "Prof. Ficticio Dr. Javier Montoya",
+      "department": "Física",
+      "email": "doc-05@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-06",
+      "name": "Prof. Ficticia MSc. Claudia Benítez",
+      "department": "Matemáticas",
+      "email": "doc-06@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-07",
+      "name": "Prof. Ficticio Dr. Fernando Lozano",
+      "department": "Ingeniería Industrial",
+      "email": "doc-07@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-08",
+      "name": "Prof. Ficticia Dra. Patricia Quintero",
+      "department": "Ciencias de la Computación",
+      "email": "doc-08@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-09",
+      "name": "Prof. Ficticio MSc. Sergio Velasco",
+      "department": "Ingeniería Electrónica",
+      "email": "doc-09@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-10",
+      "name": "Prof. Ficticia Dra. Mónica Fajardo",
+      "department": "Matemáticas",
+      "email": "doc-10@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-11",
+      "name": "Prof. Ficticio Dr. Álvaro Peñaloza",
+      "department": "Ingeniería de Sistemas",
+      "email": "doc-11@cronograph.edu.sim"
+    },
+    {
+      "id": "DOC-12",
+      "name": "Prof. Ficticia MSc. Diana Rincón",
+      "department": "Ingeniería Industrial",
+      "email": "doc-12@cronograph.edu.sim"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "SUB-01",
+      "code": "MAT-101",
+      "name": "Cálculo Diferencial",
+      "credits": 4,
+      "historical_withdrawal_rate": 0.24,
+      "department": "Matemáticas"
+    },
+    {
+      "id": "SUB-02",
+      "code": "MAT-102",
+      "name": "Álgebra Lineal",
+      "credits": 4,
+      "historical_withdrawal_rate": 0.21,
+      "department": "Matemáticas"
+    },
+    {
+      "id": "SUB-03",
+      "code": "DIS-201",
+      "name": "Matemáticas Discretas",
+      "credits": 4,
+      "historical_withdrawal_rate": 0.18,
+      "department": "Ciencias de la Computación"
+    },
+    {
+      "id": "SUB-04",
+      "code": "PRG-103",
+      "name": "Programación Orientada a Objetos",
+      "credits": 3,
+      "historical_withdrawal_rate": 0.14,
+      "department": "Ingeniería de Sistemas"
+    },
+    {
+      "id": "SUB-05",
+      "code": "EST-202",
+      "name": "Probabilidad y Estadística",
+      "credits": 3,
+      "historical_withdrawal_rate": 0.22,
+      "department": "Estadística"
+    },
+    {
+      "id": "SUB-06",
+      "code": "FIS-104",
+      "name": "Física Mecánica",
+      "credits": 4,
+      "historical_withdrawal_rate": 0.28,
+      "department": "Física"
+    },
+    {
+      "id": "SUB-07",
+      "code": "EDD-205",
+      "name": "Estructuras de Datos y Grafos",
+      "credits": 4,
+      "historical_withdrawal_rate": 0.19,
+      "department": "Ciencias de la Computación"
+    },
+    {
+      "id": "SUB-08",
+      "code": "CAL-203",
+      "name": "Cálculo Integral",
+      "credits": 4,
+      "historical_withdrawal_rate": 0.26,
+      "department": "Matemáticas"
+    },
+    {
+      "id": "SUB-09",
+      "code": "BDD-301",
+      "name": "Bases de Datos Relacionales",
+      "credits": 3,
+      "historical_withdrawal_rate": 0.11,
+      "department": "Ingeniería de Sistemas"
+    },
+    {
+      "id": "SUB-10",
+      "code": "OPT-304",
+      "name": "Investigación de Operaciones",
+      "credits": 3,
+      "historical_withdrawal_rate": 0.15,
+      "department": "Ingeniería Industrial"
+    },
+    {
+      "id": "SUB-11",
+      "code": "ARQ-206",
+      "name": "Arquitectura de Computadores",
+      "credits": 3,
+      "historical_withdrawal_rate": 0.12,
+      "department": "Ingeniería Electrónica"
+    },
+    {
+      "id": "SUB-12",
+      "code": "LOG-105",
+      "name": "Lógica Matemática",
+      "credits": 2,
+      "historical_withdrawal_rate": 0.09,
+      "department": "Ciencias de la Computación"
+    },
+    {
+      "id": "SUB-13",
+      "code": "ANA-305",
+      "name": "Análisis Numérico",
+      "credits": 3,
+      "historical_withdrawal_rate": 0.17,
+      "department": "Matemáticas"
+    },
+    {
+      "id": "SUB-14",
+      "code": "ECO-204",
+      "name": "Economía para Ingeniería",
+      "credits": 2,
+      "historical_withdrawal_rate": 0.06,
+      "department": "Ingeniería Industrial"
+    },
+    {
+      "id": "SUB-15",
+      "code": "RED-302",
+      "name": "Redes y Sistemas Distribuidos",
+      "credits": 5,
+      "historical_withdrawal_rate": 0.31,
+      "department": "Ingeniería de Sistemas"
+    }
+  ],
+  "groups": [
+    {
+      "id": "GRP-01",
+      "code": "MAT-101-A",
+      "subject_id": "SUB-01",
+      "teacher_id": "DOC-01",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-102"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-102"
+        }
+      ]
+    },
+    {
+      "id": "GRP-02",
+      "code": "MAT-101-B",
+      "subject_id": "SUB-01",
+      "teacher_id": "DOC-02",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-103"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-103"
+        }
+      ]
+    },
+    {
+      "id": "GRP-03",
+      "code": "MAT-102-A",
+      "subject_id": "SUB-02",
+      "teacher_id": "DOC-03",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-104"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-104"
+        }
+      ]
+    },
+    {
+      "id": "GRP-04",
+      "code": "MAT-102-B",
+      "subject_id": "SUB-02",
+      "teacher_id": "DOC-04",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-105"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-105"
+        }
+      ]
+    },
+    {
+      "id": "GRP-05",
+      "code": "DIS-201-A",
+      "subject_id": "SUB-03",
+      "teacher_id": "DOC-05",
+      "regular_schedule": [
+        {
+          "day_of_week": "Tuesday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-106"
+        },
+        {
+          "day_of_week": "Thursday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-106"
+        }
+      ]
+    },
+    {
+      "id": "GRP-06",
+      "code": "DIS-201-B",
+      "subject_id": "SUB-03",
+      "teacher_id": "DOC-06",
+      "regular_schedule": [
+        {
+          "day_of_week": "Tuesday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-107"
+        },
+        {
+          "day_of_week": "Thursday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-107"
+        }
+      ]
+    },
+    {
+      "id": "GRP-07",
+      "code": "PRG-103-A",
+      "subject_id": "SUB-04",
+      "teacher_id": "DOC-07",
+      "regular_schedule": [
+        {
+          "day_of_week": "Tuesday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-108"
+        },
+        {
+          "day_of_week": "Thursday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-108"
+        }
+      ]
+    },
+    {
+      "id": "GRP-08",
+      "code": "PRG-103-B",
+      "subject_id": "SUB-04",
+      "teacher_id": "DOC-08",
+      "regular_schedule": [
+        {
+          "day_of_week": "Tuesday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-109"
+        },
+        {
+          "day_of_week": "Thursday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-109"
+        }
+      ]
+    },
+    {
+      "id": "GRP-09",
+      "code": "EST-202-A",
+      "subject_id": "SUB-05",
+      "teacher_id": "DOC-09",
+      "regular_schedule": [
+        {
+          "day_of_week": "Tuesday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-110"
+        },
+        {
+          "day_of_week": "Thursday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-110"
+        }
+      ]
+    },
+    {
+      "id": "GRP-10",
+      "code": "EST-202-B",
+      "subject_id": "SUB-05",
+      "teacher_id": "DOC-10",
+      "regular_schedule": [
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "room": "AULA-101"
+        },
+        {
+          "day_of_week": "Friday",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "room": "AULA-101"
+        }
+      ]
+    },
+    {
+      "id": "GRP-11",
+      "code": "FIS-104-A",
+      "subject_id": "SUB-06",
+      "teacher_id": "DOC-11",
+      "regular_schedule": [
+        {
+          "day_of_week": "Tuesday",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "room": "AULA-102"
+        },
+        {
+          "day_of_week": "Friday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-102"
+        }
+      ]
+    },
+    {
+      "id": "GRP-12",
+      "code": "EDD-205-A",
+      "subject_id": "SUB-07",
+      "teacher_id": "DOC-12",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "room": "AULA-103"
+        },
+        {
+          "day_of_week": "Friday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-103"
+        }
+      ]
+    },
+    {
+      "id": "GRP-13",
+      "code": "CAL-203-A",
+      "subject_id": "SUB-08",
+      "teacher_id": "DOC-01",
+      "regular_schedule": [
+        {
+          "day_of_week": "Thursday",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "room": "AULA-104"
+        },
+        {
+          "day_of_week": "Friday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-104"
+        }
+      ]
+    },
+    {
+      "id": "GRP-14",
+      "code": "BDD-301-A",
+      "subject_id": "SUB-09",
+      "teacher_id": "DOC-02",
+      "regular_schedule": [
+        {
+          "day_of_week": "Friday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-105"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-105"
+        }
+      ]
+    },
+    {
+      "id": "GRP-15",
+      "code": "OPT-304-A",
+      "subject_id": "SUB-10",
+      "teacher_id": "DOC-03",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-106"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-106"
+        }
+      ]
+    },
+    {
+      "id": "GRP-16",
+      "code": "ARQ-206-A",
+      "subject_id": "SUB-11",
+      "teacher_id": "DOC-04",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-107"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "room": "AULA-107"
+        }
+      ]
+    },
+    {
+      "id": "GRP-17",
+      "code": "LOG-105-A",
+      "subject_id": "SUB-12",
+      "teacher_id": "DOC-05",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-108"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "room": "AULA-108"
+        }
+      ]
+    },
+    {
+      "id": "GRP-18",
+      "code": "ANA-305-A",
+      "subject_id": "SUB-13",
+      "teacher_id": "DOC-06",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-109"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "room": "AULA-109"
+        }
+      ]
+    },
+    {
+      "id": "GRP-19",
+      "code": "ECO-204-A",
+      "subject_id": "SUB-14",
+      "teacher_id": "DOC-07",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-110"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "room": "AULA-110"
+        }
+      ]
+    },
+    {
+      "id": "GRP-20",
+      "code": "RED-302-A",
+      "subject_id": "SUB-15",
+      "teacher_id": "DOC-08",
+      "regular_schedule": [
+        {
+          "day_of_week": "Monday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-101"
+        },
+        {
+          "day_of_week": "Wednesday",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "room": "AULA-101"
+        }
+      ]
+    }
+  ],
+  "exams": [
+    {
+      "id": "PAR-01",
+      "name": "Parcial 2 — Cálculo Diferencial (MAT-101-A)",
+      "subject_id": "SUB-01",
+      "group_id": "GRP-01",
+      "teacher_id": "DOC-01",
+      "evaluation_percentage": 0.35,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-01-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-01-S01",
+          "date": "2026-11-16",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-01-S04",
+          "date": "2026-11-18",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-01-S07",
+          "date": "2026-11-21",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        },
+        {
+          "slot_id": "PAR-01-S02",
+          "date": "2026-11-23",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-01-S05",
+          "date": "2026-11-25",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-01-S08",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        },
+        {
+          "slot_id": "PAR-01-S03",
+          "date": "2026-11-30",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-01-S06",
+          "date": "2026-12-02",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        }
+      ]
+    },
+    {
+      "id": "PAR-02",
+      "name": "Parcial 2 — Cálculo Diferencial (MAT-101-B)",
+      "subject_id": "SUB-01",
+      "group_id": "GRP-02",
+      "teacher_id": "DOC-02",
+      "evaluation_percentage": 0.25,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-02-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-02-S01",
+          "date": "2026-11-16",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-02-S04",
+          "date": "2026-11-18",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-02-S02",
+          "date": "2026-11-23",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-02-S05",
+          "date": "2026-11-25",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-02-S07",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-2"
+        },
+        {
+          "slot_id": "PAR-02-S03",
+          "date": "2026-11-30",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-02-S06",
+          "date": "2026-12-02",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        }
+      ]
+    },
+    {
+      "id": "PAR-03",
+      "name": "Parcial 2 — Álgebra Lineal (MAT-102-A)",
+      "subject_id": "SUB-02",
+      "group_id": "GRP-03",
+      "teacher_id": "DOC-03",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-03-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-03-S01",
+          "date": "2026-11-16",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-03-S04",
+          "date": "2026-11-18",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-03-S08",
+          "date": "2026-11-21",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        },
+        {
+          "slot_id": "PAR-03-S02",
+          "date": "2026-11-23",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-03-S05",
+          "date": "2026-11-25",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-03-S03",
+          "date": "2026-11-30",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-03-S06",
+          "date": "2026-12-02",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-03-S07",
+          "date": "2026-12-05",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        }
+      ]
+    },
+    {
+      "id": "PAR-04",
+      "name": "Parcial 2 — Álgebra Lineal (MAT-102-B)",
+      "subject_id": "SUB-02",
+      "group_id": "GRP-04",
+      "teacher_id": "DOC-04",
+      "evaluation_percentage": 0.25,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-04-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-04-S01",
+          "date": "2026-11-16",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-04-S04",
+          "date": "2026-11-18",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-04-S07",
+          "date": "2026-11-21",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-4"
+        },
+        {
+          "slot_id": "PAR-04-S02",
+          "date": "2026-11-23",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-04-S05",
+          "date": "2026-11-25",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-04-S03",
+          "date": "2026-11-30",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-04-S06",
+          "date": "2026-12-02",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        }
+      ]
+    },
+    {
+      "id": "PAR-05",
+      "name": "Parcial 2 — Matemáticas Discretas (DIS-201-A)",
+      "subject_id": "SUB-03",
+      "group_id": "GRP-05",
+      "teacher_id": "DOC-05",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-05-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-05-S01",
+          "date": "2026-11-17",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-05-S04",
+          "date": "2026-11-19",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-05-S02",
+          "date": "2026-11-24",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-05-S05",
+          "date": "2026-11-26",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-05-S03",
+          "date": "2026-12-01",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-05-S06",
+          "date": "2026-12-03",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        }
+      ]
+    },
+    {
+      "id": "PAR-06",
+      "name": "Parcial 2 — Matemáticas Discretas (DIS-201-B)",
+      "subject_id": "SUB-03",
+      "group_id": "GRP-06",
+      "teacher_id": "DOC-06",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-06-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-06-S01",
+          "date": "2026-11-17",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-06-S04",
+          "date": "2026-11-19",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-06-S02",
+          "date": "2026-11-24",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-06-S05",
+          "date": "2026-11-26",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-06-S03",
+          "date": "2026-12-01",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-06-S06",
+          "date": "2026-12-03",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-06-S07",
+          "date": "2026-12-05",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-2"
+        }
+      ]
+    },
+    {
+      "id": "PAR-07",
+      "name": "Parcial 2 — Programación Orientada a Objetos (PRG-103-A)",
+      "subject_id": "SUB-04",
+      "group_id": "GRP-07",
+      "teacher_id": "DOC-07",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-07-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-07-S01",
+          "date": "2026-11-17",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-07-S04",
+          "date": "2026-11-19",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-07-S07",
+          "date": "2026-11-21",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        },
+        {
+          "slot_id": "PAR-07-S02",
+          "date": "2026-11-24",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-07-S05",
+          "date": "2026-11-26",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-07-S08",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        },
+        {
+          "slot_id": "PAR-07-S03",
+          "date": "2026-12-01",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-07-S06",
+          "date": "2026-12-03",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        }
+      ]
+    },
+    {
+      "id": "PAR-08",
+      "name": "Parcial 2 — Programación Orientada a Objetos (PRG-103-B)",
+      "subject_id": "SUB-04",
+      "group_id": "GRP-08",
+      "teacher_id": "DOC-08",
+      "evaluation_percentage": 0.35,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-08-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-08-S01",
+          "date": "2026-11-17",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-08-S04",
+          "date": "2026-11-19",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-08-S02",
+          "date": "2026-11-24",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-08-S05",
+          "date": "2026-11-26",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-08-S07",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-4"
+        },
+        {
+          "slot_id": "PAR-08-S03",
+          "date": "2026-12-01",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-08-S06",
+          "date": "2026-12-03",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        }
+      ]
+    },
+    {
+      "id": "PAR-09",
+      "name": "Parcial 2 — Probabilidad y Estadística (EST-202-A)",
+      "subject_id": "SUB-05",
+      "group_id": "GRP-09",
+      "teacher_id": "DOC-09",
+      "evaluation_percentage": 0.25,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-09-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-09-S01",
+          "date": "2026-11-17",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-09-S04",
+          "date": "2026-11-19",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-09-S08",
+          "date": "2026-11-21",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        },
+        {
+          "slot_id": "PAR-09-S02",
+          "date": "2026-11-24",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-09-S05",
+          "date": "2026-11-26",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-09-S03",
+          "date": "2026-12-01",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-09-S06",
+          "date": "2026-12-03",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-09-S07",
+          "date": "2026-12-05",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        }
+      ]
+    },
+    {
+      "id": "PAR-10",
+      "name": "Parcial 2 — Probabilidad y Estadística (EST-202-B)",
+      "subject_id": "SUB-05",
+      "group_id": "GRP-10",
+      "teacher_id": "DOC-10",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-10-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-10-S01",
+          "date": "2026-11-18",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-10-S04",
+          "date": "2026-11-20",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-10-S02",
+          "date": "2026-11-25",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-10-S05",
+          "date": "2026-11-27",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-10-S03",
+          "date": "2026-12-02",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-10-S06",
+          "date": "2026-12-04",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        }
+      ]
+    },
+    {
+      "id": "PAR-11",
+      "name": "Parcial 2 — Física Mecánica (FIS-104-A)",
+      "subject_id": "SUB-06",
+      "group_id": "GRP-11",
+      "teacher_id": "DOC-11",
+      "evaluation_percentage": 0.2,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-11-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-11-S01",
+          "date": "2026-11-17",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-11-S04",
+          "date": "2026-11-20",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-11-S02",
+          "date": "2026-11-24",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-11-S05",
+          "date": "2026-11-27",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-11-S07",
+          "date": "2026-11-28",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        },
+        {
+          "slot_id": "PAR-11-S03",
+          "date": "2026-12-01",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-11-S06",
+          "date": "2026-12-04",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-102"
+        },
+        {
+          "slot_id": "PAR-11-S08",
+          "date": "2026-12-05",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        }
+      ]
+    },
+    {
+      "id": "PAR-12",
+      "name": "Parcial 2 — Estructuras de Datos y Grafos (EDD-205-A)",
+      "subject_id": "SUB-07",
+      "group_id": "GRP-12",
+      "teacher_id": "DOC-12",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-12-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-12-S01",
+          "date": "2026-11-16",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-12-S04",
+          "date": "2026-11-20",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-12-S02",
+          "date": "2026-11-23",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-12-S05",
+          "date": "2026-11-27",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-12-S03",
+          "date": "2026-11-30",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-12-S06",
+          "date": "2026-12-04",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-103"
+        },
+        {
+          "slot_id": "PAR-12-S07",
+          "date": "2026-12-05",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-4"
+        }
+      ]
+    },
+    {
+      "id": "PAR-13",
+      "name": "Parcial 2 — Cálculo Integral (CAL-203-A)",
+      "subject_id": "SUB-08",
+      "group_id": "GRP-13",
+      "teacher_id": "DOC-01",
+      "evaluation_percentage": 0.25,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-13-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-13-S01",
+          "date": "2026-11-19",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-13-S04",
+          "date": "2026-11-20",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-13-S07",
+          "date": "2026-11-21",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        },
+        {
+          "slot_id": "PAR-13-S02",
+          "date": "2026-11-26",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-13-S05",
+          "date": "2026-11-27",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-13-S08",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        },
+        {
+          "slot_id": "PAR-13-S03",
+          "date": "2026-12-03",
+          "start_time": "18:00",
+          "end_time": "20:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        },
+        {
+          "slot_id": "PAR-13-S06",
+          "date": "2026-12-04",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-104"
+        }
+      ]
+    },
+    {
+      "id": "PAR-14",
+      "name": "Parcial 2 — Bases de Datos Relacionales (BDD-301-A)",
+      "subject_id": "SUB-09",
+      "group_id": "GRP-14",
+      "teacher_id": "DOC-02",
+      "evaluation_percentage": 0.35,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-14-S04",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-14-S04",
+          "date": "2026-11-18",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-14-S01",
+          "date": "2026-11-20",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-14-S05",
+          "date": "2026-11-25",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-14-S02",
+          "date": "2026-11-27",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-14-S07",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-2"
+        },
+        {
+          "slot_id": "PAR-14-S06",
+          "date": "2026-12-02",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        },
+        {
+          "slot_id": "PAR-14-S03",
+          "date": "2026-12-04",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-105"
+        }
+      ]
+    },
+    {
+      "id": "PAR-15",
+      "name": "Parcial 2 — Investigación de Operaciones (OPT-304-A)",
+      "subject_id": "SUB-10",
+      "group_id": "GRP-15",
+      "teacher_id": "DOC-03",
+      "evaluation_percentage": 0.2,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-15-S01",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-15-S01",
+          "date": "2026-11-16",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-15-S04",
+          "date": "2026-11-18",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-15-S02",
+          "date": "2026-11-23",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-15-S05",
+          "date": "2026-11-25",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-15-S03",
+          "date": "2026-11-30",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        },
+        {
+          "slot_id": "PAR-15-S06",
+          "date": "2026-12-02",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-106"
+        }
+      ]
+    },
+    {
+      "id": "PAR-16",
+      "name": "Parcial 2 — Arquitectura de Computadores (ARQ-206-A)",
+      "subject_id": "SUB-11",
+      "group_id": "GRP-16",
+      "teacher_id": "DOC-04",
+      "evaluation_percentage": 0.3,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-16-S04",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-16-S01",
+          "date": "2026-11-16",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-16-S04",
+          "date": "2026-11-18",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-16-S07",
+          "date": "2026-11-21",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-4"
+        },
+        {
+          "slot_id": "PAR-16-S02",
+          "date": "2026-11-23",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-16-S05",
+          "date": "2026-11-25",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-16-S03",
+          "date": "2026-11-30",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        },
+        {
+          "slot_id": "PAR-16-S06",
+          "date": "2026-12-02",
+          "start_time": "07:00",
+          "end_time": "09:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-107"
+        }
+      ]
+    },
+    {
+      "id": "PAR-17",
+      "name": "Parcial 2 — Lógica Matemática (LOG-105-A)",
+      "subject_id": "SUB-12",
+      "group_id": "GRP-17",
+      "teacher_id": "DOC-05",
+      "evaluation_percentage": 0.35,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-17-S04",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-17-S01",
+          "date": "2026-11-16",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-17-S04",
+          "date": "2026-11-18",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-17-S02",
+          "date": "2026-11-23",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-17-S05",
+          "date": "2026-11-25",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-17-S07",
+          "date": "2026-11-28",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        },
+        {
+          "slot_id": "PAR-17-S03",
+          "date": "2026-11-30",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-17-S06",
+          "date": "2026-12-02",
+          "start_time": "09:00",
+          "end_time": "11:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-108"
+        },
+        {
+          "slot_id": "PAR-17-S08",
+          "date": "2026-12-05",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-1"
+        }
+      ]
+    },
+    {
+      "id": "PAR-18",
+      "name": "Parcial 2 — Análisis Numérico (ANA-305-A)",
+      "subject_id": "SUB-13",
+      "group_id": "GRP-18",
+      "teacher_id": "DOC-06",
+      "evaluation_percentage": 0.25,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-18-S04",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-18-S01",
+          "date": "2026-11-16",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-18-S04",
+          "date": "2026-11-18",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-18-S02",
+          "date": "2026-11-23",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-18-S05",
+          "date": "2026-11-25",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-18-S03",
+          "date": "2026-11-30",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-18-S06",
+          "date": "2026-12-02",
+          "start_time": "11:00",
+          "end_time": "13:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-109"
+        },
+        {
+          "slot_id": "PAR-18-S07",
+          "date": "2026-12-05",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-2"
+        }
+      ]
+    },
+    {
+      "id": "PAR-19",
+      "name": "Parcial 2 — Economía para Ingeniería (ECO-204-A)",
+      "subject_id": "SUB-14",
+      "group_id": "GRP-19",
+      "teacher_id": "DOC-07",
+      "evaluation_percentage": 0.25,
+      "duration_minutes": 90,
+      "initial_slot_id": "PAR-19-S07",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-19-S01",
+          "date": "2026-11-16",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-19-S04",
+          "date": "2026-11-18",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-19-S07",
+          "date": "2026-11-21",
+          "start_time": "08:00",
+          "end_time": "10:00",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        },
+        {
+          "slot_id": "PAR-19-S02",
+          "date": "2026-11-23",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-19-S05",
+          "date": "2026-11-25",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-19-S08",
+          "date": "2026-11-28",
+          "start_time": "10:30",
+          "end_time": "12:30",
+          "slot_type": "authorized_saturday",
+          "authorized": true,
+          "room": "AUD-SAB-3"
+        },
+        {
+          "slot_id": "PAR-19-S03",
+          "date": "2026-11-30",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        },
+        {
+          "slot_id": "PAR-19-S06",
+          "date": "2026-12-02",
+          "start_time": "14:00",
+          "end_time": "16:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-110"
+        }
+      ]
+    },
+    {
+      "id": "PAR-20",
+      "name": "Parcial 2 — Redes y Sistemas Distribuidos (RED-302-A)",
+      "subject_id": "SUB-15",
+      "group_id": "GRP-20",
+      "teacher_id": "DOC-08",
+      "evaluation_percentage": 0.2,
+      "duration_minutes": 120,
+      "initial_slot_id": "PAR-20-S04",
+      "authorized_slots": [
+        {
+          "slot_id": "PAR-20-S01",
+          "date": "2026-11-16",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-20-S04",
+          "date": "2026-11-18",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-20-S02",
+          "date": "2026-11-23",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-20-S05",
+          "date": "2026-11-25",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-20-S03",
+          "date": "2026-11-30",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        },
+        {
+          "slot_id": "PAR-20-S06",
+          "date": "2026-12-02",
+          "start_time": "16:00",
+          "end_time": "18:00",
+          "slot_type": "regular_class",
+          "authorized": true,
+          "room": "AULA-101"
+        }
+      ]
+    }
+  ],
+  "students": [
+    {
+      "id": "EST-001",
+      "name": "Martín López Gómez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-002",
+      "name": "Lucía Mendoza Díaz (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        }
+      ]
+    },
+    {
+      "id": "EST-003",
+      "name": "Santiago Sánchez Rivera (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-004",
+      "name": "Sebastián Herrera Flores (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        }
+      ]
+    },
+    {
+      "id": "EST-005",
+      "name": "Samuel Romero Morales (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        }
+      ]
+    },
+    {
+      "id": "EST-006",
+      "name": "Daniel Romero Navarro (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-007",
+      "name": "Andrea Ruiz Navarro (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-008",
+      "name": "Lucía García Mendoza (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        }
+      ]
+    },
+    {
+      "id": "EST-009",
+      "name": "Sara Vargas Mendoza (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-010",
+      "name": "Camila Vargas Gómez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-011",
+      "name": "Sara Rivera Castro (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-012",
+      "name": "Carolina Castro Martínez (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        }
+      ]
+    },
+    {
+      "id": "EST-013",
+      "name": "Juliana Romero Morales (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-014",
+      "name": "Sebastián Mendoza Ramírez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        }
+      ]
+    },
+    {
+      "id": "EST-015",
+      "name": "Gabriela Ortiz Vargas (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        }
+      ]
+    },
+    {
+      "id": "EST-016",
+      "name": "Gabriela Pérez Torres (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-017",
+      "name": "Paula Castro Sánchez (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-018",
+      "name": "Santiago Sánchez Flores (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-019",
+      "name": "Elena Pérez Martínez (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-020",
+      "name": "Juliana Ruiz Ruiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-021",
+      "name": "Samuel Díaz Ruiz (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        }
+      ]
+    },
+    {
+      "id": "EST-022",
+      "name": "Camila Vargas Herrera (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-023",
+      "name": "Carolina Herrera García (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        }
+      ]
+    },
+    {
+      "id": "EST-024",
+      "name": "Diego Torres Rodríguez (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-025",
+      "name": "Laura Rodríguez Morales (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        }
+      ]
+    },
+    {
+      "id": "EST-026",
+      "name": "Isabella Herrera Ortiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        }
+      ]
+    },
+    {
+      "id": "EST-027",
+      "name": "Natalia Álvarez Jiménez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        }
+      ]
+    },
+    {
+      "id": "EST-028",
+      "name": "Lucía Gómez Álvarez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        }
+      ]
+    },
+    {
+      "id": "EST-029",
+      "name": "Sofía López Díaz (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-030",
+      "name": "Emiliano Herrera Álvarez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        }
+      ]
+    },
+    {
+      "id": "EST-031",
+      "name": "Tomás Navarro Flores (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-032",
+      "name": "Nicolás Ortiz Ruiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-033",
+      "name": "Diego Ramírez Álvarez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-034",
+      "name": "Paula Rojas Ramírez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        }
+      ]
+    },
+    {
+      "id": "EST-035",
+      "name": "Laura Ramírez López (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-036",
+      "name": "Samuel Torres Ramírez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        }
+      ]
+    },
+    {
+      "id": "EST-037",
+      "name": "Juan Sánchez Martínez (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        }
+      ]
+    },
+    {
+      "id": "EST-038",
+      "name": "Felipe Rojas Ortiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-039",
+      "name": "Andrea Rojas Ruiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-040",
+      "name": "Samuel Rivera Rivera (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        }
+      ]
+    },
+    {
+      "id": "EST-041",
+      "name": "Felipe Gómez Ramírez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        }
+      ]
+    },
+    {
+      "id": "EST-042",
+      "name": "Camila Díaz Díaz (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-043",
+      "name": "Valentina Navarro Flores (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-044",
+      "name": "Elena Ortiz Castro (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-045",
+      "name": "Elena Ramírez Martínez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        }
+      ]
+    },
+    {
+      "id": "EST-046",
+      "name": "Daniel Díaz Navarro (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        }
+      ]
+    },
+    {
+      "id": "EST-047",
+      "name": "Natalia Gómez Martínez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-048",
+      "name": "Daniel Flores Torres (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        }
+      ]
+    },
+    {
+      "id": "EST-049",
+      "name": "Daniel Jiménez Ruiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        }
+      ]
+    },
+    {
+      "id": "EST-050",
+      "name": "Juan García Romero (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        }
+      ]
+    },
+    {
+      "id": "EST-051",
+      "name": "Valentina Martínez Rojas (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        }
+      ]
+    },
+    {
+      "id": "EST-052",
+      "name": "Laura Ortiz Díaz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-053",
+      "name": "Martín Sánchez Torres (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-054",
+      "name": "Juan Flores Navarro (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-055",
+      "name": "Martín García Torres (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        }
+      ]
+    },
+    {
+      "id": "EST-056",
+      "name": "Juan Flores Navarro (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-057",
+      "name": "Juliana Ruiz Ruiz (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-058",
+      "name": "Paula Morales Ortiz (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        }
+      ]
+    },
+    {
+      "id": "EST-059",
+      "name": "Daniel Rivera López (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        }
+      ]
+    },
+    {
+      "id": "EST-060",
+      "name": "Nicolás Torres Herrera (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-061",
+      "name": "Sebastián Ramírez López (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        }
+      ]
+    },
+    {
+      "id": "EST-062",
+      "name": "Lucía Vargas Herrera (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        }
+      ]
+    },
+    {
+      "id": "EST-063",
+      "name": "Diego Ruiz Ruiz (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        }
+      ]
+    },
+    {
+      "id": "EST-064",
+      "name": "Elena Ortiz Rodríguez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        }
+      ]
+    },
+    {
+      "id": "EST-065",
+      "name": "Valentina Mendoza Vargas (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        }
+      ]
+    },
+    {
+      "id": "EST-066",
+      "name": "Alejandro Romero Navarro (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        }
+      ]
+    },
+    {
+      "id": "EST-067",
+      "name": "Felipe Romero Navarro (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-068",
+      "name": "Camila Martínez Díaz (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-069",
+      "name": "Samuel Morales Ruiz (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        }
+      ]
+    },
+    {
+      "id": "EST-070",
+      "name": "Daniel Gómez Ruiz (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-071",
+      "name": "Natalia Vargas Rodríguez (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        }
+      ]
+    },
+    {
+      "id": "EST-072",
+      "name": "Andrea Castro Flores (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        }
+      ]
+    },
+    {
+      "id": "EST-073",
+      "name": "Mateo Torres Herrera (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-074",
+      "name": "Martín Vargas Navarro (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-075",
+      "name": "Lucas Ortiz Romero (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-076",
+      "name": "Tomás Torres Sánchez (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-077",
+      "name": "Alejandro García Díaz (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        }
+      ]
+    },
+    {
+      "id": "EST-078",
+      "name": "Andrés Rivera Gómez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-079",
+      "name": "Carolina Álvarez Mendoza (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        }
+      ]
+    },
+    {
+      "id": "EST-080",
+      "name": "Santiago Torres Díaz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-081",
+      "name": "Gabriela Rivera Vargas (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        }
+      ]
+    },
+    {
+      "id": "EST-082",
+      "name": "Valentina Jiménez Jiménez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        }
+      ]
+    },
+    {
+      "id": "EST-083",
+      "name": "Isabella López Ruiz (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-084",
+      "name": "Sara Álvarez Navarro (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        }
+      ]
+    },
+    {
+      "id": "EST-085",
+      "name": "Sebastián García Jiménez (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        }
+      ]
+    },
+    {
+      "id": "EST-086",
+      "name": "Lucas Rodríguez García (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-087",
+      "name": "Felipe Mendoza López (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-088",
+      "name": "Felipe Torres Flores (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        }
+      ]
+    },
+    {
+      "id": "EST-089",
+      "name": "Elena Jiménez Rodríguez (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        }
+      ]
+    },
+    {
+      "id": "EST-090",
+      "name": "Tomás Gómez Rivera (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        }
+      ]
+    },
+    {
+      "id": "EST-091",
+      "name": "Felipe Pérez Martínez (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        }
+      ]
+    },
+    {
+      "id": "EST-092",
+      "name": "Daniel Sánchez Pérez (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        }
+      ]
+    },
+    {
+      "id": "EST-093",
+      "name": "Sebastián Castro Vargas (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-094",
+      "name": "Samuel Ruiz Herrera (Sim)",
+      "program": "Ingeniería de Sistemas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        }
+      ]
+    },
+    {
+      "id": "EST-095",
+      "name": "Lucía Navarro Vargas (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        }
+      ]
+    },
+    {
+      "id": "EST-096",
+      "name": "Laura Álvarez Rojas (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-097",
+      "name": "Sara Navarro Martínez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-098",
+      "name": "Camila Sánchez Rivera (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        }
+      ]
+    },
+    {
+      "id": "EST-099",
+      "name": "Camila Pérez Navarro (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        }
+      ]
+    },
+    {
+      "id": "EST-100",
+      "name": "Natalia Castro Sánchez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        }
+      ]
+    },
+    {
+      "id": "EST-101",
+      "name": "Juan Mendoza López (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-102",
+      "name": "Lucas Morales Gómez (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-103",
+      "name": "Diego Navarro Romero (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-104",
+      "name": "Daniel Sánchez García (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        }
+      ]
+    },
+    {
+      "id": "EST-105",
+      "name": "Juan García Flores (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-106",
+      "name": "Tomás Castro Rodríguez (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        }
+      ]
+    },
+    {
+      "id": "EST-107",
+      "name": "Laura Rivera Romero (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-108",
+      "name": "Alejandro Flores Mendoza (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        }
+      ]
+    },
+    {
+      "id": "EST-109",
+      "name": "Carolina Vargas Rojas (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-09"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        }
+      ]
+    },
+    {
+      "id": "EST-110",
+      "name": "Alejandro López Martínez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-07"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-111",
+      "name": "Sebastián Álvarez Romero (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        }
+      ]
+    },
+    {
+      "id": "EST-112",
+      "name": "Felipe Romero Morales (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-05",
+          "group_id": "GRP-10"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        }
+      ]
+    },
+    {
+      "id": "EST-113",
+      "name": "Lucía López Gómez (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-03"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        }
+      ]
+    },
+    {
+      "id": "EST-114",
+      "name": "Samuel Pérez Navarro (Sim)",
+      "program": "Ciencia de Datos",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-14",
+          "group_id": "GRP-19"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        }
+      ]
+    },
+    {
+      "id": "EST-115",
+      "name": "Juan Navarro Navarro (Sim)",
+      "program": "Ingeniería Industrial",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-04",
+          "group_id": "GRP-08"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        }
+      ]
+    },
+    {
+      "id": "EST-116",
+      "name": "Sara Martínez Martínez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-15",
+          "group_id": "GRP-20"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-117",
+      "name": "Lucas Herrera Romero (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-10",
+          "group_id": "GRP-15"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        },
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-13",
+          "group_id": "GRP-18"
+        },
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        }
+      ]
+    },
+    {
+      "id": "EST-118",
+      "name": "Andrea Navarro Ramírez (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-05"
+        },
+        {
+          "subject_id": "SUB-08",
+          "group_id": "GRP-13"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        }
+      ]
+    },
+    {
+      "id": "EST-119",
+      "name": "Juliana Díaz Jiménez (Sim)",
+      "program": "Ingeniería Electrónica",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-12",
+          "group_id": "GRP-17"
+        },
+        {
+          "subject_id": "SUB-07",
+          "group_id": "GRP-12"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-01"
+        },
+        {
+          "subject_id": "SUB-02",
+          "group_id": "GRP-04"
+        }
+      ]
+    },
+    {
+      "id": "EST-120",
+      "name": "Lucas Romero Herrera (Sim)",
+      "program": "Matemáticas Aplicadas",
+      "is_synthetic": true,
+      "enrollments": [
+        {
+          "subject_id": "SUB-06",
+          "group_id": "GRP-11"
+        },
+        {
+          "subject_id": "SUB-11",
+          "group_id": "GRP-16"
+        },
+        {
+          "subject_id": "SUB-09",
+          "group_id": "GRP-14"
+        },
+        {
+          "subject_id": "SUB-03",
+          "group_id": "GRP-06"
+        },
+        {
+          "subject_id": "SUB-01",
+          "group_id": "GRP-02"
+        }
+      ]
+    }
+  ]
+}
