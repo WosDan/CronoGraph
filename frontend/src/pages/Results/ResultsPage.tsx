@@ -14,15 +14,23 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Download, FileSpreadsheet } from 'lucide-react';
+import { Download, FileSpreadsheet, Search, Sparkles, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSimulation } from '../../context/SimulationContext';
 import { downloadJsonFile, downloadOptimizationCsv, formatSlotTypeLabel } from '../../utils/export';
 import { Badge, Card, CardBody, CardHeader, MetricTile } from '../../components/ui/Primitives';
 
+function daysBetweenIso(isoA: string, isoB: string): number {
+  const a = new Date(`${isoA}T00:00:00Z`).getTime();
+  const b = new Date(`${isoB}T00:00:00Z`).getTime();
+  return Math.round(Math.abs(a - b) / (1000 * 60 * 60 * 24));
+}
+
 export function ResultsPage() {
   const { activeRun, runHistory, dataset } = useSimulation();
   const [calendarViewMode, setCalendarViewMode] = useState<'optimized' | 'initial' | 'both'>('optimized');
+  const [studentSearch, setStudentSearch] = useState<string>('');
+  const [selectedStudentId, setSelectedStudentId] = useState<string>('EST-001');
 
   const solverCompareData = useMemo(() => {
     if (!activeRun) return [];
@@ -108,6 +116,97 @@ export function ResultsPage() {
     return [...initEvents, ...optEvents];
   }, [activeRun, calendarViewMode]);
 
+  const executiveImpact = useMemo(() => {
+    if (!activeRun) return null;
+    const initSameDay =
+      activeRun.initial_evaluation.distance_distribution.find((d) => d.delta_days === 0)?.pair_count ?? 0;
+    const optSameDay =
+      activeRun.optimized_evaluation.distance_distribution.find((d) => d.delta_days === 0)?.pair_count ?? 0;
+    const initConsec =
+      activeRun.initial_evaluation.distance_distribution.find((d) => d.delta_days === 1)?.pair_count ?? 0;
+    const optConsec =
+      activeRun.optimized_evaluation.distance_distribution.find((d) => d.delta_days === 1)?.pair_count ?? 0;
+
+    const sameDayEliminated = Math.max(0, initSameDay - optSameDay);
+    const consecEliminated = Math.max(0, initConsec - optConsec);
+
+    const affectedBefore = activeRun.initial_evaluation.affected_students_count;
+    const affectedAfter = activeRun.optimized_evaluation.affected_students_count;
+    const studentsFreed = Math.max(0, affectedBefore - affectedAfter);
+    const pctFreed =
+      affectedBefore > 0 ? Math.round((studentsFreed / affectedBefore) * 1000) / 10 : 0;
+
+    return {
+      initSameDay,
+      optSameDay,
+      sameDayEliminated,
+      consecEliminated,
+      affectedBefore,
+      affectedAfter,
+      studentsFreed,
+      pctFreed,
+    };
+  }, [activeRun]);
+
+  const matchingStudents = useMemo(() => {
+    if (!dataset) return [];
+    const q = studentSearch.trim().toLowerCase();
+    return dataset.students.filter(
+      (st) => !q || st.id.toLowerCase().includes(q) || st.name.toLowerCase().includes(q),
+    );
+  }, [dataset, studentSearch]);
+
+  const selectedStudentSchedule = useMemo(() => {
+    if (!dataset || !activeRun) return null;
+    const student =
+      dataset.students.find((s) => s.id === selectedStudentId) ??
+      matchingStudents[0] ??
+      dataset.students[0];
+    if (!student) return null;
+
+    const initByExam = new Map(activeRun.initial_evaluation.exam_details.map((e) => [e.exam_id, e]));
+    const optByExam = new Map(activeRun.optimized_evaluation.exam_details.map((e) => [e.exam_id, e]));
+
+    const studentExams = dataset.exams.filter((ex) =>
+      student.enrollments.some(
+        (enr) => enr.subject_id === ex.subject_id && enr.group_id === ex.group_id,
+      ),
+    );
+
+    const buildTimeline = (lookup: typeof initByExam) => {
+      const items = studentExams
+        .map((ex) => lookup.get(ex.id))
+        .filter((d): d is NonNullable<typeof d> => Boolean(d))
+        .sort((a, b) =>
+          a.assigned_date === b.assigned_date
+            ? a.assigned_start_time.localeCompare(b.assigned_start_time)
+            : a.assigned_date.localeCompare(b.assigned_date),
+        );
+
+      return items.map((item, idx) => {
+        const minGap = items.reduce((min, other, oIdx) => {
+          if (idx === oIdx) return min;
+          const gap = daysBetweenIso(item.assigned_date, other.assigned_date);
+          return Math.min(min, gap);
+        }, 99);
+        return { ...item, minGap };
+      });
+    };
+
+    const beforeTimeline = buildTimeline(initByExam);
+    const afterTimeline = buildTimeline(optByExam);
+    const criticalBefore = beforeTimeline.filter((t) => t.minGap <= 1).length;
+    const criticalAfter = afterTimeline.filter((t) => t.minGap <= 1).length;
+
+    return {
+      student,
+      beforeTimeline,
+      afterTimeline,
+      criticalBefore,
+      criticalAfter,
+    };
+  }, [dataset, activeRun, selectedStudentId, matchingStudents]);
+
   if (!activeRun) {
     return (
       <Card>
@@ -158,6 +257,47 @@ export function ResultsPage() {
           </button>
         </div>
       </div>
+
+      {/* Resumen Ejecutivo — Impacto Estudiantil */}
+      {executiveImpact && (
+        <section
+          aria-label="Resumen ejecutivo de impacto estudiantil"
+          className="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-white to-indigo-50 p-5 shadow-sm"
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
+                <Sparkles className="h-4 w-4" />
+                Impacto Estudiantil en Lenguaje Claro
+              </div>
+              <p className="text-sm sm:text-base text-slate-800 leading-relaxed">
+                La reprogramación redujo la penalización académica en{' '}
+                <strong className="text-indigo-700">{activeRun.primary_solver.reduction_percentage}%</strong>,
+                eliminando{' '}
+                <strong className="text-emerald-700">{executiveImpact.sameDayEliminated}</strong> pares
+                de parciales el mismo día (de {executiveImpact.initSameDay} a {executiveImpact.optSameDay}) y{' '}
+                <strong className="text-emerald-700">{executiveImpact.consecEliminated}</strong> pares en
+                días consecutivos.{' '}
+                <strong className="text-slate-900">
+                  {executiveImpact.studentsFreed} estudiantes ({executiveImpact.pctFreed}% de los
+                  afectados inicialmente)
+                </strong>{' '}
+                quedaron completamente libres de conflictos temporales (Δ &lt; 4 días).
+              </p>
+            </div>
+            <div className="flex shrink-0 gap-3">
+              <div className="rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-center">
+                <p className="text-[11px] font-medium text-slate-500">Mismo día eliminados</p>
+                <p className="text-xl font-bold text-emerald-700">-{executiveImpact.sameDayEliminated}</p>
+              </div>
+              <div className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-center">
+                <p className="text-[11px] font-medium text-slate-500">Alumnos liberados</p>
+                <p className="text-xl font-bold text-indigo-700">{executiveImpact.pctFreed}%</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 9 Analytical Indicators with explicit units */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -422,6 +562,135 @@ export function ResultsPage() {
           </table>
         </div>
       </Card>
+
+      {/* Perspectiva del Estudiante */}
+      {selectedStudentSchedule && (
+        <Card>
+          <CardHeader
+            title="Explorador: Perspectiva del Estudiante"
+            subtitle="Consulta el cronograma individual antes y después de optimizar, con alertas de días críticos"
+            action={<UserCheck className="h-5 w-5 text-indigo-600" />}
+          />
+          <CardBody className="space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="relative w-full sm:w-64">
+                <Search className="h-4 w-4 text-slate-400 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  value={studentSearch}
+                  onChange={(e) => setStudentSearch(e.target.value)}
+                  placeholder="Buscar estudiante (ej. EST-001)..."
+                  className="w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 py-1.5 text-xs"
+                />
+              </div>
+              <select
+                aria-label="Seleccionar estudiante"
+                value={selectedStudentSchedule.student.id}
+                onChange={(e) => setSelectedStudentId(e.target.value)}
+                className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium min-w-[260px]"
+              >
+                {matchingStudents.slice(0, 120).map((st) => (
+                  <option key={st.id} value={st.id}>
+                    {st.id} — {st.name} ({st.enrollments.length} mat.)
+                  </option>
+                ))}
+              </select>
+              <div className="ml-auto flex flex-wrap gap-2 text-xs">
+                <Badge variant="rose">
+                  Días críticos antes: {selectedStudentSchedule.criticalBefore}
+                </Badge>
+                <Badge variant={selectedStudentSchedule.criticalAfter === 0 ? 'emerald' : 'amber'}>
+                  Días críticos después: {selectedStudentSchedule.criticalAfter}
+                </Badge>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {/* Antes */}
+              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-2.5">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                  Antes — Calendario Original ({selectedStudentSchedule.student.id})
+                </p>
+                {selectedStudentSchedule.beforeTimeline.map((item) => (
+                  <div
+                    key={`b-${item.exam_id}`}
+                    className="rounded-lg border border-slate-200 bg-white p-3 flex items-center justify-between gap-2 text-xs"
+                  >
+                    <div>
+                      <p className="font-semibold text-slate-900">
+                        {item.exam_id} · {item.subject_name}
+                      </p>
+                      <p className="text-slate-500">
+                        {item.assigned_date} · {item.assigned_start_time}–{item.assigned_end_time}
+                      </p>
+                    </div>
+                    <Badge
+                      variant={
+                        item.minGap === 0
+                          ? 'rose'
+                          : item.minGap === 1
+                            ? 'amber'
+                            : item.minGap <= 3
+                              ? 'neutral'
+                              : 'emerald'
+                      }
+                    >
+                      {item.minGap === 0
+                        ? 'Mismo día (Δ=0)'
+                        : item.minGap === 1
+                          ? 'Consecutivo (Δ=1)'
+                          : item.minGap <= 3
+                            ? `Δ=${item.minGap}d`
+                            : 'Despejado (Δ≥4d)'}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+
+              {/* Después */}
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 space-y-2.5">
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                  Después — Calendario Optimizado ({selectedStudentSchedule.student.id})
+                </p>
+                {selectedStudentSchedule.afterTimeline.map((item) => (
+                  <div
+                    key={`a-${item.exam_id}`}
+                    className="rounded-lg border border-emerald-100 bg-white p-3 flex items-center justify-between gap-2 text-xs"
+                  >
+                    <div>
+                      <p className="font-semibold text-slate-900">
+                        {item.exam_id} · {item.subject_name}
+                      </p>
+                      <p className="text-slate-500">
+                        {item.assigned_date} · {item.assigned_start_time}–{item.assigned_end_time}
+                      </p>
+                    </div>
+                    <Badge
+                      variant={
+                        item.minGap === 0
+                          ? 'rose'
+                          : item.minGap === 1
+                            ? 'amber'
+                            : item.minGap <= 3
+                              ? 'neutral'
+                              : 'emerald'
+                      }
+                    >
+                      {item.minGap === 0
+                        ? 'Mismo día (Δ=0)'
+                        : item.minGap === 1
+                          ? 'Consecutivo (Δ=1)'
+                          : item.minGap <= 3
+                            ? `Δ=${item.minGap}d`
+                            : 'Despejado (Δ≥4d)'}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+      )}
     </div>
   );
 }

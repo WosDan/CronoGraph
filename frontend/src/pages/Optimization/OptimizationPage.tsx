@@ -8,9 +8,35 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { CheckCircle2, Play, RotateCcw, ShieldAlert } from 'lucide-react';
+import { CheckCircle2, HelpCircle, Play, RotateCcw, ShieldAlert, Zap } from 'lucide-react';
 import { useSimulation } from '../../context/SimulationContext';
 import { Badge, Card, CardBody, CardHeader, MetricTile } from '../../components/ui/Primitives';
+
+function HelpTooltip({ label, text }: { label: string; text: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span className="relative inline-flex items-center">
+      <button
+        type="button"
+        aria-label={`Ayuda sobre ${label}`}
+        onClick={() => setOpen((v) => !v)}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        className="ml-1.5 inline-flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none"
+      >
+        <HelpCircle className="h-3.5 w-3.5" />
+      </button>
+      {open && (
+        <span
+          role="tooltip"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 w-64 rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-normal text-slate-100 shadow-lg leading-relaxed"
+        >
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
 
 export function OptimizationPage() {
   const {
@@ -28,6 +54,23 @@ export function OptimizationPage() {
   const [seed, setSeed] = useState<number>(42);
   const [timeLimit, setTimeLimit] = useState<number>(10);
   const [localError, setLocalError] = useState<string | null>(null);
+
+  function applyPreset(preset: 'quick' | 'academic' | 'audit') {
+    if (preset === 'quick') {
+      setAlgorithm('local_search');
+      setRestarts(5);
+      setSeed(42);
+    } else if (preset === 'academic') {
+      setAlgorithm('local_search');
+      setRestarts(15);
+      setSeed(42);
+    } else {
+      setAlgorithm('both');
+      setRestarts(15);
+      setSeed(42);
+      setTimeLimit(10);
+    }
+  }
 
   async function handleRun(e: React.FormEvent) {
     e.preventDefault();
@@ -52,21 +95,56 @@ export function OptimizationPage() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Simulador y Optimización</h1>
         <p className="text-sm text-slate-600">
-          Ejecución real en el backend mediante búsqueda local incremental (ΔF_i(t)) con reinicios
-          aleatorios y verificación exacta con Google OR-Tools CP-SAT.
+          Ejecución real en el backend mediante búsqueda local incremental (ΔF_i(t)) guiada por
+          centralidades con reinicios aleatorios y verificación exacta con Google OR-Tools CP-SAT.
         </p>
       </div>
 
-      {/* Controls Form */}
+      {/* Controls Form with Presets & Didactic Tooltips */}
       <Card>
         <CardHeader
           title="Parámetros de ejecución"
-          subtitle="Configura el algoritmo, la semilla determinista y el número de reinicios"
+          subtitle="Selecciona un perfil rápido o ajusta manualmente el algoritmo, reinicios y semilla"
         />
-        <CardBody>
+        <CardBody className="space-y-4">
+          {/* Quick Presets */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 mr-1">
+              <Zap className="h-3.5 w-3.5 text-amber-500" />
+              Presets rápidos:
+            </span>
+            <button
+              type="button"
+              onClick={() => applyPreset('quick')}
+              className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-800 transition-colors"
+            >
+              Demostración Rápida: 5 reinicios
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset('academic')}
+              className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-800 transition-colors"
+            >
+              Académico: 15 reinicios + Semilla 42
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset('audit')}
+              className="rounded-lg border border-indigo-200 bg-indigo-50/70 px-3 py-1.5 text-xs font-semibold text-indigo-800 hover:bg-indigo-100 transition-colors"
+            >
+              Auditoría: Búsqueda Local + OR-Tools
+            </button>
+          </div>
+
           <form onSubmit={(e) => void handleRun(e)} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">Algoritmo</label>
+              <label className="flex items-center text-xs font-medium text-slate-700 mb-1">
+                <span>Algoritmo</span>
+                <HelpTooltip
+                  label="Google OR-Tools CP-SAT"
+                  text="Google OR-Tools CP-SAT es un solucionador exacto de programación por restricciones: encuentra y certifica el óptimo global teórico para auditar la calidad de la búsqueda local."
+                />
+              </label>
               <select
                 value={algorithm}
                 onChange={(e) => setAlgorithm(e.target.value as 'local_search' | 'ortools' | 'both')}
@@ -79,7 +157,13 @@ export function OptimizationPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">Reinicios (1–200)</label>
+              <label className="flex items-center text-xs font-medium text-slate-700 mb-1">
+                <span>Reinicios (1–200)</span>
+                <HelpTooltip
+                  label="Reinicios"
+                  text="Número de puntos de partida factibles distintos (priorizando nodos de alta centralidad). Explorar múltiples valles evita quedar atrapado en un óptimo local subóptimo."
+                />
+              </label>
               <input
                 type="number"
                 min={1}
@@ -91,7 +175,13 @@ export function OptimizationPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">Semilla aleatoria</label>
+              <label className="flex items-center text-xs font-medium text-slate-700 mb-1">
+                <span>Semilla aleatoria</span>
+                <HelpTooltip
+                  label="Semilla"
+                  text="Valor entero que fija el generador pseudoaleatorio del algoritmo. Con la misma semilla y datos obtendrás exactamente la misma trayectoria y calendario final (100% reproducible)."
+                />
+              </label>
               <input
                 type="number"
                 min={0}
@@ -102,7 +192,13 @@ export function OptimizationPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">Límite OR-Tools (s)</label>
+              <label className="flex items-center text-xs font-medium text-slate-700 mb-1">
+                <span>Límite OR-Tools (s)</span>
+                <HelpTooltip
+                  label="Límite OR-Tools"
+                  text="Tiempo máximo asignado al solver exacto CP-SAT para demostrar optimalidad global."
+                />
+              </label>
               <input
                 type="number"
                 min={1}
@@ -220,7 +316,7 @@ export function OptimizationPage() {
               </div>
             ) : (
               <div className="h-72 flex items-center justify-center text-sm text-slate-500">
-                Aún no hay una corrida activa. Presiona &quot;Optimizar&quot; para ejecutar el solver.
+                Aún no hay una corrida activa. Selecciona un preset y presiona &quot;Optimizar&quot;.
               </div>
             )}
           </CardBody>

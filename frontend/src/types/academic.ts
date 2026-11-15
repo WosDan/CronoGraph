@@ -153,6 +153,9 @@ export interface ConflictNode {
   assigned_end_time: string;
   slot_type: string;
   weighted_degree: number;
+  degree_centrality: number;
+  betweenness_centrality: number;
+  closeness_centrality: number;
 }
 
 export interface ConflictEdge {
