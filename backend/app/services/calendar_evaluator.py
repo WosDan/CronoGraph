@@ -167,6 +167,9 @@ def build_conflict_graph_response(
                 assigned_end_time=slot.end_time,
                 slot_type=slot.slot_type,
                 weighted_degree=round(weighted_degree[ex.id], 4),
+                degree_centrality=round(model.degree_centrality[ex.id], 4),
+                betweenness_centrality=round(model.betweenness_centrality[ex.id], 4),
+                closeness_centrality=round(model.closeness_centrality[ex.id], 4),
             )
         )
 

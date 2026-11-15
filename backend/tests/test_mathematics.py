@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import networkx as nx
 import numpy as np
 import pytest
 
@@ -87,3 +88,23 @@ def test_fixed_dynamic_weights_and_objective_no_duplicate_pairs():
     assert graph.total_conflict_edges == 3
     assert graph.zero_penalty_edges == 3
     assert graph.total_objective_f == 0.0
+
+
+def test_conflict_graph_centrality_metrics():
+    dataset = make_small_dataset()
+    model = build_compiled_model(dataset)
+    init_assign = get_initial_assignment(model)
+    graph_resp = build_conflict_graph_response(model, init_assign, schedule_mode="initial")
+
+    expected_bw = nx.betweenness_centrality(model.conflict_graph, weight="h_ij", normalized=True)
+    expected_cl = nx.closeness_centrality(model.conflict_graph)
+
+    deg_vals = [node.degree_centrality for node in graph_resp.nodes]
+    assert max(deg_vals) == pytest.approx(1.0, abs=1e-4)
+
+    for node in graph_resp.nodes:
+        assert 0.0 <= node.degree_centrality <= 1.0
+        assert 0.0 <= node.betweenness_centrality <= 1.0
+        assert 0.0 <= node.closeness_centrality <= 1.0
+        assert node.betweenness_centrality == pytest.approx(expected_bw[node.id], abs=1e-4)
+        assert node.closeness_centrality == pytest.approx(expected_cl[node.id], abs=1e-4)

@@ -28,21 +28,32 @@ def construct_feasible_assignment(
 ) -> Optional[Dict[str, str]]:
     """
     Construct a feasible initial schedule using randomized greedy backtracking
-    ordered by most-constrained exam first (MRV + highest conflict degree).
+    guided by network centrality (DSatur/MRV + betweenness & weighted degree centrality).
     """
     ordered_exams = sorted(
         model.exam_ids,
-        key=lambda eid: (len(model.slots_by_exam[eid]), -len(model.neighbors[eid])),
+        key=lambda eid: (
+            -model.betweenness_centrality[eid],
+            -model.degree_centrality[eid],
+            len(model.slots_by_exam[eid]),
+            -len(model.neighbors[eid]),
+        ),
     )
 
-    for _ in range(max_attempts):
+    for attempt in range(max_attempts):
         assignment: Dict[str, str] = {}
         success = True
-        # Perturb exam ordering slightly after first deterministic MRV attempt
+        # Perturb tie-breaking slightly on subsequent restarts while prioritizing bridge/constrained exams
         exams_try = list(ordered_exams)
-        if _ > 0:
+        if attempt > 0:
             rng.shuffle(exams_try)
-            exams_try.sort(key=lambda eid: len(model.slots_by_exam[eid]))
+            exams_try.sort(
+                key=lambda eid: (
+                    -round(model.betweenness_centrality[eid], 2),
+                    len(model.slots_by_exam[eid]),
+                    -round(model.degree_centrality[eid], 2),
+                )
+            )
 
         for eid in exams_try:
             candidates = list(model.slots_by_exam[eid].keys())

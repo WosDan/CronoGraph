@@ -105,6 +105,28 @@ def build_compiled_model(dataset: AcademicDataset) -> CompiledAcademicModel:
                     h_ij=h_uv,
                 )
 
+    # Centrality measures on the Conflict Graph
+    raw_weighted_strength: Dict[str, float] = {
+        eid: sum(float(conflict_graph[eid][nbr]["h_ij"]) for nbr in conflict_graph.neighbors(eid))
+        for eid in exam_ids
+    }
+    max_strength = max(raw_weighted_strength.values(), default=0.0)
+    degree_centrality: Dict[str, float] = {
+        eid: (raw_weighted_strength[eid] / max_strength if max_strength > 0.0 else 0.0)
+        for eid in exam_ids
+    }
+    betweenness_centrality: Dict[str, float] = nx.betweenness_centrality(
+        conflict_graph,
+        weight="h_ij",
+        normalized=True,
+    )
+    closeness_centrality: Dict[str, float] = nx.closeness_centrality(conflict_graph)
+
+    for eid in exam_ids:
+        conflict_graph.nodes[eid]["degree_centrality"] = degree_centrality[eid]
+        conflict_graph.nodes[eid]["betweenness_centrality"] = betweenness_centrality[eid]
+        conflict_graph.nodes[eid]["closeness_centrality"] = closeness_centrality[eid]
+
     slots_by_exam: Dict[str, Dict[str, AuthorizedSlot]] = {}
     slot_dates: Dict[str, Dict[str, date]] = {}
     slot_minutes: Dict[str, Dict[str, Tuple[int, int]]] = {}
@@ -141,4 +163,7 @@ def build_compiled_model(dataset: AcademicDataset) -> CompiledAcademicModel:
         students_per_exam=students_per_exam,
         bipartite_graph=bipartite,
         conflict_graph=conflict_graph,
+        degree_centrality=degree_centrality,
+        betweenness_centrality=betweenness_centrality,
+        closeness_centrality=closeness_centrality,
     )

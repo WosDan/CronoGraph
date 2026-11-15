@@ -199,6 +199,9 @@ class ConflictNode(BaseModel):
     assigned_end_time: str
     slot_type: str
     weighted_degree: float
+    degree_centrality: float
+    betweenness_centrality: float
+    closeness_centrality: float
 
 
 class ConflictEdge(BaseModel):

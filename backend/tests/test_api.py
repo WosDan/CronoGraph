@@ -35,6 +35,13 @@ def test_graphs_and_optimization_pipeline():
     assert conf_init.status_code == 200
     init_data = conf_init.json()
     assert init_data["total_conflict_edges"] > 0
+    for node in init_data["nodes"]:
+        assert "degree_centrality" in node
+        assert "betweenness_centrality" in node
+        assert "closeness_centrality" in node
+        assert 0.0 <= node["degree_centrality"] <= 1.0
+        assert 0.0 <= node["betweenness_centrality"] <= 1.0
+        assert 0.0 <= node["closeness_centrality"] <= 1.0
 
     opt_resp = client.post(
         "/api/optimization/run",

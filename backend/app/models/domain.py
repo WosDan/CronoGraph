@@ -34,3 +34,6 @@ class CompiledAcademicModel:
     students_per_exam: Dict[str, Set[str]]
     bipartite_graph: nx.Graph
     conflict_graph: nx.Graph
+    degree_centrality: Dict[str, float]
+    betweenness_centrality: Dict[str, float]
+    closeness_centrality: Dict[str, float]
