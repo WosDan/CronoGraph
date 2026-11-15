@@ -2,6 +2,11 @@ import { useMemo, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/react/daygrid';
 import timeGridPlugin from '@fullcalendar/react/timegrid';
+import classicThemePlugin from '@fullcalendar/react/themes/classic';
+import esLocale from '@fullcalendar/react/locales/es';
+import '@fullcalendar/react/skeleton.css';
+import '@fullcalendar/react/themes/classic/theme.css';
+import '@fullcalendar/react/themes/classic/palette.css';
 import {
   Bar,
   BarChart,
@@ -488,7 +493,8 @@ export function ResultsPage() {
         />
         <CardBody>
           <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin]}
+            plugins={[classicThemePlugin, dayGridPlugin, timeGridPlugin]}
+            locales={[esLocale]}
             initialView="dayGridMonth"
             initialDate={dataset?.metadata.exam_window_start ?? '2026-11-16'}
             headerToolbar={{
