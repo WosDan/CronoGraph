@@ -85,6 +85,19 @@ npm run dev
 ```
 Abrir `http://localhost:5173`.
 
+## 5.1 Publicar una demo (Netlify + Render)
+
+La interfaz estática se publica en Netlify y la API FastAPI en Render. Netlify no ejecuta directamente este backend Python.
+
+1. Sube este proyecto a un repositorio de GitHub.
+2. En Render, crea un **Blueprint** desde ese repositorio; detectará `render.yaml`. Espera a que el servicio `cronograph-api` quede publicado. Comprueba `https://TU-API.onrender.com/api/health`.
+3. Copia la URL pública de la API y agrégale `/api` (por ejemplo `https://TU-API.onrender.com/api`).
+4. En la configuración de entorno del servicio de Netlify, define `VITE_API_BASE_URL` con esa URL y `CRONOGRAPH_CORS_ORIGINS` en Render con el dominio asignado por Netlify (por ejemplo `https://TU-SITIO.netlify.app`). Si ya tienes dominio propio, inclúyelo separado por comas junto al dominio Netlify.
+5. En Netlify, importa el mismo repositorio. `netlify.toml` configura el directorio `frontend`, el build y el fallback para rutas de React. Vuelve a desplegar después de guardar las variables.
+6. Comprueba el flujo en `https://TU-SITIO.netlify.app`: debe cargar datos, abrir Grafos y permitir una corrida en Optimización. También revisa `https://TU-API.onrender.com/api/health`.
+
+**Nota para la presentación:** en el nivel gratuito, Render puede suspender el servicio cuando no se usa; al abrirlo de nuevo, el primer acceso puede tardar. Los resultados de optimización y los datasets cargados se guardan en el disco local del servicio, que no debe considerarse persistente entre reinicios o despliegues. Para una exposición, usa el dataset incluido y ejecuta la optimización antes de presentar.
+
 ---
 
 ## 6. Base de datos sintética reproducible
