@@ -54,6 +54,7 @@ describe('CronoGraph Frontend Suite', () => {
       'Calendario',
       'Optimización',
       'Resultados',
+      'Estudiantes',
       'Grafos',
       'Datos',
       'Modelo matemático',

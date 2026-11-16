@@ -10,6 +10,7 @@ import {
   Menu,
   RefreshCw,
   Sigma,
+  Users,
   X,
 } from 'lucide-react';
 import { useSimulation } from '../../context/SimulationContext';
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { to: '/calendario', label: 'Calendario', icon: CalendarDays },
   { to: '/optimizacion', label: 'Optimización', icon: Cpu },
   { to: '/resultados', label: 'Resultados', icon: BarChart3 },
+  { to: '/estudiantes', label: 'Estudiantes', icon: Users },
   { to: '/grafos', label: 'Grafos', icon: GitFork },
   { to: '/datos', label: 'Datos', icon: Database },
   { to: '/modelo-matematico', label: 'Modelo matemático', icon: Sigma },

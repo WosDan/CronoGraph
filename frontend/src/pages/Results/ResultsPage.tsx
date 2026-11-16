@@ -19,7 +19,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Download, FileSpreadsheet, Search, Sparkles, UserCheck } from 'lucide-react';
+import { Download, FileSpreadsheet, Search, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSimulation } from '../../context/SimulationContext';
 import { downloadJsonFile, downloadOptimizationCsv, formatSlotTypeLabel } from '../../utils/export';
@@ -120,38 +120,6 @@ export function ResultsPage() {
     if (calendarViewMode === 'optimized') return optEvents;
     return [...initEvents, ...optEvents];
   }, [activeRun, calendarViewMode]);
-
-  const executiveImpact = useMemo(() => {
-    if (!activeRun) return null;
-    const initSameDay =
-      activeRun.initial_evaluation.distance_distribution.find((d) => d.delta_days === 0)?.pair_count ?? 0;
-    const optSameDay =
-      activeRun.optimized_evaluation.distance_distribution.find((d) => d.delta_days === 0)?.pair_count ?? 0;
-    const initConsec =
-      activeRun.initial_evaluation.distance_distribution.find((d) => d.delta_days === 1)?.pair_count ?? 0;
-    const optConsec =
-      activeRun.optimized_evaluation.distance_distribution.find((d) => d.delta_days === 1)?.pair_count ?? 0;
-
-    const sameDayEliminated = Math.max(0, initSameDay - optSameDay);
-    const consecEliminated = Math.max(0, initConsec - optConsec);
-
-    const affectedBefore = activeRun.initial_evaluation.affected_students_count;
-    const affectedAfter = activeRun.optimized_evaluation.affected_students_count;
-    const studentsFreed = Math.max(0, affectedBefore - affectedAfter);
-    const pctFreed =
-      affectedBefore > 0 ? Math.round((studentsFreed / affectedBefore) * 1000) / 10 : 0;
-
-    return {
-      initSameDay,
-      optSameDay,
-      sameDayEliminated,
-      consecEliminated,
-      affectedBefore,
-      affectedAfter,
-      studentsFreed,
-      pctFreed,
-    };
-  }, [activeRun]);
 
   const matchingStudents = useMemo(() => {
     if (!dataset) return [];
@@ -264,46 +232,6 @@ export function ResultsPage() {
       </div>
 
       {/* Resumen Ejecutivo — Impacto Estudiantil */}
-      {executiveImpact && (
-        <section
-          aria-label="Resumen ejecutivo de impacto estudiantil"
-          className="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-white to-indigo-50 p-5 shadow-sm"
-        >
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
-                <Sparkles className="h-4 w-4" />
-                Impacto Estudiantil en Lenguaje Claro
-              </div>
-              <p className="text-sm sm:text-base text-slate-800 leading-relaxed">
-                La reprogramación redujo la penalización académica en{' '}
-                <strong className="text-indigo-700">{activeRun.primary_solver.reduction_percentage}%</strong>,
-                eliminando{' '}
-                <strong className="text-emerald-700">{executiveImpact.sameDayEliminated}</strong> pares
-                de parciales el mismo día (de {executiveImpact.initSameDay} a {executiveImpact.optSameDay}) y{' '}
-                <strong className="text-emerald-700">{executiveImpact.consecEliminated}</strong> pares en
-                días consecutivos.{' '}
-                <strong className="text-slate-900">
-                  {executiveImpact.studentsFreed} estudiantes ({executiveImpact.pctFreed}% de los
-                  afectados inicialmente)
-                </strong>{' '}
-                quedaron completamente libres de conflictos temporales (Δ &lt; 4 días).
-              </p>
-            </div>
-            <div className="flex shrink-0 gap-3">
-              <div className="rounded-xl border border-emerald-200 bg-white px-4 py-2.5 text-center">
-                <p className="text-[11px] font-medium text-slate-500">Mismo día eliminados</p>
-                <p className="text-xl font-bold text-emerald-700">-{executiveImpact.sameDayEliminated}</p>
-              </div>
-              <div className="rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-center">
-                <p className="text-[11px] font-medium text-slate-500">Alumnos liberados</p>
-                <p className="text-xl font-bold text-indigo-700">{executiveImpact.pctFreed}%</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* 9 Analytical Indicators with explicit units */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         <MetricTile
