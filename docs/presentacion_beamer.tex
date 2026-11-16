@@ -3,16 +3,38 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
+\usepackage{lmodern}
 \usepackage{hyperref}
-\usetheme{Madrid}
-\usecolortheme{dolphin}
-\definecolor{crono}{RGB}{49,46,129}
-\definecolor{acento}{RGB}{79,70,229}
+\usetheme{default}
+\definecolor{crono}{RGB}{38,39,95}
+\definecolor{acento}{RGB}{78,70,192}
+\definecolor{menta}{RGB}{0,133,119}
+\definecolor{calido}{RGB}{185,108,17}
 \setbeamercolor{structure}{fg=crono}
-\setbeamercolor{frametitle}{bg=crono,fg=white}
-\setbeamercolor{title}{fg=white,bg=crono}
+\setbeamercolor{frametitle}{fg=white,bg=crono}
+\setbeamercolor{title}{fg=crono,bg=white}
+\setbeamercolor{subtitle}{fg=menta}
+\setbeamercolor{block title}{fg=white,bg=menta}
+\setbeamercolor{block body}{fg=black,bg=menta!8}
+\setbeamercolor{itemize item}{fg=acento}
+\setbeamercolor{itemize subitem}{fg=menta}
+\setbeamercolor{enumerate item}{fg=acento}
+\setbeamercolor{page number in head/foot}{fg=acento}
+\setbeamercolor{normal text}{fg=crono!85!black,bg=white}
+\setbeamercolor{author}{fg=crono}
+\setbeamercolor{institute}{fg=crono!75}
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{author}{size=\footnotesize}
+\setbeamerfont{institute}{size=\small}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{block title}{series=\bfseries,size=\normalsize}
+\setbeamersize{text margin left=8mm,text margin right=8mm}
+\setlength{\parskip}{0.25em}
+\setbeamertemplate{itemize item}{\color{acento}\large\textbullet}
+\setbeamertemplate{blocks}[rounded][shadow=false]
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}{\leavevmode\hbox{\begin{beamercolorbox}[wd=.78\paperwidth,ht=2.5ex,dp=1.2ex,leftskip=8mm]{page number in head/foot}\scriptsize CronoGraph \textcolor{menta}{\,\textbullet\,} Matemáticas Discretas\end{beamercolorbox}\begin{beamercolorbox}[wd=.22\paperwidth,ht=2.5ex,dp=1.2ex,rightskip=8mm plus 1fil]{page number in head/foot}\hfill\scriptsize\insertframenumber{} / \inserttotalframenumber\end{beamercolorbox}}}
 \hypersetup{colorlinks=true,urlcolor=acento}
 \title{CronoGraph}
 \subtitle{Optimización de calendarios de parciales mediante grafos}
@@ -23,7 +45,7 @@
 
 \begin{frame}
   \titlepage
-  \centering\scriptsize Repositorio: \url{https://github.com/WosDan/CronoGraph}
+  \centering\footnotesize Repositorio: \url{https://github.com/WosDan/CronoGraph}
 \end{frame}
 
 \begin{frame}{El problema y por qué lo elegimos}
@@ -41,16 +63,16 @@
 \begin{frame}{Datos y representación con grafos}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.52\textwidth}
-      \textbf{Datos de demostración}\par\medskip
+      {\color{menta}\textbf{Datos de demostración}}\par\medskip
       120 estudiantes ficticios\\ 15 asignaturas y 12 docentes\\ 20 parciales con franjas autorizadas
       \medskip\par Cada matrícula conecta un estudiante con sus parciales.
     \end{column}
     \begin{column}{0.44\textwidth}
-      \textbf{Dos grafos}\par\medskip
+      {\color{acento}\textbf{Dos grafos}}\par\medskip
       1. Bipartito: estudiantes y parciales.\par\medskip
       2. Conflictos: parciales conectados por estudiantes compartidos.
       \[A=B^{\mathsf T}B\]
-      \footnotesize $A_{ij}$ cuenta los estudiantes que presentan ambos parciales.
+      \small $A_{ij}$ cuenta los estudiantes que presentan ambos parciales.
     \end{column}
   \end{columns}
 \end{frame}
@@ -58,19 +80,19 @@
 \begin{frame}{Cómo medimos la concentración}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
-      \textbf{Peso académico}
+      {\color{menta}\textbf{Peso académico}}
       \[W_i=C_i p_i\left(1+\frac{r_i}{2}\right)\]
-      \footnotesize Créditos $C_i$, porcentaje del parcial $p_i$ e índice de retiro $r_i$.
+      \small Créditos $C_i$, porcentaje del parcial $p_i$ e índice de retiro $r_i$.
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{Proximidad}
+      {\color{acento}\textbf{Proximidad}}
       \[P(\Delta)=\max(0,4-\Delta)\]
-      \footnotesize Se penalizan parciales separados por 0 a 3 días calendario.
+      \small Se penalizan parciales separados por 0 a 3 días calendario.
     \end{column}
   \end{columns}
   \vspace{0.15cm}
   \[\min F=\sum_{i<j}A_{ij}P(\Delta_{ij})\frac{W_i+W_j}{2}\]
-  \centering\footnotesize Los pesos son decisiones del modelo; no miden directamente el estrés.
+  \centering\small Los pesos son decisiones del modelo; no miden directamente el estrés.
 \end{frame}
 
 \begin{frame}{Cómo construimos una propuesta}
@@ -97,21 +119,26 @@
   \footnotesize La demostración utiliza datos ficticios. Cada resultado corresponde a la ejecución mostrada.
 \end{frame}
 
-\begin{frame}{Limitaciones y trabajo futuro}
+\begin{frame}{Prueba conocida y trabajo futuro}
+  {\color{menta}\textbf{Caso pequeño verificable:}} 3 parciales, 2 opciones por parcial.
   \begin{itemize}
-    \item La búsqueda encuentra soluciones factibles, pero no garantiza el mínimo global.
-    \item CP-SAT certifica el óptimo de su objetivo redondeado solo si alcanza \texttt{OPTIMAL}.
-    \item Faltan datos reales y validación de los pesos y del avance de los temas de clase.
-    \item Comparar algoritmos bajo las mismas condiciones y verificar instancias pequeñas por enumeración.
+    \item La enumeración de las 8 combinaciones factibles encontró un costo mínimo $F=0$.
+    \item Nuestra búsqueda pasó de $F=23{,}14875$ a $F=0$ en este caso.
+  \end{itemize}
+  \vspace{0.1cm}
+  {\color{calido}\textbf{Lo que falta}}
+  \begin{itemize}
+    \item La búsqueda no garantiza el mínimo global en otras instancias.
+    \item Comparar algoritmos y validar pesos y avance de temas con datos reales.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusiones}
   \begin{itemize}
-    \item Los grafos conectan las matrículas con los conflictos entre parciales.
-    \item El simulador compara calendarios respetando las restricciones registradas.
-    \item Si el calendario inicial es factible, nuestra búsqueda conserva uno de costo igual o menor.
-    \item El siguiente paso es contrastar métodos y validar los criterios con datos representativos.
+    \item Los grafos permiten identificar relaciones entre matrículas y conflictos de fechas.
+    \item CronoGraph genera propuestas factibles y, si el calendario inicial es factible, conserva un costo igual o menor según el modelo.
+    \item En la instancia pequeña, la búsqueda coincidió con el mínimo verificado por enumeración; esto no garantiza el óptimo en otros casos.
+    \item Para evaluar su utilidad real, falta contrastar algoritmos y validar los pesos y las franjas con datos representativos.
   \end{itemize}
   \vfill
   \small Repositorio: \url{https://github.com/WosDan/CronoGraph}\\
