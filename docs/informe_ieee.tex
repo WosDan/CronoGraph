@@ -48,6 +48,8 @@ El problema se representa mediante un grafo ponderado. Cada nodo corresponde a u
 \subsection{Criterio de disponibilidad}
 Para cada parcial $i$, se define un conjunto $D_i$ de fechas y horarios autorizados. Este conjunto puede derivarse del horario habitual de clase cuando el parcial se realiza durante la sesión, o de las opciones especiales aprobadas por el docente o la institución. El calendario asignado debe seleccionar una opción perteneciente a $D_i$.
 
+Además, la fecha propuesta puede adelantarse o aplazarse como máximo 14 días calendario respecto de la fecha inicial, incluidos los extremos. Las franjas autorizadas deben reflejar la disponibilidad real del docente y el avance de los contenidos: el simulador no verifica automáticamente que los temas evaluados ya se hayan enseñado. Los solapamientos de estudiantes, docentes y aulas se comprueban por separado.
+
 \section{Criterios de decisión}
 Los criterios del modelo son:
 \begin{itemize}
@@ -59,7 +61,7 @@ Los criterios del modelo son:
 
 \section{Alternativas y justificación}
 \subsection{Indicador de importancia académica}
-Los créditos representan la carga académica formal prevista para una asignatura y el porcentaje del parcial representa su contribución a la calificación final. Se combinan multiplicativamente para que el indicador dependa de ambas dimensiones. El índice histórico de retiro se incorpora como factor complementario de priorización, no como prueba causal de dificultad o de que una fecha provoque retiros. La fórmula y el ajuste del 50\% son decisiones de diseño del proyecto, susceptibles de validación.
+Los créditos representan la carga académica formal prevista para una asignatura \cite{decreto1330} y el porcentaje del parcial representa su contribución a la calificación final. Se combinan multiplicativamente para que el indicador dependa de ambas dimensiones. El índice histórico de retiro se incorpora como factor complementario de priorización, no como prueba causal de dificultad o de que una fecha provoque retiros. La fórmula y el ajuste del 50\% son decisiones de diseño del proyecto, susceptibles de validación.
 
 \subsection{Alternativas para estimar la carga de un parcial}
 Se consideran como alternativas las horas reales de preparación registradas por estudiantes, las horas estimadas por docentes, y los resultados históricos de los parciales (por ejemplo, promedios o tasas de reprobación). Las horas reales serían una medida más directa del esfuerzo temporal, pero requerirían encuestas de seguimiento o diarios de estudio. Las calificaciones históricas serían complementarias, pues un resultado bajo no demuestra por sí mismo que se haya dedicado más tiempo. Se propone comparar los indicadores con las horas de estudio registradas y evaluar su asociación mediante correlación de rangos de Spearman \cite{nist,unsd}.
@@ -70,7 +72,15 @@ Una extensión podría penalizar también los cambios respecto del calendario or
 \subsection{Algoritmos implementados y decisión de comparación}
 Además de las alternativas conceptuales para estimar carga y ampliar la función objetivo, la implementación compara dos métodos de optimización. La búsqueda local con reinicios aleatorios parte del calendario inicial si es factible y construye otros calendarios mediante una heurística voraz aleatorizada. En cada reinicio realiza búsqueda de mejor mejora hasta un óptimo local. Si el calendario inicial es factible, el sistema garantiza que el costo retornado no sea mayor que el inicial.
 
-La segunda alternativa es CP-SAT de Google OR-Tools. El modelo selecciona exactamente una franja válida por parcial, prohíbe solapamientos incompatibles y minimiza el costo temporal con coeficientes enteros escalados por $10^4$. El límite de tiempo es configurable; solo el estado \texttt{OPTIMAL} certifica el óptimo del objetivo escalado. El modo combinado proporciona a CP-SAT la solución de búsqueda local como punto de partida cuando es factible y presenta la solución factible de menor costo original entre ambas. Esta es la estrategia comparativa que efectivamente ofrece la aplicación.
+La segunda alternativa es CP-SAT de Google OR-Tools \cite{ortools}. El modelo selecciona exactamente una franja válida por parcial, prohíbe solapamientos incompatibles y minimiza el costo temporal con coeficientes enteros escalados por $10^4$. El límite de tiempo es configurable; solo el estado \texttt{OPTIMAL} certifica el óptimo del objetivo escalado. El modo combinado proporciona a CP-SAT la solución de búsqueda local como punto de partida cuando es factible y presenta la solución factible de menor costo original entre ambas. Esta es la estrategia comparativa que efectivamente ofrece la aplicación.
+
+\subsection{Otras alternativas y búsqueda del mejor calendario}
+Como alternativas futuras se pueden estudiar recocido simulado y algoritmos genéticos, que exploran otras asignaciones factibles, así como formulaciones de programación entera. Se propone compararlos con los métodos implementados usando las mismas instancias, función objetivo y restricciones, registrando costo, factibilidad, tiempo de ejecución y variabilidad entre ejecuciones. Estas alternativas se proponen para evaluación futura; no se afirma que ya hayan sido probadas.
+
+El calendario de menor costo entre los algoritmos evaluados es el mejor encontrado en esos experimentos, pero no necesariamente el mejor de todos los calendarios posibles. Para instancias pequeñas puede verificarse el mínimo enumerando todas las asignaciones factibles. En instancias mayores puede recurrirse a un método exacto hasta obtener un certificado de optimalidad; para que esa garantía corresponda a la función original debe evitarse la pérdida de precisión de los coeficientes, siempre que la representación entera sea viable. Los recursos y el tiempo disponibles pueden impedir completar la demostración.
+
+\subsection{Papel de las centralidades}
+El grafo de conflictos permite calcular el grado ponderado, que suma la intensidad de las conexiones de cada parcial, y la intermediación, que mide su presencia en caminos mínimos. Para esta última se utiliza la distancia $1/H_{ij}$, donde $H_{ij}$ es la intensidad del conflicto. Ambas medidas orientan el orden de construcción de algunas soluciones iniciales; en la búsqueda local, el grado ponderado y después la intermediación se usan para desempatar movimientos con mejoras prácticamente iguales. La cercanía se presenta como indicador, pero no selecciona movimientos. El efecto de esta priorización debe medirse comparando ejecuciones con y sin centralidades.
 
 \section{Fórmulas del simulador}
 El peso académico del parcial $i$ se define como
@@ -102,6 +112,8 @@ El conjunto de demostración incluido en el repositorio contiene 120 estudiantes
 
 El backend verifica las relaciones entre entidades, las franjas autorizadas, la duración del examen y los solapamientos de estudiantes, docentes y aulas. Las franjas permitidas son sesiones habituales de clase o espacios sabatinos marcados explícitamente como autorizados. A partir de la matrícula forma la matriz binaria estudiante--parcial $B$ y la matriz $A=B^{\mathsf T}B$, cuyos elementos fuera de la diagonal cuentan los estudiantes compartidos. Con estas cantidades construye el grafo ponderado y evalúa el calendario inicial y el propuesto.
 
+El límite de reprogramación de cada evaluación es $|d_i-d_i^0|\leq 14$ días calendario, además de pertenecer a su dominio autorizado. El calendario permite examinar la franja asignada y la factibilidad global. La sección de estudiantes compara sus pares de parciales separados por hasta tres días; una reducción de este indicador no demuestra por sí sola una mejora del bienestar o del rendimiento académico.
+
 La interfaz web permite explorar datos y grafos, elegir búsqueda local, CP-SAT o el modo combinado, y consultar factibilidad, costo inicial y final, reducción, cambios de horario, métricas por estudiante, distribución de penalizaciones y traza de convergencia. Los resultados de optimización pueden guardarse como archivos JSON en el backend y exportarse desde la aplicación.
 
 \subsection{Pruebas y resultados disponibles}
@@ -117,12 +129,13 @@ El modelo depende de la calidad y disponibilidad de los datos de matrícula, ret
 CronoGraph implementa la reprogramación de parciales mediante un grafo ponderado, restricciones de factibilidad y una función objetivo que combina estudiantes afectados, proximidad temporal e importancia académica. La aplicación permite comparar búsqueda local con reinicios aleatorios y CP-SAT. La calidad de las recomendaciones todavía debe evaluarse cuantitativamente en ejecuciones documentadas y mediante validación de los parámetros con datos institucionales.
 
 \begin{thebibliography}{99}
-\bibitem{decreto1330} Presidencia de la República de Colombia, ``Decreto 1330 de 2019,'' 25 de julio de 2019. [En línea]. Disponible: \url{https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=98270}
 \bibitem{carter1994} M. W. Carter, G. Laporte y J. W. Chinneck, ``A general examination scheduling system,'' \emph{Interfaces}, vol. 24, no. 3, pp. 109--120, 1994, doi: 10.1287/inte.24.3.109.
 \bibitem{qu2009} R. Qu, E. K. Burke, B. McCollum, L. T. G. Merlot y S. Y. Lee, ``A survey of search methodologies and automated system development for examination timetabling,'' \emph{Journal of Scheduling}, vol. 12, pp. 55--89, 2009.
 \bibitem{bassimir2025} B. Bassimir y R. Wanka, ``On the computation of robust examination timetables: Methods and experimental results,'' \emph{Journal of Scheduling}, vol. 28, pp. 159--181, 2025, doi: 10.1007/s10951-024-00815-y.
+\bibitem{decreto1330} Presidencia de la República de Colombia, ``Decreto 1330 de 2019,'' 25 de julio de 2019. [En línea]. Disponible: \url{https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=98270}
 \bibitem{nist} National Institute of Standards and Technology, ``Rank correlation.'' [En línea]. Disponible: \url{https://www.itl.nist.gov/div898/software/dataplot/refman2/ch2/rankcorr.pdf}
 \bibitem{unsd} United Nations Statistics Division, ``Time-use diaries.'' [En línea]. Disponible: \url{https://unstats.un.org/UNSDWebsite/demographic-social/time-use/guidelines/III/}
+\bibitem{ortools} Google, ``CP-SAT Solver,'' \emph{OR-Tools}. [En línea]. Disponible: \url{https://developers.google.com/optimization/cp/cp_solver}
 \end{thebibliography}
 
 \end{document}
