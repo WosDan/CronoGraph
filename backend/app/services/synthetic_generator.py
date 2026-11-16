@@ -170,8 +170,8 @@ def generate_dataset(seed: int = SEED) -> AcademicDataset:
             # Select teacher and non-conflicting regular class pattern for that teacher
             assigned_teacher = teachers[(group_counter - 1) % len(teachers)]
             chosen_pattern = None
-            for offset in range(len(CLASS_PATTERNS)):
-                cand = CLASS_PATTERNS[(group_counter + offset) % len(CLASS_PATTERNS)]
+            candidate_patterns = rng.sample(CLASS_PATTERNS, len(CLASS_PATTERNS))
+            for cand in candidate_patterns:
                 conflict = False
                 for sess in cand:
                     for existing in teacher_pattern_used[assigned_teacher.id]:
@@ -192,7 +192,7 @@ def generate_dataset(seed: int = SEED) -> AcademicDataset:
                     day_of_week=sess[0],
                     start_time=sess[1],
                     end_time=sess[2],
-                    room=f"AULA-{(group_counter % 10) + 101}",
+                    room=f"AULA-{group_counter + 100}",
                 )
                 for sess in chosen_pattern
             ]
@@ -329,16 +329,21 @@ def generate_dataset(seed: int = SEED) -> AcademicDataset:
             }
         )
 
-    # Pick feasible initial slots concentrated in Week 1 (first chronological slots) to create realistic initial congestion
+    # Independent preferred dates across the full window simulate uncoordinated
+    # planning: some exams remain close, without forcing everything into week 1.
     chosen_initial: Dict[str, AuthorizedSlot] = {}
-    for draft in exams_draft:
+    for draft in rng.sample(exams_draft, len(exams_draft)):
         eid = draft["id"]
         gid = draft["group_id"]
         tid = draft["teacher_id"]
         dur = draft["duration_minutes"]
 
         selected: AuthorizedSlot | None = None
-        for cand in draft["authorized_slots"]:
+        preferred_day = WINDOW_START + timedelta(days=rng.randrange((WINDOW_END - WINDOW_START).days + 1))
+        candidates = list(draft["authorized_slots"])
+        rng.shuffle(candidates)
+        candidates.sort(key=lambda slot: (abs((date.fromisoformat(slot.date) - preferred_day).days), slot.slot_type == "authorized_saturday"))
+        for cand in candidates:
             cand_start_m = int(cand.start_time[:2]) * 60 + int(cand.start_time[3:])
             cand_end_m = cand_start_m + dur
 
@@ -354,7 +359,8 @@ def generate_dataset(seed: int = SEED) -> AcademicDataset:
                 if cand_start_m < other_end_m and other_start_m < cand_end_m:
                     shares_student = bool(students_per_group[gid] & students_per_group[other_draft["group_id"]])
                     same_teacher = tid == other_draft["teacher_id"]
-                    if shares_student or same_teacher:
+                    same_room = bool(cand.room and cand.room == other_slot.room)
+                    if shares_student or same_teacher or same_room:
                         conflict = True
                         break
             if not conflict:

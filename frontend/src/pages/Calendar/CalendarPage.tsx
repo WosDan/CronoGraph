@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { DatasetActions } from '../../components/DatasetActions';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/react/daygrid';
 import timeGridPlugin from '@fullcalendar/react/timegrid';
@@ -21,6 +22,7 @@ export function CalendarPage() {
   const [teacher, setTeacher] = useState('');
   const [student, setStudent] = useState('');
   const [selected, setSelected] = useState<ExamEvaluationDetail | null>(null);
+  useEffect(() => { setSubject(''); setTeacher(''); setStudent(''); setSelected(null); setMode('initial'); }, [dataset]);
   const initial = activeRun?.initial_evaluation ?? initialEvaluation;
   const optimized = activeRun?.optimized_evaluation;
   const effectiveMode = optimized ? mode : 'initial';
@@ -61,6 +63,7 @@ export function CalendarPage() {
       <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">Planificación académica</p><h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">Calendario de parciales</h1><p className="mt-2 text-sm text-slate-500">Consulta las fechas y explora los cambios de la propuesta.</p></div>
       <Link to="/optimizacion" className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">Optimizar calendario</Link>
     </div>
+    <DatasetActions />
     <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-1 rounded-lg bg-slate-100 p-1">{([{ id: 'initial', label: 'Inicial' }, { id: 'optimized', label: 'Propuesto' }, { id: 'both', label: 'Comparar' }] as const).map((item) => <button key={item.id} type="button" disabled={item.id !== 'initial' && !optimized} onClick={() => { setMode(item.id); setSelected(null); }} className={`rounded-md px-4 py-2 text-sm font-medium disabled:opacity-40 ${effectiveMode === item.id ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>{item.label}</button>)}</div>
