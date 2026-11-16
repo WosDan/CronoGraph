@@ -53,6 +53,7 @@ def _slots_overlap_forbidden(
 def solve_with_ortools(
     model: CompiledAcademicModel,
     time_limit_seconds: float = 10.0,
+    starting_assignment: Dict[str, str] | None = None,
 ) -> SolverRunSummary:
     """
     Exact CP-SAT formulation:
@@ -155,11 +156,11 @@ def solve_with_ortools(
 
     cp.minimize(sum(objective_terms))
 
-    # Provide feasible initial hint if available
-    if initial_feasible:
-        for eid, slot_id in initial_assignment.items():
-            if (eid, slot_id) in y:
-                cp.add_hint(y[(eid, slot_id)], 1)
+    # Seed CP-SAT with a complete feasible schedule when one is available.
+    hint = starting_assignment if starting_assignment is not None and evaluate_feasibility(model, starting_assignment).is_feasible else (initial_assignment if initial_feasible else None)
+    if hint is not None:
+        for (eid, slot_id), var in y.items():
+            cp.add_hint(var, int(hint[eid] == slot_id))
 
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit_seconds

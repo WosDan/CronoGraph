@@ -37,6 +37,7 @@ from app.services.dataset_service import (
     validate_academic_dataset,
 )
 from app.services.graph_builder import build_compiled_model
+from app.services.conflict_calculator import compute_objective_function
 
 router = APIRouter(prefix="/api", tags=["CronoGraph"])
 
@@ -188,7 +189,16 @@ def run_optimization(req: OptimizationRequest) -> OptimizationResult:
         ls_outcome = solve_with_random_restarts(model, restarts=req.restarts, seed=req.seed)
         primary_solver = ls_outcome.summary
         max_inc_err = ls_outcome.max_incremental_error
-        comparison_solver = solve_with_ortools(model, time_limit_seconds=req.ortools_time_limit_seconds)
+        cp_result = solve_with_ortools(
+            model,
+            time_limit_seconds=req.ortools_time_limit_seconds,
+            starting_assignment=primary_solver.assignment if primary_solver.is_feasible else None,
+        )
+        if cp_result.is_feasible and (not primary_solver.is_feasible or compute_objective_function(model, cp_result.assignment) <= compute_objective_function(model, primary_solver.assignment)):
+            comparison_solver = primary_solver
+            primary_solver = cp_result
+        else:
+            comparison_solver = cp_result
 
     if not primary_solver.is_feasible:
         message = ("CP-SAT no encontró una solución dentro del tiempo disponible; prueba aumentando el límite."

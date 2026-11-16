@@ -24,6 +24,8 @@ Implementado en `backend/app/optimization/random_restarts.py`:
 
 ## 3. Modelo Exacto Complementario con Google OR-Tools (CP-SAT)
 
+En el modo combinado, la búsqueda con reinicios proporciona a CP-SAT una asignación factible inicial cuando está disponible. Al terminar ambos, se muestra como calendario principal el de menor costo original entre los resultados factibles. Si CP-SAT alcanza `OPTIMAL`, la certificación corresponde a su objetivo con coeficientes redondeados, no necesariamente a la función original sin redondear.
+
 Implementado en `backend/app/optimization/ortools_solver.py` para auditar la calidad de la heurística y demostrar optimalidad global en instancias verificables:
 
 - **Variables de decisión**: $y_{i,s} \in \{0, 1\}$ para cada franja $s \in D_i$ donde cabe la duración completa del parcial.
