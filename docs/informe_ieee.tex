@@ -1,0 +1,129 @@
+\documentclass[conference]{IEEEtran}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{url}
+
+\title{Modelo de optimización para la reprogramación de parciales universitarios}
+\author{%
+\IEEEauthorblockN{Manuel David Polo Salgado}
+\IEEEauthorblockA{Universidad del Norte\\Barranquilla, Colombia\\\url{polodm@uninorte.edu.co}}
+\and
+\IEEEauthorblockN{Andres David Issa Camargo}
+\IEEEauthorblockA{Universidad del Norte\\Barranquilla, Colombia\\\url{adissa@uninorte.edu.co}}
+\and
+\IEEEauthorblockN{Daniel Alejandro Rincon Navarro}
+\IEEEauthorblockA{Universidad del Norte\\Barranquilla, Colombia\\\url{danielnavarro@uninorte.edu.co}}
+\and
+\IEEEauthorblockN{Cristian Camilo Fuentes Sanchez}
+\IEEEauthorblockA{Universidad del Norte\\Barranquilla, Colombia\\\url{ccfuentes@uninorte.edu.co}}
+\and
+\IEEEauthorblockN{Matias Guarin Rueda}
+\IEEEauthorblockA{Universidad del Norte\\Barranquilla, Colombia\\\url{matiasguarin@uninorte.edu.co}}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Este trabajo describe CronoGraph, una aplicación implementada para apoyar la programación de parciales universitarios. El problema se formula mediante un grafo en el que cada nodo representa una evaluación y las aristas representan conflictos entre parciales que comparten estudiantes. El modelo pondera esos conflictos según la cantidad de estudiantes afectados, la proximidad temporal de las evaluaciones y la importancia académica de cada parcial. Esta importancia se estima a partir de los créditos de la asignatura, el porcentaje de la nota final correspondiente al parcial y el índice histórico de retiro. Se describen los criterios, las alternativas consideradas y la función objetivo para comparar calendarios factibles. El simulador implementa búsqueda local con reinicios aleatorios y el solucionador CP-SAT de Google OR-Tools; también permite ejecutarlos en modo combinado. El repositorio incluye una instancia sintética reproducible, pero no conserva corridas experimentales, por lo que este trabajo no atribuye al sistema reducciones numéricas no medidas.
+\end{abstract}
+
+\begin{IEEEkeywords}
+programación de exámenes, optimización, teoría de grafos, calendario académico, parciales
+\end{IEEEkeywords}
+
+\section{Problemática}
+La programación de parciales puede concentrar evaluaciones en periodos cortos y afectar simultáneamente a muchos estudiantes, un problema estudiado en la literatura de horarios de exámenes \cite{carter1994,qu2009,bassimir2025}. Además de evitar coincidencias de horario, se busca reducir la proximidad entre evaluaciones compartidas, respetando las fechas y horarios en que cada parcial puede realizarse. El proyecto aborda este problema mediante una aplicación que cuantifica los conflictos, valida calendarios y compara propuestas de reprogramación. El código fuente y las instrucciones de ejecución están disponibles en \url{https://github.com/WosDan/CronoGraph}.
+
+\section{Motivación de la elección del problema}
+Se escogió este problema por su relación directa con la organización de la carga académica y por la posibilidad de representar sus componentes con datos observables: estudiantes inscritos en cada materia, fechas disponibles, créditos, ponderación de los parciales e historial de retiros. Un calendario que considere simultáneamente estos factores puede ofrecer recomendaciones más informadas que una asignación basada únicamente en evitar choques de horario.
+
+\section{Enfoque propuesto}
+El problema se representa mediante un grafo ponderado. Cada nodo corresponde a un parcial y cada arista conecta dos parciales cuando hay estudiantes que deben presentar ambos. El simulador considera para cada evaluación su conjunto de fechas y horarios permitidos, construye o utiliza la relación de estudiantes compartidos y evalúa las combinaciones de fechas con una función de costo. La disponibilidad se trata como una restricción obligatoria; la reducción de la proximidad y de la concentración de evaluaciones se trata como criterio de calidad.
+
+\subsection{Criterio de disponibilidad}
+Para cada parcial $i$, se define un conjunto $D_i$ de fechas y horarios autorizados. Este conjunto puede derivarse del horario habitual de clase cuando el parcial se realiza durante la sesión, o de las opciones especiales aprobadas por el docente o la institución. El calendario asignado debe seleccionar una opción perteneciente a $D_i$.
+
+\section{Criterios de decisión}
+Los criterios del modelo son:
+\begin{itemize}
+  \item \textbf{Disponibilidad:} cada parcial solo puede asignarse a las fechas y horas autorizadas.
+  \item \textbf{Estudiantes compartidos:} dos evaluaciones que afectan a más estudiantes generan un conflicto potencial mayor.
+  \item \textbf{Proximidad temporal:} se penalizan los parciales separados por cero, uno, dos o tres días calendario; a partir de cuatro días la penalización es nula.
+  \item \textbf{Importancia académica:} el peso del parcial combina créditos, porcentaje de la nota final e índice histórico de retiro.
+\end{itemize}
+
+\section{Alternativas y justificación}
+\subsection{Indicador de importancia académica}
+Los créditos representan la carga académica formal prevista para una asignatura y el porcentaje del parcial representa su contribución a la calificación final. Se combinan multiplicativamente para que el indicador dependa de ambas dimensiones. El índice histórico de retiro se incorpora como factor complementario de priorización, no como prueba causal de dificultad o de que una fecha provoque retiros. La fórmula y el ajuste del 50\% son decisiones de diseño del proyecto, susceptibles de validación.
+
+\subsection{Alternativas para estimar la carga de un parcial}
+Se consideran como alternativas las horas reales de preparación registradas por estudiantes, las horas estimadas por docentes, y los resultados históricos de los parciales (por ejemplo, promedios o tasas de reprobación). Las horas reales serían una medida más directa del esfuerzo temporal, pero requerirían encuestas de seguimiento o diarios de estudio. Las calificaciones históricas serían complementarias, pues un resultado bajo no demuestra por sí mismo que se haya dedicado más tiempo. Se propone comparar los indicadores con las horas de estudio registradas y evaluar su asociación mediante correlación de rangos de Spearman \cite{nist,unsd}.
+
+\subsection{Alternativas para ampliar la función objetivo}
+Una extensión podría penalizar también los cambios respecto del calendario original y la máxima cantidad de parciales que afronta un estudiante en una ventana temporal. Esto permitiría equilibrar la reducción de conflictos con la estabilidad del calendario y la carga individual; los coeficientes de ponderación tendrían que calibrarse.
+
+\subsection{Algoritmos implementados y decisión de comparación}
+Además de las alternativas conceptuales para estimar carga y ampliar la función objetivo, la implementación compara dos métodos de optimización. La búsqueda local con reinicios aleatorios parte del calendario inicial si es factible y construye otros calendarios mediante una heurística voraz aleatorizada. En cada reinicio realiza búsqueda de mejor mejora hasta un óptimo local. Si el calendario inicial es factible, el sistema garantiza que el costo retornado no sea mayor que el inicial.
+
+La segunda alternativa es CP-SAT de Google OR-Tools. El modelo selecciona exactamente una franja válida por parcial, prohíbe solapamientos incompatibles y minimiza el costo temporal con coeficientes enteros escalados por $10^4$. El límite de tiempo es configurable; solo el estado \texttt{OPTIMAL} certifica el óptimo del objetivo escalado. El modo combinado proporciona a CP-SAT la solución de búsqueda local como punto de partida cuando es factible y presenta la solución factible de menor costo original entre ambas. Esta es la estrategia comparativa que efectivamente ofrece la aplicación.
+
+\section{Fórmulas del simulador}
+El peso académico del parcial $i$ se define como
+\begin{equation}
+  W_i = C_i p_i\left(1+\frac{r_i}{2}\right),
+\end{equation}
+donde $C_i$ es el número de créditos de la asignatura, $p_i$ es la fracción de la nota final correspondiente al parcial y $r_i\in[0,1]$ es el índice histórico de retiro. Así, el factor de retiro aumenta el peso base entre 0\% y 50\%.
+
+Para dos parciales $i$ y $j$, la penalización por proximidad, con $\Delta_{ij}$ como la distancia en días calendario entre sus fechas, es
+\begin{equation}
+  P(\Delta_{ij}) = \max(0,4-\Delta_{ij}).
+\end{equation}
+Si $A_{ij}$ es el número de estudiantes que presentan ambos parciales, el conflicto ponderado se calcula como
+\begin{equation}
+  K_{ij} = A_{ij}P(\Delta_{ij})\frac{W_i+W_j}{2}.
+\end{equation}
+La función objetivo del calendario es minimizar la suma de los conflictos entre pares:
+\begin{equation}
+  F = \sum_{i<j} K_{ij}.
+\end{equation}
+Una extensión posible, que no forma parte de la función objetivo implementada, es
+\begin{equation}
+  \min F^* = \sum_{i<j}K_{ij} + \lambda\sum_i|d_i-d_i^0| + \mu B_{\max},
+\end{equation}
+donde $d_i$ es la fecha nueva, $d_i^0$ la fecha original y $B_{\max}$ la mayor concentración de parciales que afronta un estudiante en una ventana definida. $\lambda$ y $\mu$ representan la importancia relativa de conservar el calendario y reducir esa concentración.
+
+\section{Funcionamiento del simulador}
+El conjunto de demostración incluido en el repositorio contiene 120 estudiantes ficticios, 15 asignaturas, 12 docentes, 20 grupos y 20 parciales. Sus datos fueron generados con semilla 42; hay 595 matrículas y cada estudiante cursa entre cuatro y seis asignaturas. El usuario también puede generar otra instancia sintética o cargar un archivo JSON personalizado que supere la validación. Los datos incluidos son sintéticos y no representan registros institucionales reales.
+
+El backend verifica las relaciones entre entidades, las franjas autorizadas, la duración del examen y los solapamientos de estudiantes, docentes y aulas. Las franjas permitidas son sesiones habituales de clase o espacios sabatinos marcados explícitamente como autorizados. A partir de la matrícula forma la matriz binaria estudiante--parcial $B$ y la matriz $A=B^{\mathsf T}B$, cuyos elementos fuera de la diagonal cuentan los estudiantes compartidos. Con estas cantidades construye el grafo ponderado y evalúa el calendario inicial y el propuesto.
+
+La interfaz web permite explorar datos y grafos, elegir búsqueda local, CP-SAT o el modo combinado, y consultar factibilidad, costo inicial y final, reducción, cambios de horario, métricas por estudiante, distribución de penalizaciones y traza de convergencia. Los resultados de optimización pueden guardarse como archivos JSON en el backend y exportarse desde la aplicación.
+
+\subsection{Pruebas y resultados disponibles}
+El repositorio contiene pruebas automatizadas para matemática, restricciones, optimización y API. Estas comprueban, entre otras propiedades, reproducibilidad con semilla fija, factibilidad y consistencia entre evaluación incremental y global. La documentación establece un error inferior a $10^{-9}$ para esa comparación. Sin embargo, la existencia de las pruebas no demuestra que se hayan ejecutado en esta revisión. El directorio de resultados del repositorio no contiene corridas guardadas. Por ello, no se reportan aquí valores medidos de reducción de conflictos, tiempos, número de cambios ni optimalidad. Para completar una evaluación experimental se deben ejecutar los métodos sobre la instancia especificada y registrar costo inicial/final, reducción porcentual, tiempo, parciales modificados, semilla, reinicios, límite de CP-SAT y estado del solver.
+
+\section{Aspectos por mejorar}
+Como trabajo futuro se propone validar el indicador de peso frente a horas efectivas de estudio y calibrar sus parámetros mediante análisis de sensibilidad con actores académicos. El sistema ya implementa restricciones de solapamiento de estudiantes, docentes y aulas, y presenta métricas de concentración e impacto individual. Falta evaluar experimentalmente esas métricas con instancias representativas y cuantificar la reducción de conflictos, los estudiantes beneficiados y los parciales reprogramados.
+
+\section{Problemas y limitaciones identificados}
+El modelo depende de la calidad y disponibilidad de los datos de matrícula, retiro, créditos, ponderación y fechas autorizadas. El índice de retiro puede depender de factores personales, económicos, docentes y académicos, por lo que no debe interpretarse causalmente. El límite de cuatro días y el incremento máximo del 50\% son parámetros propuestos por el proyecto y necesitan validación empírica. La búsqueda local puede terminar en un óptimo local, y la heurística voraz no garantiza encontrar una asignación factible si existe. CP-SAT puede alcanzar el límite de tiempo sin probar optimalidad; además, la certificación usa coeficientes redondeados a escala $10^4$. No se encontraron bitácoras de fallos ni resultados de ejecuciones persistidos en el repositorio, por lo que no es posible afirmar problemas observados durante pruebas reales.
+
+\section{Conclusiones}
+CronoGraph implementa la reprogramación de parciales mediante un grafo ponderado, restricciones de factibilidad y una función objetivo que combina estudiantes afectados, proximidad temporal e importancia académica. La aplicación permite comparar búsqueda local con reinicios aleatorios y CP-SAT. La calidad de las recomendaciones todavía debe evaluarse cuantitativamente en ejecuciones documentadas y mediante validación de los parámetros con datos institucionales.
+
+\begin{thebibliography}{99}
+\bibitem{decreto1330} Presidencia de la República de Colombia, ``Decreto 1330 de 2019,'' 25 de julio de 2019. [En línea]. Disponible: \url{https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=98270}
+\bibitem{carter1994} M. W. Carter, G. Laporte y J. W. Chinneck, ``A general examination scheduling system,'' \emph{Interfaces}, vol. 24, no. 3, pp. 109--120, 1994, doi: 10.1287/inte.24.3.109.
+\bibitem{qu2009} R. Qu, E. K. Burke, B. McCollum, L. T. G. Merlot y S. Y. Lee, ``A survey of search methodologies and automated system development for examination timetabling,'' \emph{Journal of Scheduling}, vol. 12, pp. 55--89, 2009.
+\bibitem{bassimir2025} B. Bassimir y R. Wanka, ``On the computation of robust examination timetables: Methods and experimental results,'' \emph{Journal of Scheduling}, vol. 28, pp. 159--181, 2025, doi: 10.1007/s10951-024-00815-y.
+\bibitem{nist} National Institute of Standards and Technology, ``Rank correlation.'' [En línea]. Disponible: \url{https://www.itl.nist.gov/div898/software/dataplot/refman2/ch2/rankcorr.pdf}
+\bibitem{unsd} United Nations Statistics Division, ``Time-use diaries.'' [En línea]. Disponible: \url{https://unstats.un.org/UNSDWebsite/demographic-social/time-use/guidelines/III/}
+\end{thebibliography}
+
+\end{document}
+
