@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
+\usepackage{array}
 \usepackage{lmodern}
 \usepackage{hyperref}
 \usetheme{default}
@@ -139,13 +140,18 @@
   \footnotesize La demostración utiliza datos ficticios. Cada resultado corresponde a la ejecución mostrada.
 \end{frame}
 
-\begin{frame}{Alcances y trabajo futuro}
-  \begin{itemize}
-    \item La búsqueda local puede detenerse en un óptimo local y no garantiza el mínimo global.
-    \item CP-SAT puede hallar una solución factible sin probar optimalidad si alcanza el límite de tiempo.
-    \item Para evaluar el desempeño, falta comparar los algoritmos en instancias representativas con métricas comunes.
-    \item También se deben validar los pesos y las franjas autorizadas con actores académicos y datos institucionales.
-  \end{itemize}
+\begin{frame}{Alcances y cómo podría crecer CronoGraph}
+  \small
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
+    {\color{acento}\textbf{Línea}} & {\color{acento}\textbf{Hoy}} & {\color{menta}\textbf{Con datos, apoyo e investigación}}\\
+    \hline
+    \textbf{Datos reales} & Datos ficticios de 120 estudiantes. & Matrículas, franjas y aulas del registro académico, anonimizadas.\\
+    \textbf{Modelo} & Penaliza pares de parciales según los días entre ellos. & Medir la carga de toda la semana: tres o más parciales, entregas y proyectos.\\
+    \textbf{Pesos} & $W_i$ y $P(\Delta)$ definidos por el equipo. & Calibrarlos con encuestas, notas y retiros históricos.\\
+    \textbf{Algoritmos} & Búsqueda local sin garantía de mínimo global. & Comparar con coloreo de grafos, recocido simulado, búsqueda tabú y CP-SAT.\\
+    \textbf{Uso real} & Simulador web de demostración. & Herramienta para coordinadores, con preferencias de estudiantes y docentes.\\
+  \end{tabular}
 \end{frame}
 
 \begin{frame}{Conclusiones}
@@ -153,7 +159,7 @@
     \item Los grafos permiten identificar relaciones entre matrículas y conflictos de fechas.
     \item CronoGraph genera propuestas factibles y, si el calendario inicial es factible, conserva un costo igual o menor según el modelo.
     \item El simulador genera propuestas sujetas a las restricciones; su calidad debe medirse en instancias representativas.
-    \item Para evaluar su utilidad real, falta contrastar algoritmos y validar los pesos y las franjas con datos representativos.
+    \item Con datos institucionales e investigación, puede convertirse en un apoyo para planear cada semestre.
   \end{itemize}
   \vfill
   \small Repositorio: \url{https://github.com/WosDan/CronoGraph}\\
