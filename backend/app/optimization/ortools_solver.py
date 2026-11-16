@@ -201,6 +201,8 @@ def solve_with_ortools(
     if initial_feasible and final_cost > initial_cost:
         solved_assignment = dict(initial_assignment)
         final_cost = initial_cost
+        # The returned calendar is no longer the one certified by CP-SAT.
+        optimality_proven = False
 
     modified_count = sum(1 for eid in model.exam_ids if solved_assignment[eid] != initial_assignment[eid])
     red_abs = initial_cost - final_cost

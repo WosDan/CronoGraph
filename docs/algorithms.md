@@ -16,7 +16,7 @@ $$\Delta F_i(t) = \sum_{j \in N(i)} H_{ij} \Big[ P\big(|d(t) - d_j|\big) - P\big
 
 Implementado en `backend/app/optimization/random_restarts.py`:
 1. El **reinicio 0** parte exactamente del calendario inicial $x^{(0)}$ (si es factible).
-2. Los reinicios $1, \dots, R-1$ construyen soluciones iniciales factibles aleatorias dentro de $D_i$ mediante una heurística constructiva **DSatur / MRV guiada por centralidad**: prioriza los parciales con mayor centralidad de intermediación ($C_B$), mayor centralidad de grado ponderado ($C_D^{(w)}$), menor número de franjas autorizadas disponibles ($|D_i|$) y mayor grado de conflicto ($|N(i)|$).
+2. Los reinicios $1, \dots, R-1$ intentan construir soluciones factibles mediante una **heurística voraz aleatorizada guiada por centralidad**. En cada intento se recorren los parciales en un orden predefinido y se asigna a cada uno la primera franja factible de una lista barajada. En el primer intento, el orden prioriza mayor intermediación, mayor grado ponderado, menor tamaño del dominio autorizado y mayor número de vecinos, en ese orden. En los intentos posteriores, se barajan los parciales y se ordenan por intermediación redondeada, tamaño del dominio y grado ponderado redondeado. Si no se puede asignar un parcial, se descarta el intento completo y se vuelve a empezar, hasta un máximo de 80 intentos. El tamaño del dominio es fijo: no cuenta las franjas que siguen siendo factibles durante la construcción.
 3. Cada reinicio desciende mediante búsqueda local hasta un óptimo local.
 4. **Política de no empeoramiento**: si el calendario inicial $x^{(0)}$ es factible, el algoritmo garantiza explícitamente $F(x^*) \le F(x^{(0)})$.
 
@@ -31,3 +31,7 @@ Implementado en `backend/app/optimization/ortools_solver.py` para auditar la cal
 - **Incompatibilidad horaria**: $y_{i,s} + y_{j,t} \le 1$ para todo par de franjas simultáneas que compartan estudiantes, docente o aula.
 - **Linealización temporal por fecha**: variables indicadoras de fecha $d_{i,\delta}$ y variables auxiliares $z_{u,\delta_u,v,\delta_v} \ge d_{u,\delta_u} + d_{v,\delta_v} - 1$ para minimizar exactamente $\sum_{i<j} H_{ij} P(|\delta_u - \delta_v|)$ con escala entera de precisión $10^4$.
 - El solucionador únicamente etiqueta una solución como **óptima global** (`optimality_proven = True`) cuando CP-SAT retorna estado `OPTIMAL`.
+
+## Centralidades en la búsqueda local
+
+Cuando dos movimientos tienen la misma mejora (tolerancia numérica de 10⁻¹²), se prioriza el parcial con mayor grado ponderado y, si persiste el empate, mayor intermediación. Se sigue escogiendo la mayor mejora de la función objetivo; la centralidad no garantiza una solución global ni modifica su valor. La cercanía se utiliza como indicador visual.

@@ -594,7 +594,7 @@ export function GraphsPage() {
               <Card>
                 <CardHeader
                   title="Materias Cuello de Botella (Top 5)"
-                  subtitle="Mayor centralidad de intermediación: moverlas desbloquea en cascada múltiples pares"
+                  subtitle="Mayor centralidad de intermediación: parciales que conectan caminos del grafo de conflictos"
                   action={<Flame className="h-4 w-4 text-amber-500" />}
                 />
                 <CardBody className="space-y-2 pt-3">

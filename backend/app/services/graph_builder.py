@@ -115,9 +115,13 @@ def build_compiled_model(dataset: AcademicDataset) -> CompiledAcademicModel:
         eid: (raw_weighted_strength[eid] / max_strength if max_strength > 0.0 else 0.0)
         for eid in exam_ids
     }
+    # H is conflict strength, while NetworkX interprets weights as distances.
+    # Reciprocal distances make stronger connections shorter for this heuristic.
+    for _, _, edge in conflict_graph.edges(data=True):
+        edge["centrality_distance"] = 1.0 / edge["h_ij"]
     betweenness_centrality: Dict[str, float] = nx.betweenness_centrality(
         conflict_graph,
-        weight="h_ij",
+        weight="centrality_distance",
         normalized=True,
     )
     closeness_centrality: Dict[str, float] = nx.closeness_centrality(conflict_graph)

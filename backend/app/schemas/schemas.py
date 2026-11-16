@@ -45,8 +45,8 @@ class Subject(BaseModel):
     id: str
     code: str
     name: str
-    credits: int = Field(ge=2, le=5)
-    historical_withdrawal_rate: float = Field(ge=0.0, le=0.35)
+    credits: int = Field(ge=1)
+    historical_withdrawal_rate: float = Field(ge=0.0, le=1.0)
     department: str
 
 

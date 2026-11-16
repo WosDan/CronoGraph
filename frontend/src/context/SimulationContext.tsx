@@ -45,11 +45,10 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     setError(null);
     try {
-      const [ds, bip, confInit, history] = await Promise.all([
+      const [ds, bip, confInit] = await Promise.all([
         cronoApi.getDataset(),
         cronoApi.getBipartiteGraph(),
         cronoApi.getConflictGraph('initial'),
-        cronoApi.listOptimizationResults(),
       ]);
 
       const initialAssign: Record<string, string> = {};
@@ -62,21 +61,11 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
       setBipartiteGraph(bip);
       setInitialConflictGraph(confInit);
       setInitialEvaluation(initEval);
-      setRunHistory(history);
 
-      if (history.length > 0) {
-        const latest = history[0];
-        setActiveRun(latest);
-        try {
-          const optGraph = await cronoApi.getConflictGraph('optimized', latest.run_id);
-          setOptimizedConflictGraph(optGraph);
-        } catch {
-          setOptimizedConflictGraph(null);
-        }
-      } else {
-        setActiveRun(null);
-        setOptimizedConflictGraph(null);
-      }
+      // An old run may belong to a different dataset, even if IDs coincide.
+      setActiveRun(null);
+      setOptimizedConflictGraph(null);
+      setRunHistory([]);
     } catch (err) {
       const message =
         err instanceof Error

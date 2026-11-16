@@ -96,7 +96,7 @@ def test_conflict_graph_centrality_metrics():
     init_assign = get_initial_assignment(model)
     graph_resp = build_conflict_graph_response(model, init_assign, schedule_mode="initial")
 
-    expected_bw = nx.betweenness_centrality(model.conflict_graph, weight="h_ij", normalized=True)
+    expected_bw = nx.betweenness_centrality(model.conflict_graph, weight="centrality_distance", normalized=True)
     expected_cl = nx.closeness_centrality(model.conflict_graph)
 
     deg_vals = [node.degree_centrality for node in graph_resp.nodes]
@@ -108,3 +108,11 @@ def test_conflict_graph_centrality_metrics():
         assert 0.0 <= node.closeness_centrality <= 1.0
         assert node.betweenness_centrality == pytest.approx(expected_bw[node.id], abs=1e-4)
         assert node.closeness_centrality == pytest.approx(expected_cl[node.id], abs=1e-4)
+
+
+def test_centrality_distances_reflect_conflict_strength():
+    from app.services.dataset_service import load_active_dataset
+    from app.services.graph_builder import build_compiled_model
+    model = build_compiled_model(load_active_dataset())
+    for _, _, edge in model.conflict_graph.edges(data=True):
+        assert edge["centrality_distance"] == pytest.approx(1.0 / edge["h_ij"])
