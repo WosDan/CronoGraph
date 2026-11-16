@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   BarChart3,
+  CalendarDays,
   Cpu,
   Database,
   GitFork,
@@ -15,12 +16,13 @@ import { useSimulation } from '../../context/SimulationContext';
 import { Badge } from '../ui/Primitives';
 
 const NAV_ITEMS = [
-  { to: '/', label: '1. Inicio', icon: Home, end: true },
-  { to: '/modelo-matematico', label: '2. Modelo matemático', icon: Sigma },
-  { to: '/datos', label: '3. Datos', icon: Database },
-  { to: '/grafos', label: '4. Grafos', icon: GitFork },
-  { to: '/optimizacion', label: '5. Optimización', icon: Cpu },
-  { to: '/resultados', label: '6. Resultados', icon: BarChart3 },
+  { to: '/', label: 'Inicio', icon: Home, end: true },
+  { to: '/calendario', label: 'Calendario', icon: CalendarDays },
+  { to: '/optimizacion', label: 'Optimización', icon: Cpu },
+  { to: '/resultados', label: 'Resultados', icon: BarChart3 },
+  { to: '/grafos', label: 'Grafos', icon: GitFork },
+  { to: '/datos', label: 'Datos', icon: Database },
+  { to: '/modelo-matematico', label: 'Modelo matemático', icon: Sigma },
 ];
 
 export function MainLayout({ children }: { children: React.ReactNode }) {

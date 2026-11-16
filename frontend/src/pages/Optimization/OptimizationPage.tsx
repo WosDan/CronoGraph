@@ -95,8 +95,8 @@ export function OptimizationPage() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Simulador y Optimización</h1>
         <p className="text-sm text-slate-600">
-          Ejecución real en el backend mediante búsqueda local incremental (ΔF_i(t)) guiada por
-          centralidades con reinicios aleatorios o Google OR-Tools CP-SAT, ejecutados en el backend.
+          Nuestra solución explora calendarios factibles con ayuda de las centralidades. También puedes
+          compararla con Google OR-Tools CP-SAT.
         </p>
       </div>
 
@@ -132,7 +132,7 @@ export function OptimizationPage() {
               onClick={() => applyPreset('audit')}
               className="rounded-lg border border-indigo-200 bg-indigo-50/70 px-3 py-1.5 text-xs font-semibold text-indigo-800 hover:bg-indigo-100 transition-colors"
             >
-              Auditoría: Búsqueda Local + OR-Tools
+              Comparar nuestra solución con OR-Tools
             </button>
           </div>
 
@@ -150,8 +150,8 @@ export function OptimizationPage() {
                 onChange={(e) => setAlgorithm(e.target.value as 'local_search' | 'ortools' | 'both')}
                 className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
               >
-                <option value="both">Búsqueda Local + OR-Tools (Comparativo)</option>
-                <option value="local_search">Solo Búsqueda Local con Reinicios</option>
+                <option value="both">Nuestra solución + OR-Tools (comparación)</option>
+                <option value="local_search">Nuestra solución</option>
                 <option value="ortools">Solo Google OR-Tools CP-SAT</option>
               </select>
             </div>
@@ -239,11 +239,11 @@ export function OptimizationPage() {
 
       {solver && (
         <div className="rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-950">
-          <strong>{solver.algorithm}:</strong>{' '}
+          <strong>{solver.algorithm.startsWith('Búsqueda Local') ? 'Nuestra solución' : solver.algorithm}:</strong>{' '}
           {solver.optimality_proven
             ? 'CP-SAT demostró el óptimo del modelo con coeficientes redondeados.'
             : 'Se encontró una solución factible; no se ha demostrado que sea el óptimo global.'}
-          {activeRun?.comparison_solver && ' En el modo comparativo, el calendario mostrado corresponde a la búsqueda local; CP-SAT aparece como comparación.'}
+          {activeRun?.comparison_solver && ' Se muestra el mejor calendario factible encontrado por los dos métodos.'}
         </div>
       )}
 
@@ -292,7 +292,7 @@ export function OptimizationPage() {
             title="Evolución real del costo durante la optimización"
             subtitle={
               solver
-                ? `${solver.algorithm} · Estado: ${solver.status}`
+                ? `${solver.algorithm.startsWith('Búsqueda Local') ? 'Nuestra solución' : solver.algorithm} · Estado: ${solver.status}`
                 : 'Ejecuta el algoritmo para visualizar la traza real de iteraciones'
             }
           />
@@ -378,18 +378,18 @@ export function OptimizationPage() {
 
             {activeRun?.comparison_solver && (
               <div className="mt-4 rounded-lg border border-indigo-100 bg-indigo-50/60 p-3 space-y-1">
-                <p className="font-semibold text-indigo-950">Comparación OR-Tools CP-SAT:</p>
+                <p className="font-semibold text-indigo-950">Otro método: {activeRun.comparison_solver.algorithm}</p>
                 <p>Estado: <strong>{activeRun.comparison_solver.status}</strong></p>
                 {activeRun.comparison_solver.is_feasible ? (
                   <p>Costo final: <strong>{activeRun.comparison_solver.final_cost.toFixed(2)}</strong></p>
                 ) : (
-                  <p>CP-SAT no obtuvo una solución factible en esta ejecución. UNKNOWN no demuestra que el problema sea infactible.</p>
+                  <p>Este método no obtuvo una solución factible en esta ejecución. UNKNOWN no demuestra que el problema sea infactible.</p>
                 )}
                 <p>
                   Optimalidad demostrada:{' '}
                   <strong>{activeRun.comparison_solver.optimality_proven ? 'Sí, para el modelo con coeficientes redondeados' : 'No demostrada en el límite'}</strong>
                 </p>
-                <p>Tiempo CP-SAT: {activeRun.comparison_solver.execution_time_ms.toFixed(1)} ms</p>
+                <p>Tiempo: {activeRun.comparison_solver.execution_time_ms.toFixed(1)} ms</p>
               </div>
             )}
           </CardBody>

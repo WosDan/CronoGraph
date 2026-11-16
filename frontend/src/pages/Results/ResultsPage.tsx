@@ -353,9 +353,9 @@ export function ResultsPage() {
           label="Estado del solver"
           value={activeRun.primary_solver.status}
           hint={
-            activeRun.comparison_solver?.optimality_proven
-              ? 'OR-Tools probó óptimo global'
-              : 'Heurística multi-arranque'
+            activeRun.primary_solver.optimality_proven
+              ? 'Óptimo del modelo redondeado demostrado'
+              : 'Optimalidad global no demostrada'
           }
         />
       </div>

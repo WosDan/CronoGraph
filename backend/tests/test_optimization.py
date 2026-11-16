@@ -41,6 +41,15 @@ def test_exhaustive_optimum_matches_ortools_and_local_search():
     assert ls_res.max_incremental_error < 1e-9
 
 
+def test_ortools_accepts_local_search_calendar_as_hint():
+    model = build_compiled_model(make_small_dataset())
+    local = solve_with_random_restarts(model, restarts=2, seed=42).summary
+    result = solve_with_ortools(model, time_limit_seconds=5.0, starting_assignment=local.assignment)
+    assert result.is_feasible
+    assert result.optimality_proven
+    assert result.final_cost <= local.final_cost
+
+
 def test_infeasible_problem_handled_cleanly():
     dataset = make_small_dataset(infeasible=True)
     model = build_compiled_model(dataset)

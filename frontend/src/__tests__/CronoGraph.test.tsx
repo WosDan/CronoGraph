@@ -37,7 +37,7 @@ beforeAll(() => {
 });
 
 describe('CronoGraph Frontend Suite', () => {
-  it('renders navigation items in the exact required 6-section order', () => {
+  it('renders navigation with direct calendar access', () => {
     render(
       <MemoryRouter>
         <MainLayout>
@@ -50,12 +50,13 @@ describe('CronoGraph Frontend Suite', () => {
     const links = Array.from(nav.querySelectorAll('a')).map((a) => a.textContent?.trim());
 
     expect(links).toEqual([
-      '1. Inicio',
-      '2. Modelo matemático',
-      '3. Datos',
-      '4. Grafos',
-      '5. Optimización',
-      '6. Resultados',
+      'Inicio',
+      'Calendario',
+      'Optimización',
+      'Resultados',
+      'Grafos',
+      'Datos',
+      'Modelo matemático',
     ]);
   });
 
@@ -81,7 +82,7 @@ describe('CronoGraph Frontend Suite', () => {
     render(<OptimizationPage />);
     expect(screen.getByText('Demostración Rápida: 5 reinicios')).toBeInTheDocument();
     expect(screen.getByText('Académico: 15 reinicios + Semilla 42')).toBeInTheDocument();
-    expect(screen.getByText('Auditoría: Búsqueda Local + OR-Tools')).toBeInTheDocument();
+    expect(screen.getByText('Comparar nuestra solución con OR-Tools')).toBeInTheDocument();
 
     const seedHelp = screen.getByRole('button', { name: /ayuda sobre semilla/i });
     fireEvent.click(seedHelp);

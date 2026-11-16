@@ -22,7 +22,8 @@ export function GraphsPage() {
   const [conflictMode, setConflictMode] = useState<'initial' | 'optimized'>('initial');
   const [sizeBy, setSizeBy] = useState<CentralityMetric>('betweenness');
   const [kThreshold, setKThreshold] = useState<number>(0);
-  const [showEdgeLabels, setShowEdgeLabels] = useState<boolean>(true);
+  const [showEdgeLabels, setShowEdgeLabels] = useState<boolean>(false);
+  const [activeOnly, setActiveOnly] = useState<boolean>(false);
   const [selectedEdge, setSelectedEdge] = useState<ConflictEdge | null>(null);
   const [selectedNodeInfo, setSelectedNodeInfo] = useState<Record<string, unknown> | null>(null);
 
@@ -30,6 +31,8 @@ export function GraphsPage() {
   const [subjectFilter, setSubjectFilter] = useState<string>('ALL');
   const [groupFilter, setGroupFilter] = useState<string>('ALL');
   const [studentQuery, setStudentQuery] = useState<string>('');
+  const [studentPage, setStudentPage] = useState(0);
+  useEffect(() => { setStudentPage(0); }, [subjectFilter, groupFilter, studentQuery]);
 
   const conflictContainerRef = useRef<HTMLDivElement | null>(null);
   const bipartiteContainerRef = useRef<HTMLDivElement | null>(null);
@@ -48,8 +51,8 @@ export function GraphsPage() {
 
   const filteredConflictEdges = useMemo(() => {
     if (!activeConflictGraph) return [];
-    return activeConflictGraph.edges.filter((edge) => edge.k_ij >= kThreshold);
-  }, [activeConflictGraph, kThreshold]);
+    return activeConflictGraph.edges.filter((edge) => edge.k_ij >= kThreshold && (!activeOnly || edge.has_active_penalty));
+  }, [activeConflictGraph, kThreshold, activeOnly]);
 
   const bottleneckExams = useMemo(() => {
     if (!activeConflictGraph) return [];
@@ -90,7 +93,7 @@ export function GraphsPage() {
         return {
           data: {
             id: node.id,
-            label: `${node.id}\n${node.label}`,
+            label: node.id,
             diameter,
             isBottleneck: bottleneckSet.has(node.id) ? 'yes' : 'no',
             weightedDegree: node.weighted_degree,
@@ -213,6 +216,10 @@ export function GraphsPage() {
           },
         },
         {
+          selector: '.unfocused',
+          style: { opacity: 0.08 },
+        },
+        {
           selector: 'node:selected',
           style: {
             'background-color': '#4f46e5',
@@ -242,8 +249,18 @@ export function GraphsPage() {
     });
 
     cy.on('tap', 'node', (evt) => {
+      cy.elements().removeClass('unfocused');
+      cy.elements().not(evt.target.closedNeighborhood()).addClass('unfocused');
       setSelectedNodeInfo(evt.target.data());
       setSelectedEdge(null);
+    });
+
+    cy.on('tap', (evt) => {
+      if (evt.target === cy) {
+        cy.elements().removeClass('unfocused');
+        setSelectedNodeInfo(null);
+        setSelectedEdge(null);
+      }
     });
 
     cyConflictRef.current = cy;
@@ -276,10 +293,7 @@ export function GraphsPage() {
       return true;
     });
 
-    const cappedStudents =
-      subjectFilter === 'ALL' && groupFilter === 'ALL' && !q
-        ? students.slice(0, 35)
-        : students;
+    const cappedStudents = students.slice(studentPage * 25, (studentPage + 1) * 25);
     const allowedStudentSet = new Set(cappedStudents.map((s) => s.id));
 
     const finalEdges = matchingEdges.filter((e) => allowedStudentSet.has(e.source));
@@ -295,7 +309,7 @@ export function GraphsPage() {
       edges: finalEdges,
       totalMatchedStudents: students.length,
     };
-  }, [bipartiteGraph, dataset, subjectFilter, groupFilter, studentQuery]);
+  }, [bipartiteGraph, dataset, subjectFilter, groupFilter, studentQuery, studentPage]);
 
   // Render Bipartite Graph in Cytoscape.js
   useEffect(() => {
@@ -515,6 +529,10 @@ export function GraphsPage() {
               </div>
 
               <label className="inline-flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+                <input type="checkbox" checked={activeOnly} onChange={(e) => setActiveOnly(e.target.checked)} className="rounded accent-indigo-600" />
+                Solo conflictos con penalización
+              </label>
+              <label className="inline-flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={showEdgeLabels}
@@ -558,15 +576,16 @@ export function GraphsPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => cyConflictRef.current?.fit(undefined, 30)}
+                      onClick={() => { cyConflictRef.current?.elements().removeClass('unfocused'); cyConflictRef.current?.fit(undefined, 30); setSelectedNodeInfo(null); }}
                       className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-700 hover:bg-slate-50"
                     >
-                      Centrar
+                      Ver todo
                     </button>
                   </div>
                 }
               />
               <CardBody className="p-2">
+                <p className="px-2 pb-2 text-xs text-slate-500">Selecciona un parcial para destacar sus conexiones; haz clic en el fondo o en «Ver todo» para recuperar la vista completa. Usa la rueda para acercar.</p>
                 <div
                   ref={conflictContainerRef}
                   className="h-[540px] w-full rounded-lg border border-slate-100 bg-slate-50/40"
@@ -767,6 +786,10 @@ export function GraphsPage() {
                   ref={bipartiteContainerRef}
                   className="h-[520px] w-full rounded-lg border border-slate-100 bg-slate-50/40"
                 />
+                <div className="flex items-center justify-between gap-3 p-2 text-xs text-slate-600">
+                  <span>Página {studentPage + 1} de {Math.max(1, Math.ceil((filteredBipartite.totalMatchedStudents ?? 0) / 25))} · hasta 25 estudiantes por página</span>
+                  <div className="flex gap-2"><button type="button" disabled={studentPage === 0} onClick={() => setStudentPage((page) => page - 1)} className="rounded border px-3 py-1 disabled:opacity-40">Anterior</button><button type="button" disabled={(studentPage + 1) * 25 >= (filteredBipartite.totalMatchedStudents ?? 0)} onClick={() => setStudentPage((page) => page + 1)} className="rounded border px-3 py-1 disabled:opacity-40">Siguiente</button></div>
+                </div>
               </CardBody>
             </Card>
             <Card className="lg:col-span-3">

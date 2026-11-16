@@ -46,7 +46,7 @@ const PIPELINE_STEPS = [
     title: '5. Optimización',
     route: '/optimizacion',
     summary:
-      'Búsqueda local incremental con reinicios aleatorios y comparación exacta mediante Google OR-Tools CP-SAT.',
+      'Nuestra solución explora calendarios con reinicios aleatorios y permite compararlos con Google OR-Tools CP-SAT.',
     detail:
       'Calcula variaciones ΔF_i(t) en tiempo real sobre los vecinos del parcial y conserva la mejor solución factible.',
   },
@@ -79,7 +79,7 @@ export function HomePage() {
         <div className="max-w-3xl space-y-4">
           <Badge variant="indigo">Matemáticas Discretas · Optimización Combinatoria</Badge>
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
-            CronoGraph: Programación Óptima de Parciales con Teoría de Grafos
+            Planifica parciales con una visión más clara
           </h1>
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
             Aplicación académica para modelar la congestión de evaluaciones universitarias mediante{' '}
@@ -88,6 +88,9 @@ export function HomePage() {
             carga académica simultánea sin violar horarios docentes ni franjas institucionales.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
+            <Link to="/calendario" className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-indigo-950 hover:bg-indigo-50 transition-colors">
+              Ver calendario <ArrowRight className="h-4 w-4" />
+            </Link>
             <Link
               to="/optimizacion"
               className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-400 transition-colors"
@@ -96,10 +99,10 @@ export function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              to="/modelo-matematico"
+              to="/grafos"
               className="inline-flex items-center gap-2 rounded-lg border border-slate-600 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 hover:bg-slate-800 transition-colors"
             >
-              Explorar modelo matemático
+              Explorar grafos
             </Link>
           </div>
         </div>
@@ -111,12 +114,12 @@ export function HomePage() {
           <MetricTile
             label="Estudiantes"
             value={loading ? '...' : dataset?.students.length ?? 0}
-            hint="Matrículas sintéticas"
+            hint="Dataset activo"
           />
           <MetricTile
             label="Asignaturas"
             value={loading ? '...' : dataset?.subjects.length ?? 0}
-            hint="Créditos 2 a 5"
+            hint="Dataset activo"
           />
           <MetricTile
             label="Parciales (|E|)"

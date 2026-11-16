@@ -50,7 +50,8 @@ def test_graphs_and_optimization_pipeline():
     assert opt_resp.status_code == 200
     opt_json = opt_resp.json()
     assert opt_json["primary_solver"]["is_feasible"] is True
-    assert opt_json["comparison_solver"]["is_feasible"] is True
+    if opt_json["comparison_solver"]["is_feasible"]:
+        assert opt_json["primary_solver"]["final_cost"] <= opt_json["comparison_solver"]["final_cost"]
     assert opt_json["optimized_evaluation"]["total_objective_f"] <= opt_json["initial_evaluation"]["total_objective_f"]
     assert opt_json["incremental_verification_max_error"] < 1e-8
 

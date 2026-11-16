@@ -47,6 +47,7 @@ CronoGraph transforma los registros de matrícula en grafos de conflicto para ay
 - Inspeccionar el grafo bipartito estudiante–parcial y el grafo ponderado de conflictos.
 - Comparar el calendario inicial con una propuesta optimizada.
 - Ejecutar búsqueda local con reinicios aleatorios, Google OR-Tools CP-SAT o ambos.
+- En el modo combinado, usar el calendario hallado por nuestra solución como punto de partida para CP-SAT y mostrar el mejor resultado factible de ambos.
 - Evaluar factibilidad, penalización, cambios de horario y métricas de estudiantes.
 - Consultar resultados en gráficas y calendario, y exportar información a JSON o CSV.
 
@@ -55,6 +56,7 @@ CronoGraph transforma los registros de matrícula en grafos de conflicto para ay
 | Sección | Ruta | Contenido |
 |---|---|---|
 | Inicio | `/` | Presentación del problema, flujo del modelo y resumen del dataset. |
+| Calendario | `/calendario` | Horario inicial y propuesto, filtros y detalle de cada parcial. |
 | Modelo matemático | `/modelo-matematico` | Formulación, variables y criterios de evaluación. |
 | Datos | `/datos` | Exploración, validación, carga y descarga del dataset JSON. |
 | Grafos | `/grafos` | Grafo bipartito y grafo de conflictos, con vistas inicial y optimizada. |
