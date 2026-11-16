@@ -1,0 +1,156 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{geometry}
+\geometry{margin=2.4cm}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+
+\title{\textbf{Guía de estudio de CronoGraph}\\
+\large Datos, grafos, ponderaciones y funcionamiento del simulador}
+\author{Material de apoyo para Matemáticas Discretas}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{¿Qué problema resuelve CronoGraph?}
+CronoGraph ayuda a organizar las fechas y horas de parciales universitarios. Busca reducir la cercanía entre evaluaciones que comparten estudiantes, sin asignar exámenes a franjas no autorizadas ni permitir choques simultáneos que hagan inviable el horario. El sistema compara el calendario inicial con una propuesta y explica qué cambió y cómo varían los conflictos.
+
+Es una herramienta de apoyo a la decisión: el resultado es un calendario factible de menor costo según el modelo implementado. La función de costo es una aproximación diseñada por el equipo y no una medida universal del esfuerzo real de cada estudiante.
+
+\section{Por qué usar datos sintéticos de demostración}
+El repositorio incluye un conjunto de demostración reproducible con 120 estudiantes ficticios, 15 asignaturas, 12 docentes, 20 grupos, 20 parciales y 595 matrículas. Cada estudiante está inscrito en entre cuatro y seis asignaturas. La ventana abarca tres semanas. Los registros se identifican como sintéticos y no representan alumnos ni horarios institucionales reales.
+
+Hay tres razones para trabajar con estos datos:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Privacidad y seguridad:} se puede mostrar y desarrollar el sistema sin exponer matrículas personales.
+    \item \textbf{Reproducibilidad:} el generador usa la semilla 42, así que la misma versión del generador vuelve a producir la misma instancia. La semilla es una elección técnica para repetir experimentos; no tiene un significado académico especial.
+    \item \textbf{Prueba funcional controlada:} la instancia contiene suficientes relaciones para construir y visualizar conflictos, probar restricciones y ejecutar los algoritmos sin depender de una base institucional.
+\end{enumerate}
+El tamaño es adecuado para una demostración y para depuración, pero no demuestra que el sistema represente a toda la Universidad ni que el método mejore horarios reales. Para evaluar esa afirmación se requerirían datos institucionales autorizados y experimentos documentados.
+
+\section{Relación con Matemáticas Discretas}
+El proyecto aplica varios objetos centrales de la asignatura:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Conjuntos y relaciones:} se consideran conjuntos de estudiantes, parciales y franjas horarias. La matrícula define una relación entre estudiantes y parciales.
+    \item \textbf{Grafos bipartitos:} la relación de matrícula se representa conectando dos tipos de vértices: estudiantes y parciales.
+    \item \textbf{Matrices binarias y producto matricial:} la matriz de incidencia codifica la relación; su producto con la traspuesta cuenta pares de parciales con estudiantes en común.
+    \item \textbf{Grafos ponderados:} cada arista puede tener un peso que combina matrícula, importancia académica y proximidad de fechas.
+    \item \textbf{Optimización combinatoria:} se elige una franja de un conjunto finito de opciones para cada parcial, minimizando una función objetivo bajo restricciones.
+    \item \textbf{Algoritmos y complejidad:} se comparan una búsqueda local heurística y un solucionador por restricciones. La búsqueda local evalúa cambios a partir de los vecinos de un parcial, en vez de recomputar todo el costo para cada movimiento.
+\end{itemize}
+Así, el proyecto convierte una situación académica en una estructura matemática finita que puede analizarse mediante definiciones, operaciones matriciales, restricciones y algoritmos.
+
+\section{Por qué se usan dos grafos}
+Los grafos responden preguntas distintas y conservan distintos niveles de detalle.
+
+\subsection{Grafo bipartito estudiante--parcial}
+Sea $S$ el conjunto de estudiantes y $E$ el conjunto de parciales. El grafo bipartito
+\[
+G_B=(S\cup E,M)
+\]
+tiene una arista $(s,i)\in M$ cuando el estudiante $s$ debe presentar el parcial $i$. No hay aristas entre dos estudiantes ni entre dos parciales. Este grafo permite inspeccionar directamente quién está relacionado con qué evaluación y de dónde salen los conflictos. Conserva la relación original de matrícula.
+
+\subsection{Grafo de conflictos entre parciales}
+Para optimizar el calendario interesa comparar parciales entre sí. El grafo de conflictos $G_C=(E,\mathcal A)$ tiene un vértice por parcial y una arista entre $i$ y $j$ cuando al menos un estudiante presenta ambos. Esta proyección resume la información del grafo bipartito en una red de evaluaciones. Su arista guarda cuántos estudiantes se comparten y los pesos que el simulador necesita para evaluar fechas.
+
+El grafo bipartito muestra las relaciones estudiante--evaluación; el grafo de conflictos facilita calcular qué pares de evaluaciones deben separarse. Ambos representan la misma matrícula desde perspectivas complementarias.
+
+\section{De la matrícula a los conflictos}
+La relación se codifica en una matriz de incidencia binaria $B$:
+\[
+B_{si}=\begin{cases}
+1,&\text{si el estudiante }s\text{ presenta el parcial }i,\\
+0,&\text{en caso contrario.}
+\end{cases}
+\]
+Al multiplicar,
+\[
+A=B^{\mathsf T}B,\qquad
+A_{ij}=\sum_{s\in S}B_{si}B_{sj}.
+\]
+Para $i\ne j$, $A_{ij}$ es la cantidad de estudiantes que comparten los parciales $i$ y $j$. En la diagonal, $A_{ii}$ es la matrícula del parcial $i$. El simulador crea una arista de conflicto solo si $A_{ij}>0$.
+
+\section{Cómo se calcula el peso académico de un parcial}
+A cada parcial $i$ se le asigna un peso académico determinista:
+\[
+W_i=C_i\,p_i\left(1+\frac{r_i}{2}\right),
+\]
+donde:
+\begin{description}[leftmargin=2.8cm,style=nextline]
+    \item[$C_i$] créditos de la asignatura.
+    \item[$p_i$] fracción de la nota final que corresponde a ese parcial (por ejemplo, 0.25 representa 25\%).
+    \item[$r_i$] tasa histórica de retiro de la asignatura, expresada como proporción entre 0 y 1.
+\end{description}
+La lógica es usar los créditos como aproximación de la carga académica formal, el porcentaje como aproximación al peso evaluativo y el retiro como un ajuste complementario. El factor $(1+r_i/2)$ aumenta el peso base desde 1 hasta, como máximo, 1.5. El retiro no prueba que el curso sea más difícil ni que una fecha cause retiros. Es una decisión heurística del proyecto, que requiere validación; no es una escala estándar ni está calibrada estadísticamente.
+
+El peso estructural fijo de una arista se define como
+\[
+H_{ij}=A_{ij}\frac{W_i+W_j}{2}.
+\]
+Así se combinan dos elementos: cuántos estudiantes comparten las evaluaciones y qué peso académico tienen. $H_{ij}$ depende de los datos de los parciales, no de las fechas asignadas.
+
+\section{Penalización temporal y función objetivo}
+Sea $d_i$ la fecha del parcial $i$. La distancia temporal en días calendario es
+\[
+\Delta_{ij}=|d_i-d_j|.
+\]
+La penalización de proximidad implementada es
+\[
+P(\Delta_{ij})=\max(0,4-\Delta_{ij}).
+\]
+Por tanto, la penalización vale 4 si se programan el mismo día, 3 si hay un día entre ellos, 2 si hay dos, 1 si hay tres y 0 si están separados por cuatro días o más.
+
+El costo dinámico de cada arista y el costo total del calendario son
+\[
+K_{ij}=H_{ij}P(\Delta_{ij}),\qquad
+F(x)=\sum_{\{i,j\}\in\mathcal A,\ i<j}K_{ij}(x_i,x_j).
+\]
+El simulador busca minimizar $F(x)$. Una arista puede seguir existiendo en $G_C$ aunque su costo dinámico sea cero: todavía indica que los parciales comparten estudiantes, pero en las fechas actuales ya no reciben penalización por cercanía.
+
+\subsection{Ejemplo numérico ilustrativo}
+Supongamos dos parciales con $C_i=4$, $p_i=0.25$, $r_i=0.10$ y $C_j=3$, $p_j=0.20$, $r_j=0.20$. Entonces
+\[
+W_i=4(0.25)(1+0.10/2)=1.05,\qquad
+W_j=3(0.20)(1+0.20/2)=0.66.
+\]
+Si comparten cinco estudiantes, $A_{ij}=5$ y
+\[
+H_{ij}=5\frac{1.05+0.66}{2}=4.275.
+\]
+Si sus fechas están separadas por dos días, $P(2)=2$ y $K_{ij}=8.55$. Este ejemplo solo ilustra las operaciones; no es un resultado obtenido de una ejecución del dataset.
+
+\section{Cómo funciona el simulador}
+El flujo implementado es:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Cargar datos:} se usa el dataset de demostración, una instancia sintética generada o un JSON personalizado.
+    \item \textbf{Validar:} se revisan identificadores y relaciones, dominios de franjas, duración completa y reglas de solapamiento.
+    \item \textbf{Construir el modelo:} se crea $B$, se calcula $A=B^{\mathsf T}B$ y se construyen los grafos y pesos.
+    \item \textbf{Definir el calendario inicial:} cada parcial parte de su franja indicada por \texttt{initial\_slot\_id}.
+    \item \textbf{Optimizar:} el usuario selecciona búsqueda local con reinicios aleatorios, CP-SAT o ambos. La búsqueda local aplica cambios factibles que reducen el costo y termina al llegar a un óptimo local. CP-SAT busca una solución del modelo entero dentro de su límite de tiempo. En modo combinado, CP-SAT recibe la solución local como punto de partida cuando es factible y se conserva la mejor de las dos por el costo original.
+    \item \textbf{Evaluar y mostrar:} se informa factibilidad, costo, cambios de horario, conflictos y métricas por estudiante; también se visualizan calendarios, grafos y la traza de convergencia. Las corridas se pueden guardar en el backend.
+\end{enumerate}
+
+Las restricciones duras incluyen: (i) usar una franja autorizada; (ii) que quepa toda la duración del examen; (iii) no solapar parciales con estudiantes compartidos; (iv) no asignar simultáneamente dos parciales al mismo docente; (v) no duplicar un aula cuando hay aula especificada; y (vi) mantener cada cambio de fecha a no más de 14 días de la fecha inicial.
+
+\section{Qué significan las salidas y qué no significan}
+Un menor $F(x)$ indica menor penalización según las reglas y pesos elegidos. No garantiza por sí solo que cada estudiante considere más cómodo el calendario, porque la función objetivo usa una penalización agregada. Las métricas individuales y las explicaciones de cambios complementan ese valor.
+
+La búsqueda local puede quedar en un óptimo local; no demuestra óptimo global. CP-SAT puede devolver una solución factible sin probar que sea óptima si llega al límite de tiempo. Cuando CP-SAT informa \texttt{OPTIMAL}, la certificación se refiere al objetivo con coeficientes redondeados a escala $10^4$. Los resultados del dataset sintético sirven para demostrar y depurar el funcionamiento, no para afirmar efectos académicos reales.
+
+\section{Resumen para explicar en la sustentación}
+\begin{itemize}[leftmargin=*]
+    \item Usamos datos sintéticos para proteger privacidad y repetir pruebas con una instancia controlada.
+    \item El grafo bipartito conserva quién presenta cada parcial; el grafo de conflictos resume qué pares de parciales comparten estudiantes.
+    \item $W_i$ aproxima importancia académica usando créditos, porcentaje evaluativo y retiro histórico; es una ponderación diseñada por el equipo.
+    \item $A_{ij}$ cuenta estudiantes compartidos, $H_{ij}$ mide conflicto estructural, $P(\Delta)$ mide cercanía temporal y $F(x)$ suma las penalizaciones del calendario.
+    \item El simulador valida restricciones, optimiza y muestra calendarios, costos, conflictos y métricas.
+\end{itemize}
+
+\end{document}

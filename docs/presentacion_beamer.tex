@@ -139,17 +139,12 @@
   \footnotesize La demostración utiliza datos ficticios. Cada resultado corresponde a la ejecución mostrada.
 \end{frame}
 
-\begin{frame}{Prueba conocida y trabajo futuro}
-  {\color{menta}\textbf{Caso pequeño verificable:}} 3 parciales, 2 opciones por parcial.
+\begin{frame}{Alcances y trabajo futuro}
   \begin{itemize}
-    \item La enumeración de las 8 combinaciones factibles encontró un costo mínimo $F=0$.
-    \item Nuestra búsqueda pasó de $F=23{,}14875$ a $F=0$ en este caso.
-  \end{itemize}
-  \vspace{0.1cm}
-  {\color{calido}\textbf{Lo que falta}}
-  \begin{itemize}
-    \item La búsqueda no garantiza el mínimo global en otras instancias.
-    \item Comparar algoritmos y validar pesos y avance de temas con datos reales.
+    \item La búsqueda local puede detenerse en un óptimo local y no garantiza el mínimo global.
+    \item CP-SAT puede hallar una solución factible sin probar optimalidad si alcanza el límite de tiempo.
+    \item Para evaluar el desempeño, falta comparar los algoritmos en instancias representativas con métricas comunes.
+    \item También se deben validar los pesos y las franjas autorizadas con actores académicos y datos institucionales.
   \end{itemize}
 \end{frame}
 
@@ -157,7 +152,7 @@
   \begin{itemize}
     \item Los grafos permiten identificar relaciones entre matrículas y conflictos de fechas.
     \item CronoGraph genera propuestas factibles y, si el calendario inicial es factible, conserva un costo igual o menor según el modelo.
-    \item En la instancia pequeña, la búsqueda coincidió con el mínimo verificado por enumeración; esto no garantiza el óptimo en otros casos.
+    \item El simulador genera propuestas sujetas a las restricciones; su calidad debe medirse en instancias representativas.
     \item Para evaluar su utilidad real, falta contrastar algoritmos y validar los pesos y las franjas con datos representativos.
   \end{itemize}
   \vfill

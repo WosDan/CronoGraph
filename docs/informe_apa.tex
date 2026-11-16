@@ -7,7 +7,7 @@
 \usepackage{setspace}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
@@ -40,7 +40,7 @@ Profesor: MSc. Iván Gómez\par
 16 de noviembre de 2026\par}
 \end{titlepage}
 \section*{Resumen}
-Este trabajo describe CronoGraph, una aplicación implementada para apoyar la programación de parciales universitarios. El problema se formula mediante un grafo en el que cada nodo representa una evaluación y las aristas representan conflictos entre parciales que comparten estudiantes. El modelo pondera esos conflictos según la cantidad de estudiantes afectados, la proximidad temporal de las evaluaciones y la importancia académica de cada parcial. Esta importancia se estima a partir de los créditos de la asignatura, el porcentaje de la nota final correspondiente al parcial y el índice histórico de retiro. Se describen los criterios, las alternativas consideradas y la función objetivo para comparar calendarios factibles. El simulador implementa búsqueda local con reinicios aleatorios y el solucionador CP-SAT de Google OR-Tools; también permite ejecutarlos en modo combinado. Una prueba de tres parciales contrasta el resultado de la búsqueda con la enumeración de las ocho asignaciones posibles; quedan pendientes experimentos con datos institucionales.
+Este trabajo describe CronoGraph, una aplicación implementada para apoyar la programación de parciales universitarios. El problema se formula mediante un grafo en el que cada nodo representa una evaluación y las aristas representan conflictos entre parciales que comparten estudiantes. El modelo pondera esos conflictos según la cantidad de estudiantes afectados, la proximidad temporal de las evaluaciones y la importancia académica de cada parcial. Esta importancia se estima a partir de los créditos de la asignatura, el porcentaje de la nota final correspondiente al parcial y el índice histórico de retiro. Se describen los criterios, las alternativas consideradas y la función objetivo para comparar calendarios factibles. El simulador implementa búsqueda local con reinicios aleatorios y el solucionador CP-SAT de Google OR-Tools; también permite ejecutarlos en modo combinado. La evaluación cuantitativa en instancias representativas queda como trabajo futuro.
 
 
 \noindent\textit{Palabras clave:} 
@@ -121,10 +121,8 @@ Como alternativas futuras se pueden estudiar recocido simulado y algoritmos gen�
 
 El calendario de menor costo entre los algoritmos evaluados es el mejor encontrado en esos experimentos, pero no necesariamente el mejor de todos los calendarios posibles. Para instancias pequeñas puede verificarse el mínimo enumerando todas las asignaciones factibles. En instancias mayores puede recurrirse a un método exacto hasta obtener un certificado de optimalidad; para que esa garantía corresponda a la función original debe evitarse la pérdida de precisión de los coeficientes, siempre que la representación entera sea viable. Los recursos y el tiempo disponibles pueden impedir completar la demostración.
 
-\section{Resultados e interpretación}
-Para validar la implementación se utilizó una instancia sintética pequeña de tres parciales y cuatro estudiantes, con dos franjas por parcial. La enumeración de las ocho combinaciones posibles encontró que las ocho eran factibles y que el costo mínimo era $F=0$. El calendario inicial tenía costo $F=23.14875$. En la ejecución de búsqueda local con diez reinicios y semilla 42 se obtuvo $F=0$, moviendo dos de los tres parciales; por tanto, para esta instancia concreta el resultado coincide con el mínimo comprobado por enumeración. Este caso no demuestra optimalidad en otras instancias ni constituye una medición de bienestar estudiantil.
-
-En esta revisión también se ejecutaron ocho pruebas seleccionadas de restricciones y optimización: todas pasaron. Incluyen la comparación contra enumeración en la instancia pequeña y el límite de reprogramación de 14 días. Para evaluar el rendimiento con la instancia de 20 parciales o con datos institucionales, aún deben registrarse ejecuciones, tiempos, costos y resultados comparables.
+\section{Resultados y alcance de la evaluación}
+La aplicación está implementada para evaluar calendarios y presentar el valor de la función objetivo, la factibilidad, los cambios de horario y métricas por estudiante. Este documento describe ese funcionamiento y el modelo matemático. No se presentan aquí resultados cuantitativos de desempeño sobre la instancia de demostración de 20 parciales ni sobre datos institucionales; por tanto, no se concluye que el sistema mejore calendarios reales. Una evaluación futura deberá comparar métodos con las mismas instancias y restricciones, y reportar costos, tiempos de ejecución, factibilidad y variabilidad entre corridas.
 
 \section{Conclusiones y limitaciones}
 CronoGraph implementa la reprogramación de parciales mediante un grafo ponderado, restricciones de factibilidad y una función objetivo que combina estudiantes afectados, proximidad temporal e importancia académica. La aplicación permite comparar búsqueda local con reinicios aleatorios y CP-SAT. La calidad de las recomendaciones todavía debe evaluarse cuantitativamente en ejecuciones documentadas y mediante validación de los parámetros con datos institucionales.
