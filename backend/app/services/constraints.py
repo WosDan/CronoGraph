@@ -3,9 +3,19 @@
 from __future__ import annotations
 
 from typing import Dict, List, Tuple
+from datetime import date
 
 from app.models.domain import CompiledAcademicModel
 from app.schemas.schemas import ConstraintViolation, FeasibilityReport
+
+MAX_RESCHEDULE_DAYS = 14
+
+
+def within_reschedule_window(model: CompiledAcademicModel, exam_id: str, slot_id: str) -> bool:
+    exam = model.exams_by_id[exam_id]
+    initial = next((slot for slot in exam.authorized_slots if slot.slot_id == exam.initial_slot_id), None)
+    candidate = model.slots_by_exam[exam_id].get(slot_id)
+    return bool(initial and candidate and abs((date.fromisoformat(candidate.date) - date.fromisoformat(initial.date)).days) <= MAX_RESCHEDULE_DAYS)
 
 
 def _intervals_overlap(start_a: int, end_a: int, start_b: int, end_b: int) -> bool:
@@ -41,6 +51,9 @@ def evaluate_feasibility(
             continue
 
         slot = model.slots_by_exam[eid][slot_id]
+        if not within_reschedule_window(model, eid, slot_id):
+            domain_ok = False
+            violations.append(ConstraintViolation(constraint_type="reschedule_window", message=f"Parcial {eid} supera el límite de 14 días respecto a su fecha inicial.", exam_ids=[eid]))
         slot_start, slot_end = model.slot_minutes[eid][slot_id]
         exam_end = slot_start + exam.duration_minutes
         if exam_end > slot_end:
@@ -137,6 +150,8 @@ def can_assign_exam_slot(
 ) -> bool:
     """Fast feasibility check for changing a single exam_id to candidate_slot_id."""
     if candidate_slot_id not in model.slots_by_exam[exam_id]:
+        return False
+    if not within_reschedule_window(model, exam_id, candidate_slot_id):
         return False
 
     exam = model.exams_by_id[exam_id]

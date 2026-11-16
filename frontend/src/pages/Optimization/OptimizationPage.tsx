@@ -132,7 +132,7 @@ export function OptimizationPage() {
               onClick={() => applyPreset('audit')}
               className="rounded-lg border border-indigo-200 bg-indigo-50/70 px-3 py-1.5 text-xs font-semibold text-indigo-800 hover:bg-indigo-100 transition-colors"
             >
-              Comparar nuestra solución con OR-Tools
+              Optimización con verificación
             </button>
           </div>
 
@@ -150,9 +150,9 @@ export function OptimizationPage() {
                 onChange={(e) => setAlgorithm(e.target.value as 'local_search' | 'ortools' | 'both')}
                 className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
               >
-                <option value="both">Nuestra solución + OR-Tools (comparación)</option>
-                <option value="local_search">Nuestra solución</option>
-                <option value="ortools">Solo Google OR-Tools CP-SAT</option>
+                <option value="both">Optimización con verificación</option>
+                <option value="local_search">Nuestra solución · búsqueda con reinicios</option>
+                <option value="ortools">Verificación con CP-SAT</option>
               </select>
             </div>
 
@@ -193,7 +193,7 @@ export function OptimizationPage() {
 
             <div>
               <label className="flex items-center text-xs font-medium text-slate-700 mb-1">
-                <span>Límite OR-Tools (s)</span>
+                <span>Tiempo máximo de CP-SAT (s)</span>
                 <HelpTooltip
                   label="Límite OR-Tools"
                   text="Tiempo máximo de búsqueda de CP-SAT; construir el modelo puede tomar tiempo adicional."

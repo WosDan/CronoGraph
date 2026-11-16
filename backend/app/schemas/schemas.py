@@ -231,6 +231,7 @@ class ConflictGraphResponse(BaseModel):
 class ConstraintViolation(BaseModel):
     constraint_type: Literal[
         "authorized_domain",
+        "reschedule_window",
         "duration_fit",
         "student_overlap",
         "teacher_overlap",
