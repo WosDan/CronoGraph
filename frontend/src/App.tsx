@@ -8,6 +8,7 @@ import { MathematicalModelPage } from './pages/MathematicalModel/MathematicalMod
 import { OptimizationPage } from './pages/Optimization/OptimizationPage';
 import { ResultsPage } from './pages/Results/ResultsPage';
 import { CalendarPage } from './pages/Calendar/CalendarPage';
+import { StudentImpactPage } from './pages/Students/StudentImpactPage';
 
 export function App() {
   return (
@@ -19,6 +20,7 @@ export function App() {
             <Route path="/modelo-matematico" element={<MathematicalModelPage />} />
             <Route path="/datos" element={<DataPage />} />
             <Route path="/calendario" element={<CalendarPage />} />
+            <Route path="/estudiantes" element={<StudentImpactPage />} />
             <Route path="/grafos" element={<GraphsPage />} />
             <Route path="/optimizacion" element={<OptimizationPage />} />
             <Route path="/resultados" element={<ResultsPage />} />

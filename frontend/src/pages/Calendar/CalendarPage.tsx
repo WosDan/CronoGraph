@@ -20,7 +20,8 @@ function dayDifference(from: string, to: string): number {
 }
 
 export function CalendarPage() {
-  const { dataset, initialEvaluation, activeRun, loading } = useSimulation();
+  const { dataset, initialEvaluation, activeRun, loading, optimizing, executeOptimization } = useSimulation();
+  const [optimizationError, setOptimizationError] = useState<string | null>(null);
   const [mode, setMode] = useState<Mode>('initial');
   const [subject, setSubject] = useState('');
   const [teacher, setTeacher] = useState('');
@@ -72,11 +73,25 @@ export function CalendarPage() {
   const proposedSlotMatches = !!proposedSlot && !!proposed && proposedSlot.date === proposed.assigned_date && proposedSlot.start_time === proposed.assigned_start_time;
   const proposedFeasibility = optimized?.feasibility;
 
+  async function optimizeCalendar() {
+    setOptimizationError(null);
+    try {
+      await executeOptimization({ algorithm: 'local_search', restarts: 15, seed: 42, ortools_time_limit_seconds: 10 });
+      setSelected(null);
+      setMode('optimized');
+    } catch (error) {
+      setOptimizationError(error instanceof Error ? error.message : 'No se pudo optimizar el calendario.');
+    }
+  }
+
   return <div className="space-y-6">
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">Planificación académica</p><h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">Calendario de parciales</h1><p className="mt-2 text-sm text-slate-500">Consulta las fechas y explora los cambios de la propuesta.</p></div>
-      <Link to="/optimizacion" className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">Optimizar calendario</Link>
+      <div className="flex flex-wrap items-center gap-3"><Link to="/optimizacion" className="text-sm font-medium text-indigo-700 hover:text-indigo-900">Ajustes avanzados</Link><button type="button" onClick={() => void optimizeCalendar()} disabled={!dataset || loading || optimizing} className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">{optimizing ? 'Optimizando…' : 'Optimizar calendario'}</button></div>
     </div>
+    {optimizing && <p role="status" className="rounded-lg bg-indigo-50 px-4 py-3 text-sm text-indigo-800">Buscando una propuesta con 15 reinicios. Esto puede tardar unos momentos.</p>}
+    {optimizationError && <p role="alert" className="rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-800">{optimizationError}</p>}
+    {activeRun && !optimizing && <p className="text-sm text-slate-600">Propuesta activa: costo {activeRun.initial_evaluation.total_objective_f.toFixed(2)} → {activeRun.optimized_evaluation.total_objective_f.toFixed(2)}. <Link to="/estudiantes" className="font-semibold text-indigo-700">Ver perspectiva de estudiantes</Link></p>}
     <DatasetActions />
     <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">

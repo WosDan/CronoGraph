@@ -26,15 +26,26 @@ Una aplicación interactiva para visualizar y optimizar la programación de parc
 
 ---
 
-## Equipo del proyecto
+<div align="center">
 
-Estudiantes de Ingeniería de Sistemas de la Universidad del Norte:
+## ✨ El equipo detrás de CronoGraph
 
-- Daniel Alejandro Rincón Navarro
-- Matías Guarín Rueda
-- Manuel David Polo Salgado
-- Andrés David Issa Camargo
-- Cristian Camilo Fuentes Sánchez
+**Ingeniería de Sistemas · Universidad del Norte**  
+Proyecto de Matemáticas Discretas · Barranquilla, Colombia
+
+<table>
+  <tr>
+    <td align="center">🎓<br><strong>Daniel Alejandro<br>Rincón Navarro</strong></td>
+    <td align="center">🎓<br><strong>Matías<br>Guarín Rueda</strong></td>
+    <td align="center">🎓<br><strong>Manuel David<br>Polo Salgado</strong></td>
+  </tr>
+  <tr>
+    <td align="center">🎓<br><strong>Andrés David<br>Issa Camargo</strong></td>
+    <td align="center" colspan="2">🎓<br><strong>Cristian Camilo<br>Fuentes Sánchez</strong></td>
+  </tr>
+</table>
+
+</div>
 
 ---
 
@@ -60,10 +71,14 @@ CronoGraph transforma los registros de matrícula en grafos de conflicto para ay
 - Comparar el calendario inicial con una propuesta optimizada.
 - Ejecutar búsqueda local con reinicios aleatorios, Google OR-Tools CP-SAT o ambos.
 - En el modo combinado, usar el calendario hallado por nuestra solución como punto de partida para CP-SAT y mostrar el mejor resultado factible de ambos.
-
-En **Optimización** se ofrecen tres modos: **Nuestra solución · búsqueda con reinicios**, **Verificación con CP-SAT** y **Optimización con verificación**, que combina ambos y muestra el menor costo factible encontrado. CP-SAT solo certifica la optimalidad de su modelo con coeficientes redondeados cuando alcanza `OPTIMAL`; el tiempo máximo configurado limita su búsqueda.
 - Evaluar factibilidad, penalización, cambios de horario y métricas de estudiantes.
 - Consultar resultados en gráficas y calendario, y exportar información a JSON o CSV.
+
+En **Calendario** puedes cargar un JSON, generar datos ficticios, restaurar la demo y ejecutar directamente nuestra solución con 15 reinicios. La propuesta aparece en la misma pantalla y, al seleccionar un parcial, puedes consultar sus franjas autorizadas y la validación del calendario.
+
+En **Optimización** se ofrecen tres modos: **Nuestra solución · búsqueda con reinicios**, **Verificación con CP-SAT** y **Optimización con verificación**, que combina ambos y muestra el menor costo factible encontrado. CP-SAT solo certifica la optimalidad de su modelo con coeficientes redondeados cuando alcanza `OPTIMAL`; el tiempo máximo configurado limita su búsqueda.
+
+En **Estudiantes** puedes comparar los parciales individuales y contar cuántas personas tienen más, menos o la misma cantidad de pares de parciales separados por hasta tres días. El indicador describe la distribución de evaluaciones; no mide directamente el estrés ni el bienestar.
 
 ### Recorrido por la aplicación
 
@@ -71,6 +86,7 @@ En **Optimización** se ofrecen tres modos: **Nuestra solución · búsqueda con
 |---|---|---|
 | Inicio | `/` | Presentación del problema, flujo del modelo y resumen del dataset. |
 | Calendario | `/calendario` | Horario inicial y propuesto, filtros y detalle de cada parcial. |
+| Estudiantes | `/estudiantes` | Comparación individual y colectiva de pares de parciales cercanos. |
 | Modelo matemático | `/modelo-matematico` | Formulación, variables y criterios de evaluación. |
 | Datos | `/datos` | Exploración, validación, carga y descarga del dataset JSON. |
 | Grafos | `/grafos` | Grafo bipartito y grafo de conflictos, con vistas inicial y optimizada. |
