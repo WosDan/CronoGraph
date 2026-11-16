@@ -30,6 +30,11 @@ export const cronoApi = {
     return data;
   },
 
+  async randomDataset(): Promise<AcademicDataset> {
+    const { data } = await apiClient.post<AcademicDataset>('/dataset/random');
+    return data;
+  },
+
   async resetDataset(): Promise<AcademicDataset> {
     const { data } = await apiClient.post<AcademicDataset>('/dataset/reset');
     return data;
@@ -53,7 +58,7 @@ export const cronoApi = {
   },
 
   async runOptimization(req: OptimizationRequest): Promise<OptimizationResult> {
-    const { data } = await apiClient.post<OptimizationResult>('/optimization/run', req);
+    const { data } = await apiClient.post<OptimizationResult>('/optimization/run', req, { timeout: 300000 });
     return data;
   },
 

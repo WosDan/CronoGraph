@@ -105,7 +105,12 @@ def run_local_search(
 
                 delta_f = compute_incremental_delta(model, current, eid, cand_slot)
                 if delta_f < -1e-9:
-                    if best_move is None or delta_f < best_move[2]:
+                    # Preserve best improvement; centralities only break numerical ties.
+                    priority = (model.degree_centrality[eid], model.betweenness_centrality[eid])
+                    best_priority = ((model.degree_centrality[best_move[0]], model.betweenness_centrality[best_move[0]])
+                                     if best_move else (-1.0, -1.0))
+                    if (best_move is None or delta_f < best_move[2] - 1e-12 or
+                            (abs(delta_f - best_move[2]) <= 1e-12 and priority > best_priority)):
                         best_move = (eid, cand_slot, delta_f)
 
         if best_move is None:

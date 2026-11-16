@@ -9,7 +9,7 @@
 | `subjects` | `Subject[]` | Asignaturas (`id`, `code`, `name`, `credits` en `[2,5]`, `historical_withdrawal_rate` en `[0, 0.35]`). |
 | `groups` | `Group[]` | Secciones específicas (`id`, `code`, `subject_id`, `teacher_id`, `regular_schedule`). |
 | `exams` | `Exam[]` | Parciales a programar (`id`, `name`, `subject_id`, `group_id`, `teacher_id`, `evaluation_percentage`, `duration_minutes`, `initial_slot_id`, `authorized_slots`). |
-| `students` | `Student[]` | Estudiantes sintéticos (`id`, `name`, `program`, `is_synthetic`, `enrollments`). |
+| `students` | `Student[]` | Estudiantes (`id`, `name`, `program`, `is_synthetic`, `enrollments`). |
 
 ---
 
@@ -26,3 +26,5 @@
 ### `Enrollment`
 - `subject_id`: identificador de la asignatura.
 - `group_id`: grupo específico matriculado por el estudiante (garantiza que los conflictos entre grupos paralelos A y B no se mezclen indebidamente).
+
+Para datos reales, ajusta las referencias entre entidades, marca `metadata.is_synthetic` y `students[].is_synthetic` como `false`, y usa fechas y franjas autorizadas reales. La carga requiere JSON con esta estructura; descarga el dataset activo desde la aplicación como ejemplo. Las tasas y porcentajes se expresan como fracciones: 0.25 equivale al 25 %.

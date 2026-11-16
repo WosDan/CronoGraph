@@ -96,7 +96,7 @@ export function OptimizationPage() {
         <h1 className="text-2xl font-bold text-slate-900">Simulador y Optimización</h1>
         <p className="text-sm text-slate-600">
           Ejecución real en el backend mediante búsqueda local incremental (ΔF_i(t)) guiada por
-          centralidades con reinicios aleatorios y verificación exacta con Google OR-Tools CP-SAT.
+          centralidades con reinicios aleatorios o Google OR-Tools CP-SAT, ejecutados en el backend.
         </p>
       </div>
 
@@ -142,7 +142,7 @@ export function OptimizationPage() {
                 <span>Algoritmo</span>
                 <HelpTooltip
                   label="Google OR-Tools CP-SAT"
-                  text="Google OR-Tools CP-SAT es un solucionador exacto de programación por restricciones: encuentra y certifica el óptimo global teórico para auditar la calidad de la búsqueda local."
+                  text="CP-SAT busca una solución mediante programación por restricciones. Solo certifica el óptimo de su modelo con coeficientes redondeados si alcanza el estado OPTIMAL."
                 />
               </label>
               <select
@@ -161,7 +161,7 @@ export function OptimizationPage() {
                 <span>Reinicios (1–200)</span>
                 <HelpTooltip
                   label="Reinicios"
-                  text="Número de puntos de partida factibles distintos (priorizando nodos de alta centralidad). Explorar múltiples valles evita quedar atrapado en un óptimo local subóptimo."
+                  text="Número de puntos de partida factibles distintos (priorizando nodos de alta centralidad). Explorar varios puntos de partida puede ayudar a encontrar mejores soluciones, sin garantizar el óptimo global."
                 />
               </label>
               <input
@@ -196,7 +196,7 @@ export function OptimizationPage() {
                 <span>Límite OR-Tools (s)</span>
                 <HelpTooltip
                   label="Límite OR-Tools"
-                  text="Tiempo máximo asignado al solver exacto CP-SAT para demostrar optimalidad global."
+                  text="Tiempo máximo de búsqueda de CP-SAT; construir el modelo puede tomar tiempo adicional."
                 />
               </label>
               <input
@@ -236,6 +236,16 @@ export function OptimizationPage() {
           )}
         </CardBody>
       </Card>
+
+      {solver && (
+        <div className="rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-950">
+          <strong>{solver.algorithm}:</strong>{' '}
+          {solver.optimality_proven
+            ? 'CP-SAT demostró el óptimo del modelo con coeficientes redondeados.'
+            : 'Se encontró una solución factible; no se ha demostrado que sea el óptimo global.'}
+          {activeRun?.comparison_solver && ' En el modo comparativo, el calendario mostrado corresponde a la búsqueda local; CP-SAT aparece como comparación.'}
+        </div>
+      )}
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -369,12 +379,15 @@ export function OptimizationPage() {
             {activeRun?.comparison_solver && (
               <div className="mt-4 rounded-lg border border-indigo-100 bg-indigo-50/60 p-3 space-y-1">
                 <p className="font-semibold text-indigo-950">Comparación OR-Tools CP-SAT:</p>
-                <p>
-                  Costo final: <strong>{activeRun.comparison_solver.final_cost.toFixed(2)}</strong> ({activeRun.comparison_solver.status})
-                </p>
+                <p>Estado: <strong>{activeRun.comparison_solver.status}</strong></p>
+                {activeRun.comparison_solver.is_feasible ? (
+                  <p>Costo final: <strong>{activeRun.comparison_solver.final_cost.toFixed(2)}</strong></p>
+                ) : (
+                  <p>CP-SAT no obtuvo una solución factible en esta ejecución. UNKNOWN no demuestra que el problema sea infactible.</p>
+                )}
                 <p>
                   Optimalidad demostrada:{' '}
-                  <strong>{activeRun.comparison_solver.optimality_proven ? 'Sí (Óptimo Global)' : 'No demostrada en el límite'}</strong>
+                  <strong>{activeRun.comparison_solver.optimality_proven ? 'Sí, para el modelo con coeficientes redondeados' : 'No demostrada en el límite'}</strong>
                 </p>
                 <p>Tiempo CP-SAT: {activeRun.comparison_solver.execution_time_ms.toFixed(1)} ms</p>
               </div>

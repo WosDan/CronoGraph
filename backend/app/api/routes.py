@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import secrets
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -114,6 +115,19 @@ def upload_dataset(payload: Dict[str, Any]) -> DatasetValidationResponse:
     return report
 
 
+@router.post("/dataset/random", response_model=AcademicDataset)
+def random_dataset() -> AcademicDataset:
+    """Generate and activate a fresh synthetic dataset."""
+    from app.services.synthetic_generator import generate_dataset
+
+    dataset = generate_dataset(secrets.randbelow(2**31))
+    _, report = validate_academic_dataset(dataset.model_dump())
+    if not report.valid:
+        raise HTTPException(status_code=500, detail="No se pudo generar un dataset válido.")
+    set_custom_active_dataset(dataset)
+    return dataset
+
+
 @router.post("/dataset/reset", response_model=AcademicDataset)
 def reset_dataset() -> AcademicDataset:
     """Restore the reproducible seed-42 demonstration dataset."""
@@ -177,10 +191,13 @@ def run_optimization(req: OptimizationRequest) -> OptimizationResult:
         comparison_solver = solve_with_ortools(model, time_limit_seconds=req.ortools_time_limit_seconds)
 
     if not primary_solver.is_feasible:
+        message = ("CP-SAT no encontró una solución dentro del tiempo disponible; prueba aumentando el límite."
+                   if primary_solver.status == "UNKNOWN" else
+                   "No se encontró una solución factible que cumpla todas las restricciones obligatorias.")
         raise HTTPException(
             status_code=422,
             detail={
-                "message": "No se encontró una solución factible que cumpla todas las restricciones obligatorias.",
+                "message": message,
                 "status": primary_solver.status,
                 "algorithm": primary_solver.algorithm,
             },

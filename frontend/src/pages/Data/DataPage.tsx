@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   Download,
   RotateCcw,
+  Shuffle,
   Search,
   Upload,
 } from 'lucide-react';
@@ -102,6 +103,20 @@ export function DataPage() {
     }
   }
 
+  async function handleRandomDataset() {
+    setBusyAction(true);
+    setValidationFeedback(null);
+    setUploadError(null);
+    try {
+      await cronoApi.randomDataset();
+      await refreshDatasetAndGraphs();
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'No se pudo generar el dataset.');
+    } finally {
+      setBusyAction(false);
+    }
+  }
+
   async function handleResetDemo() {
     setBusyAction(true);
     setValidationFeedback(null);
@@ -124,8 +139,7 @@ export function DataPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Datos Académicos</h1>
           <p className="text-sm text-slate-600">
-            Inspección, validación estructural, carga de JSON personalizado y exportación del conjunto
-            sintético reproducible.
+            Inspección, validación estructural, carga de JSON personalizado y exportación del conjunto activo. Puedes cargar datos reales en el formato JSON indicado en la documentación.
           </p>
         </div>
 
@@ -149,6 +163,15 @@ export function DataPage() {
           <button
             type="button"
             disabled={busyAction}
+            onClick={() => void handleRandomDataset()}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-300 bg-white px-3.5 py-2 text-xs font-medium text-indigo-700 hover:bg-indigo-50 disabled:opacity-50"
+          >
+            <Shuffle className="h-3.5 w-3.5" />
+            Generar datos ficticios
+          </button>
+          <button
+            type="button"
+            disabled={busyAction}
             onClick={() => downloadJsonFile(dataset, 'cronograph_dataset.json')}
             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
           >
@@ -162,10 +185,20 @@ export function DataPage() {
             className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            Restaurar demo (Semilla 42)
+            Restaurar demo
           </button>
         </div>
       </div>
+
+      <details className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700">
+        <summary className="cursor-pointer font-semibold text-slate-900">Formato para cargar datos reales</summary>
+        <div className="mt-3 space-y-2">
+          <p>La carga admite archivos JSON. Descarga el conjunto activo para usarlo como ejemplo y reemplaza sus datos.</p>
+          <p>El archivo debe incluir metadata, teachers, subjects, groups, exams y students. Cada parcial necesita sus franjas autorizadas y cada matrícula debe vincularse con su asignatura y grupo.</p>
+          <p>Usa fechas AAAA-MM-DD, horas de 24 horas y porcentajes como decimales: 0.25 equivale al 25 %. Marca is_synthetic como false para datos reales.</p>
+          <p>Los CSV no se convierten automáticamente: el dataset contiene varias tablas relacionadas y horarios anidados. Deben adaptarse primero a la estructura JSON.</p>
+        </div>
+      </details>
 
       {/* Validation Feedback */}
       {uploadError && (
@@ -345,13 +378,13 @@ export function DataPage() {
       {activeTab === 'students' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <Card className="lg:col-span-7 overflow-hidden">
-            <CardHeader title="Estudiantes sintéticos (120)" subtitle="Haz clic en un estudiante para inspeccionar sus matrículas por grupo" />
+            <CardHeader title={`Estudiantes (${dataset.students.length})`} subtitle="Haz clic en un estudiante para inspeccionar sus matrículas por grupo" />
             <div className="overflow-x-auto max-h-[480px]">
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-50 text-slate-600 sticky top-0">
                   <tr>
                     <th className="px-4 py-2.5">ID</th>
-                    <th className="px-4 py-2.5">Nombre ficticio</th>
+                    <th className="px-4 py-2.5">Nombre</th>
                     <th className="px-4 py-2.5">Programa</th>
                     <th className="px-4 py-2.5">Asignaturas</th>
                   </tr>

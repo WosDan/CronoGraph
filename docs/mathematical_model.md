@@ -22,9 +22,9 @@ Cada parcial $i \in E$ recibe un peso académico determinista:
 $$W_i = C_i \cdot p_i \cdot \left(1 + \frac{r_i}{2}\right)$$
 
 donde:
-- $C_i \in [2, 5]$: créditos académicos de la asignatura.
+- $C_i \in \mathbb{Z}$, $C_i \geq 1$: créditos académicos de la asignatura.
 - $p_i \in (0, 1]$: porcentaje de evaluación del parcial respecto a la nota definitiva.
-- $r_i \in [0, 0.35]$: índice histórico de retiro de la asignatura.
+- $r_i \in [0, 1]$: índice histórico de retiro de la asignatura, expresado como proporción.
 
 ---
 
@@ -79,11 +79,10 @@ Para identificar estructuralmente qué evaluaciones concentran mayor acoplamient
    Mide la presión estructural total que el parcial $i$ ejerce sobre sus vecinos antes de considerar la distancia temporal.
 
 2. **Centralidad de Intermediación ($C_B(i)$)**:
-   Calculada con `nx.betweenness_centrality(G_C, weight="h_ij", normalized=True)`:
+   Calculada con `nx.betweenness_centrality(G_C, weight="centrality_distance", normalized=True)`, usando distancia `1 / H_ij` para que una relación de conflicto más fuerte corresponda a una distancia más corta:
    $$C_B(i) = \frac{2}{(|E|-1)(|E|-2)} \sum_{s \neq i \neq t} \frac{\sigma_{st}(i)}{\sigma_{st}}$$
-   Identifica las evaluaciones "cuello de botella" que sirven de puente entre distintos subgrupos de estudiantes; reprogramarlas produce efectos en cascada sobre múltiples pares del calendario.
+   Identifica evaluaciones que aparecen en caminos más cortos entre otros parciales según esas distancias. Esta medida por sí sola no garantiza que reprogramarlas mejore el calendario.
 
 3. **Centralidad de Cercanía ($C_C(i)$)**:
    Calculada con `nx.closeness_centrality(G_C)`:
-   $$C_C(i) = \frac{|E| - 1}{\sum_{j \neq i} \text{dist}(i, j)}$$
-   Cuantifica qué tan cerca se encuentra el parcial $i$ del resto de la red de conflictos.
+   Para un grafo conexo, $C_C(i) = \frac{|E| - 1}{\sum_{j \neq i} \text{dist}(i, j)}$. NetworkX aplica un ajuste cuando el grafo es desconexo. Esta medida usa distancias sin ponderar y resume la cercanía al resto de la red de conflictos.

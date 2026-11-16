@@ -81,6 +81,25 @@ Las franjas regulares deben coincidir con sesiones de clase del grupo y las fran
 | Modelo y optimización | NumPy, NetworkX, Google OR-Tools CP-SAT |
 | Persistencia de demostración | Dataset JSON; archivos JSON para ejecuciones guardadas |
 
+## Documentación del proyecto
+
+Estas guías explican cómo funciona CronoGraph y están disponibles para cualquier persona que consulte el repositorio. Son documentación técnica de la aplicación, no el informe académico oficial del trabajo.
+
+- [Modelo matemático y fórmulas](docs/mathematical_model.md): grafos, pesos, función objetivo, restricciones y centralidades.
+- [Algoritmos de optimización](docs/algorithms.md): búsqueda local, reinicios y CP-SAT.
+- [Diccionario de datos](docs/data_dictionary.md): estructura y campos del dataset.
+- [Arquitectura](docs/architecture.md): componentes de la aplicación.
+
+## Equipo del proyecto
+
+Estudiantes de Ingeniería de Sistemas de la Universidad del Norte:
+
+- Daniel Alejandro Rincón Navarro
+- Matías Guarín Rueda
+- Manuel David Polo Salgado
+- Andrés David Issa Camargo
+- Cristian Camilo Fuentes Sánchez
+
 ## Estructura del proyecto
 
 ```text
@@ -183,6 +202,10 @@ El archivo [`DB/simulacion_academica.json`](DB/simulacion_academica.json) contie
 | Docentes | 12 | Asociados a grupos y parciales. |
 | Parciales | 20 | Con franjas de clase y sábados autorizados. |
 
+Desde **Datos**, usa **Generar datos ficticios** para crear y activar una nueva instancia sintética. El archivo de demostración original no se modifica. **Cargar JSON personalizado** permite validar y activar datos reales adaptados al formato del proyecto; consulta el [diccionario de datos](docs/data_dictionary.md) y descarga el JSON de ejemplo como plantilla. Los datos cargados se guardan en el servidor configurado: usa identificadores seudónimos y asegúrate de que el entorno sea apropiado para los datos que cargas.
+
+El simulador comprueba identificadores, relaciones, duración y franjas autorizadas, pero no convierte automáticamente archivos CSV o Excel ni verifica si los datos corresponden a la realidad. Al cambiar de dataset se limpia la selección de resultados de la interfaz; los resultados históricos permanecen en el servidor.
+
 Para regenerar y validar el dataset desde la raíz:
 
 ```bash
@@ -202,6 +225,7 @@ La documentación interactiva en `/docs` describe todos los esquemas y parámetr
 | `GET` | `/api/dataset` | Obtener el dataset activo. |
 | `POST` | `/api/dataset/validate` | Validar un JSON sin activarlo. |
 | `POST` | `/api/dataset/upload` | Validar y activar un dataset. |
+| `POST` | `/api/dataset/random` | Generar y activar un dataset sintético nuevo. |
 | `POST` | `/api/dataset/reset` | Restaurar el dataset de demostración. |
 | `GET` | `/api/graphs/bipartite` | Obtener el grafo estudiante–parcial. |
 | `GET` | `/api/graphs/conflicts` | Obtener el grafo de conflictos. |
@@ -219,45 +243,6 @@ python -m pytest -p no:hydra backend/tests -v
 
 Para probar y compilar la interfaz, desde `frontend/`:
 
-<<<<<<< HEAD
-=======
-## 5.1 Publicar una demo (Netlify + Render)
-
-La interfaz estática se publica en Netlify y la API FastAPI en Render. Netlify no ejecuta directamente este backend Python.
-
-1. Sube este proyecto a un repositorio de GitHub.
-2. En Render, crea un **Blueprint** desde ese repositorio; detectará `render.yaml`. Espera a que el servicio `cronograph-api` quede publicado. Comprueba `https://TU-API.onrender.com/api/health`.
-3. Copia la URL pública de la API y agrégale `/api` (por ejemplo `https://TU-API.onrender.com/api`).
-4. En la configuración de entorno del servicio de Netlify, define `VITE_API_BASE_URL` con esa URL y `CRONOGRAPH_CORS_ORIGINS` en Render con el dominio asignado por Netlify (por ejemplo `https://TU-SITIO.netlify.app`). Si ya tienes dominio propio, inclúyelo separado por comas junto al dominio Netlify.
-5. En Netlify, importa el mismo repositorio. `netlify.toml` configura el directorio `frontend`, el build y el fallback para rutas de React. Vuelve a desplegar después de guardar las variables.
-6. Comprueba el flujo en `https://TU-SITIO.netlify.app`: debe cargar datos, abrir Grafos y permitir una corrida en Optimización. También revisa `https://TU-API.onrender.com/api/health`.
-
-**Nota para la presentación:** en el nivel gratuito, Render puede suspender el servicio cuando no se usa; al abrirlo de nuevo, el primer acceso puede tardar. Los resultados de optimización y los datasets cargados se guardan en el disco local del servicio, que no debe considerarse persistente entre reinicios o despliegues. Para una exposición, usa el dataset incluido y ejecuta la optimización antes de presentar.
-
----
-
-## 6. Base de datos sintética reproducible
-
-El archivo `DB/simulacion_academica.json` se genera de forma determinista con **semilla `42`**:
-- **120 estudiantes ficticios** (`EST-001` a `EST-120`, `is_synthetic: true`), cursando entre 4 y 6 asignaturas cada uno (595 matrículas totales).
-- **15 asignaturas** con créditos entre 2 y 5 e índices históricos de retiro entre `0.06` y `0.31`.
-- **12 docentes** y **20 grupos / parciales** con duraciones de 90 o 120 minutos y porcentajes de evaluación entre 20% y 35%.
-- Cada parcial posee un dominio autorizado $D_i$ compuesto exclusivamente por sus sesiones habituales de clase dentro de la ventana de exámenes (`2026-11-16` a `2026-12-05`) y espacios de sábado explícitamente autorizados (`authorized_saturday`).
-
----
-
-## 7. Pruebas automatizadas
-
-### Pruebas matemáticas y de API (Backend)
-Desde `backend/`:
-```bash
-python -m pytest -p no:hydra -v
-```
-Verifica exactitud de $W_i$, $B$, $A = B^\top B$, $P(\Delta)$, $H_{ij}$, $K_{ij}$, función objetivo $F$, restricciones duras, equivalencia exacta entre $\Delta F_i(t)$ incremental y evaluación completa, enumeración exhaustiva en instancia pequeña vs. Búsqueda Local y OR-Tools, manejo de infactibilidad y endpoints REST.
-
-### Pruebas de interfaz y compilación (Frontend)
-Desde `frontend/`:
->>>>>>> 28faf5c6ae8a3dc654ec47f531a3cde2cf5a2b68
 ```bash
 npm test
 npm run build
@@ -307,7 +292,9 @@ El JSON incluido proporciona el dataset inicial. La API guarda datasets activos 
 
 - Las franjas disponibles se toman de las opciones autorizadas; el sistema no deduce disponibilidad por ausencia de clases.
 - La penalización temporal usa un horizonte de cuatro días calendario, `P(Δ) = max(0, 4 − Δ)`. Es un parámetro metodológico del proyecto, no una regla universal.
-- La búsqueda local es una metaheurística y no garantiza el óptimo global. CP-SAT sirve como contraste sujeto al límite de tiempo configurado.
+- La búsqueda local prueba cambios factibles de un parcial a la vez, selecciona la mayor mejora y repite desde varias asignaciones iniciales. Puede llegar a un óptimo local; no demuestra optimalidad global.
+- La construcción de algunas asignaciones iniciales prioriza intermediación, grado ponderado y tamaño del dominio. Durante la búsqueda local, el grado ponderado y la intermediación también desempatan movimientos con la misma mejora; la cercanía se calcula para visualización. Para calcular intermediación se usa la distancia `1 / H_ij`, de modo que un vínculo de conflicto más fuerte corresponda a una distancia menor.
+- CP-SAT formula las asignaciones y restricciones con variables enteras y busca una solución global. `OPTIMAL` prueba el óptimo de su función con coeficientes redondeados a escala 10⁴; con un límite de tiempo puede devolver una solución factible sin demostrar optimalidad.
 
 ---
 

@@ -27,8 +27,9 @@ def construct_feasible_assignment(
     max_attempts: int = 80,
 ) -> Optional[Dict[str, str]]:
     """
-    Construct a feasible initial schedule using randomized greedy backtracking
-    guided by network centrality (DSatur/MRV + betweenness & weighted degree centrality).
+    Construct a feasible schedule using randomized greedy attempts.
+    Exams are ordered by fixed centrality and domain-size priorities; if an
+    exam cannot be placed, the entire attempt is discarded and retried.
     """
     ordered_exams = sorted(
         model.exam_ids,
