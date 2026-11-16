@@ -82,7 +82,7 @@ describe('CronoGraph Frontend Suite', () => {
     render(<OptimizationPage />);
     expect(screen.getByText('Demostración Rápida: 5 reinicios')).toBeInTheDocument();
     expect(screen.getByText('Académico: 15 reinicios + Semilla 42')).toBeInTheDocument();
-    expect(screen.getByText('Comparar nuestra solución con OR-Tools')).toBeInTheDocument();
+    expect(screen.getAllByText('Optimización con verificación').length).toBeGreaterThan(0);
 
     const seedHelp = screen.getByRole('button', { name: /ayuda sobre semilla/i });
     fireEvent.click(seedHelp);

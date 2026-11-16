@@ -2,9 +2,25 @@
 
 from __future__ import annotations
 
-from app.services.constraints import evaluate_feasibility
+from app.services.constraints import evaluate_feasibility, can_assign_exam_slot
 from app.services.graph_builder import build_compiled_model
 from helpers import make_small_dataset
+
+
+def test_reschedule_window_includes_14_days_and_rejects_15():
+    dataset = make_small_dataset()
+    exam = dataset.exams[0]
+    original = exam.authorized_slots[0]
+    for slot_id, date in [('before14', '2026-11-02'), ('after14', '2026-11-30'), ('before15', '2026-11-01'), ('after15', '2026-12-01')]:
+        exam.authorized_slots.append(original.model_copy(update={'slot_id': slot_id, 'date': date}))
+    model = build_compiled_model(dataset)
+    for slot_id in ('before14', 'after14'):
+        assert can_assign_exam_slot(model, {}, exam.id, slot_id)
+    for slot_id in ('before15', 'after15'):
+        assert not can_assign_exam_slot(model, {}, exam.id, slot_id)
+        report = evaluate_feasibility(model, {'E1': slot_id, 'E2': 'E2-S1', 'E3': 'E3-S1'})
+        assert not report.domain_ok
+        assert any(v.constraint_type == 'reschedule_window' for v in report.violations)
 
 
 def test_feasible_schedule_passes_all_constraints():

@@ -62,6 +62,7 @@ Las aristas con $A_{ij} > 0$ nunca se eliminan del grafo cuando $K_{ij} = 0$, ya
 $$\min_{x} \; F(x) = \sum_{\substack{\{i, j\} \in \mathcal{A} \\ i < j}} K_{ij}(x_i, x_j)$$
 
 sujeto a las siguientes restricciones duras (obligatorias):
+0. **Límite de reprogramación**: $|d(x_i)-d(x_i^{(0)})| \leq 14$ días calendario, donde $x_i^{(0)}$ es la franja inicial.
 1. **Dominio autorizado**: $x_i \in D_i$, donde $D_i$ contiene únicamente sesiones habituales de clase del docente/grupo y espacios de sábado marcados explícitamente con `authorized = true`.
 2. **Duración completa**: $[\text{start}(x_i), \text{start}(x_i) + \text{duration}_i] \subseteq [\text{start}(x_i), \text{end}(x_i)]$.
 3. **No solapamiento estudiantil**: si $A_{ij} > 0$ y $d(x_i) = d(x_j)$, sus intervalos horarios de evaluación efectiva no pueden intersectarse.

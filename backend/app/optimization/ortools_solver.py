@@ -15,7 +15,7 @@ from app.services.conflict_calculator import (
     compute_objective_function,
     temporal_penalty,
 )
-from app.services.constraints import evaluate_feasibility
+from app.services.constraints import evaluate_feasibility, within_reschedule_window
 
 # Scale float H_ij by 10,000 for exact integer CP-SAT objective representation
 OBJECTIVE_SCALE = 10_000
@@ -76,7 +76,7 @@ def solve_with_ortools(
         opts = []
         for slot_id in model.slots_by_exam[eid]:
             start_m, end_m = model.slot_minutes[eid][slot_id]
-            if start_m + dur <= end_m:
+            if start_m + dur <= end_m and within_reschedule_window(model, eid, slot_id):
                 opts.append(slot_id)
         valid_slots[eid] = opts
 

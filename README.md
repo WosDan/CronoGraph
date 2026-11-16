@@ -15,7 +15,7 @@ Una aplicación interactiva para visualizar y optimizar la programación de parc
 
 <br>
 
-[**Explorar el repositorio**](https://github.com/WosDan/CronoGraph)　·　[**Puesta en marcha**](#-puesta-en-marcha)　·　[**API**](#-api)
+[**Abrir CronoGraph**](https://crono-graph.vercel.app/) · [**Explorar el repositorio**](https://github.com/WosDan/CronoGraph) · [**Puesta en marcha**](#-puesta-en-marcha) · [**API**](#-api)
 
 <br>
 
@@ -23,6 +23,18 @@ Una aplicación interactiva para visualizar y optimizar la programación de parc
 > Universidad del Norte · Barranquilla, Colombia
 
 </div>
+
+---
+
+## Equipo del proyecto
+
+Estudiantes de Ingeniería de Sistemas de la Universidad del Norte:
+
+- Daniel Alejandro Rincón Navarro
+- Matías Guarín Rueda
+- Manuel David Polo Salgado
+- Andrés David Issa Camargo
+- Cristian Camilo Fuentes Sánchez
 
 ---
 
@@ -48,6 +60,8 @@ CronoGraph transforma los registros de matrícula en grafos de conflicto para ay
 - Comparar el calendario inicial con una propuesta optimizada.
 - Ejecutar búsqueda local con reinicios aleatorios, Google OR-Tools CP-SAT o ambos.
 - En el modo combinado, usar el calendario hallado por nuestra solución como punto de partida para CP-SAT y mostrar el mejor resultado factible de ambos.
+
+En **Optimización** se ofrecen tres modos: **Nuestra solución · búsqueda con reinicios**, **Verificación con CP-SAT** y **Optimización con verificación**, que combina ambos y muestra el menor costo factible encontrado. CP-SAT solo certifica la optimalidad de su modelo con coeficientes redondeados cuando alcanza `OPTIMAL`; el tiempo máximo configurado limita su búsqueda.
 - Evaluar factibilidad, penalización, cambios de horario y métricas de estudiantes.
 - Consultar resultados en gráficas y calendario, y exportar información a JSON o CSV.
 
@@ -91,16 +105,6 @@ Estas guías explican cómo funciona CronoGraph y están disponibles para cualqu
 - [Algoritmos de optimización](docs/algorithms.md): búsqueda local, reinicios y CP-SAT.
 - [Diccionario de datos](docs/data_dictionary.md): estructura y campos del dataset.
 - [Arquitectura](docs/architecture.md): componentes de la aplicación.
-
-## Equipo del proyecto
-
-Estudiantes de Ingeniería de Sistemas de la Universidad del Norte:
-
-- Daniel Alejandro Rincón Navarro
-- Matías Guarín Rueda
-- Manuel David Polo Salgado
-- Andrés David Issa Camargo
-- Cristian Camilo Fuentes Sánchez
 
 ## Estructura del proyecto
 
@@ -254,6 +258,8 @@ npm run build
 
 El despliegue separa **la API en Railway** y **la interfaz en Vercel**, conectadas al mismo repositorio: [github.com/WosDan/CronoGraph](https://github.com/WosDan/CronoGraph).
 
+**Acceso a la aplicación:** utiliza [crono-graph.vercel.app](https://crono-graph.vercel.app/), el dominio estable de producción. Las URL individuales de los despliegues de Vercel son vistas previas y pueden no estar autorizadas en la configuración CORS del backend de Railway.
+
 ### Railway · API
 
 1. Crea un proyecto y conecta el repositorio.
@@ -293,6 +299,9 @@ El JSON incluido proporciona el dataset inicial. La API guarda datasets activos 
 ## ◇ Alcance del modelo
 
 - Las franjas disponibles se toman de las opciones autorizadas; el sistema no deduce disponibilidad por ausencia de clases.
+- Las franjas autorizadas pueden estar antes o después de la fecha inicial: el optimizador puede elegir cualquiera de ellas que cumpla las restricciones. La ventana de fechas y las franjas de cada parcial se definen en el dataset; el modelo no impone automáticamente que la nueva fecha sea posterior a la inicial.
+- Cada parcial puede adelantarse o aplazarse como máximo **14 días calendario** respecto a su fecha inicial, incluidos los días 14, y solo hacia franjas autorizadas. En el calendario se muestran los extremos autorizados dentro de ese límite y el cambio de la propuesta. Esos extremos no garantizan factibilidad: también se verifican la duración y los solapamientos.
+- El simulador todavía no consulta el avance de los temas ni el cronograma de clases. Al preparar un dataset real, docentes y coordinadores deben autorizar únicamente fechas en las que se hayan cubierto los contenidos necesarios y se disponga del tiempo de preparación requerido. Como mejora futura, se podrían incorporar estos hitos y tiempos como restricciones explícitas.
 - La penalización temporal usa un horizonte de cuatro días calendario, `P(Δ) = max(0, 4 − Δ)`. Es un parámetro metodológico del proyecto, no una regla universal.
 - La búsqueda local prueba cambios factibles de un parcial a la vez, selecciona la mayor mejora y repite desde varias asignaciones iniciales. Puede llegar a un óptimo local; no demuestra optimalidad global.
 - La construcción de algunas asignaciones iniciales prioriza intermediación, grado ponderado y tamaño del dominio. Durante la búsqueda local, el grado ponderado y la intermediación también desempatan movimientos con la misma mejora; la cercanía se calcula para visualización. Para calcular intermediación se usa la distancia `1 / H_ij`, de modo que un vínculo de conflicto más fuerte corresponda a una distancia menor.

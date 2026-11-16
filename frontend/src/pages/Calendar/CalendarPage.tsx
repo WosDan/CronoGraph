@@ -15,6 +15,10 @@ import type { ExamEvaluationDetail } from '../../types/academic';
 
 type Mode = 'initial' | 'optimized' | 'both';
 
+function dayDifference(from: string, to: string): number {
+  return Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000);
+}
+
 export function CalendarPage() {
   const { dataset, initialEvaluation, activeRun, loading } = useSimulation();
   const [mode, setMode] = useState<Mode>('initial');
@@ -57,6 +61,16 @@ export function CalendarPage() {
   const proposed = selected && optimized?.exam_details.find((item) => item.exam_id === selected.exam_id);
   const enrolled = selected && dataset?.exams.find((item) => item.id === selected.exam_id);
   const studentCount = enrolled && dataset?.students.filter((item) => item.enrollments.some((e) => e.subject_id === enrolled.subject_id && e.group_id === enrolled.group_id)).length;
+  const validDates = enrolled?.authorized_slots.filter((slot) => {
+    const minutes = (value: string) => Number(value.slice(0, 2)) * 60 + Number(value.slice(3, 5));
+    return slot.authorized && minutes(slot.end_time) - minutes(slot.start_time) >= enrolled.duration_minutes && !!old && Math.abs(dayDifference(old.assigned_date, slot.date)) <= 14;
+  }).map((slot) => slot.date).sort() ?? [];
+  const advanceDays = old && validDates.length ? Math.max(0, -dayDifference(old.assigned_date, validDates[0])) : 0;
+  const delayDays = old && validDates.length ? Math.max(0, dayDifference(old.assigned_date, validDates[validDates.length - 1])) : 0;
+  const shiftDays = old && proposed ? dayDifference(old.assigned_date, proposed.assigned_date) : null;
+  const proposedSlot = enrolled && proposed ? enrolled.authorized_slots.find((slot) => slot.slot_id === proposed.assigned_slot_id && slot.authorized) : undefined;
+  const proposedSlotMatches = !!proposedSlot && !!proposed && proposedSlot.date === proposed.assigned_date && proposedSlot.start_time === proposed.assigned_start_time;
+  const proposedFeasibility = optimized?.feasibility;
 
   return <div className="space-y-6">
     <div className="flex flex-wrap items-end justify-between gap-4">
@@ -80,5 +94,16 @@ export function CalendarPage() {
         <div className="min-w-0 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><div className="min-w-[620px]"><FullCalendar key={dataset?.metadata.exam_window_start ?? 'calendar'} plugins={[classicThemePlugin, dayGridPlugin, timeGridPlugin]} locales={[esLocale]} initialView="timeGridWeek" initialDate={initial.exam_details[0]?.assigned_date ?? dataset?.metadata.exam_window_start} headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' }} events={events} eventClick={(info) => setSelected(info.event.extendedProps.detail as ExamEvaluationDetail)} height="auto" /></div></div>
         <aside className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">Detalle del parcial</h2>{selected && <button type="button" aria-label="Cerrar detalle" onClick={() => setSelected(null)}><X className="h-4 w-4 text-slate-400" /></button>}</div>{selected ? <div className="mt-5 space-y-4 text-sm"><div><p className="text-xs uppercase tracking-wide text-slate-400">Asignatura</p><p className="mt-1 font-semibold text-slate-900">{selected.subject_name}</p><p className="text-slate-500">{selected.exam_name}</p></div><div><p className="text-xs uppercase tracking-wide text-slate-400">Docente</p><p className="mt-1 text-slate-700">{selected.teacher_name}</p></div><div><p className="text-xs uppercase tracking-wide text-slate-400">Fecha y hora</p><p className="mt-1 text-slate-700">{selected.assigned_date} · {selected.assigned_start_time}–{selected.assigned_end_time}</p></div><div><p className="text-xs uppercase tracking-wide text-slate-400">Estudiantes inscritos</p><p className="mt-1 text-slate-700">{studentCount ?? '—'}</p></div>{old && proposed && old.assigned_slot_id !== proposed.assigned_slot_id && <div className="rounded-lg bg-amber-50 p-3 text-amber-900"><p className="font-semibold">Parcial reprogramado</p><p className="mt-1">Antes: {old.assigned_date} · {old.assigned_start_time}</p><p>Propuesta: {proposed.assigned_date} · {proposed.assigned_start_time}</p></div>}</div> : <p className="mt-4 text-sm leading-relaxed text-slate-500">Selecciona un parcial en el calendario para ver su información y los cambios propuestos.</p>}</aside>
       </div>}
+    {selected && enrolled && <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 className="font-bold text-slate-900">Disponibilidad registrada para {selected.subject_name}</h2>
+      <p className="mt-2 text-sm text-slate-600">Docente: {selected.teacher_name}. La propuesta debe usar una franja autorizada dentro de los 14 días anteriores o posteriores a la fecha inicial y no solaparse con otros parciales del mismo docente. La disponibilidad registrada debe reflejar la disponibilidad real.</p>
+      {proposed && proposedFeasibility && <div className={`mt-4 rounded-lg border p-3 text-sm ${proposedSlotMatches && proposedFeasibility.is_feasible ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
+        <p className="font-semibold">{proposedSlotMatches && proposedFeasibility.is_feasible ? 'Propuesta factible según los datos cargados' : 'La propuesta requiere revisión'}</p>
+        <p className="mt-1">Fecha propuesta: {proposed.assigned_date} · {proposed.assigned_start_time}. {proposedSlotMatches ? `Coincide con la franja autorizada ${proposedSlot?.slot_id} (${proposedSlot?.start_time}–${proposedSlot?.end_time}).` : 'No se encontró una franja autorizada coincidente en el dataset actual.'}</p>
+        <p className="mt-1">Validación del calendario completo: {proposedFeasibility.is_feasible ? 'cumple las restricciones de duración y solapamiento de estudiantes, docentes y aulas.' : 'se detectaron incumplimientos; revisa los resultados.'}</p>
+      </div>}
+      {old && validDates.length > 0 && <div className="mt-3 rounded-lg bg-slate-50 p-3 text-sm text-slate-700"><p>Respecto a la fecha inicial ({old.assigned_date}), las franjas con duración suficiente permiten adelantar hasta <strong>{advanceDays} días</strong> o aplazar hasta <strong>{delayDays} días</strong>. Son límites de fechas autorizadas; otras restricciones pueden reducir las opciones viables.</p>{shiftDays !== null && <p className="mt-2">Cambio de la propuesta: <strong>{shiftDays < 0 ? `adelantado ${Math.abs(shiftDays)} días` : shiftDays > 0 ? `aplazado ${shiftDays} días` : 'misma fecha'}</strong>.</p>}</div>}
+      <div className="mt-3 flex flex-wrap gap-2">{enrolled.authorized_slots.filter((slot) => slot.authorized && !!old && Math.abs(dayDifference(old.assigned_date, slot.date)) <= 14).slice().sort((a, b) => `${a.date}T${a.start_time}`.localeCompare(`${b.date}T${b.start_time}`)).map((slot) => <span key={slot.slot_id} className={`rounded-lg border px-3 py-2 text-xs ${slot.slot_id === selected.assigned_slot_id ? 'border-indigo-300 bg-indigo-50 font-semibold text-indigo-800' : 'border-slate-200 text-slate-600'}`}>{slot.date} · {slot.start_time}–{slot.end_time} · {slot.slot_type === 'authorized_saturday' ? 'sábado autorizado' : 'sesión de clase'}{slot.slot_id === selected.assigned_slot_id ? ' · asignada' : ''}</span>)}</div>
+    </section>}
   </div>;
 }
