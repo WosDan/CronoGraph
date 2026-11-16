@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from typing import List
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -21,9 +22,12 @@ class Settings(BaseSettings):
     env: str = "development"
     host: str = "127.0.0.1"
     port: int = 8000
-    cors_origins_raw: str = os.getenv(
-        "CRONOGRAPH_CORS_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173",
+    cors_origins_raw: str = Field(
+        default="http://localhost:5173,http://127.0.0.1:5173",
+        validation_alias=AliasChoices(
+            "CRONOGRAPH_CORS_ORIGINS_RAW",
+            "CRONOGRAPH_CORS_ORIGINS",
+        ),
     )
     db_dir: Path = Path(os.getenv("CRONOGRAPH_DB_DIR", str(DEFAULT_DB_DIR)))
 
