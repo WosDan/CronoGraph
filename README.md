@@ -219,6 +219,45 @@ python -m pytest -p no:hydra backend/tests -v
 
 Para probar y compilar la interfaz, desde `frontend/`:
 
+<<<<<<< HEAD
+=======
+## 5.1 Publicar una demo (Netlify + Render)
+
+La interfaz estática se publica en Netlify y la API FastAPI en Render. Netlify no ejecuta directamente este backend Python.
+
+1. Sube este proyecto a un repositorio de GitHub.
+2. En Render, crea un **Blueprint** desde ese repositorio; detectará `render.yaml`. Espera a que el servicio `cronograph-api` quede publicado. Comprueba `https://TU-API.onrender.com/api/health`.
+3. Copia la URL pública de la API y agrégale `/api` (por ejemplo `https://TU-API.onrender.com/api`).
+4. En la configuración de entorno del servicio de Netlify, define `VITE_API_BASE_URL` con esa URL y `CRONOGRAPH_CORS_ORIGINS` en Render con el dominio asignado por Netlify (por ejemplo `https://TU-SITIO.netlify.app`). Si ya tienes dominio propio, inclúyelo separado por comas junto al dominio Netlify.
+5. En Netlify, importa el mismo repositorio. `netlify.toml` configura el directorio `frontend`, el build y el fallback para rutas de React. Vuelve a desplegar después de guardar las variables.
+6. Comprueba el flujo en `https://TU-SITIO.netlify.app`: debe cargar datos, abrir Grafos y permitir una corrida en Optimización. También revisa `https://TU-API.onrender.com/api/health`.
+
+**Nota para la presentación:** en el nivel gratuito, Render puede suspender el servicio cuando no se usa; al abrirlo de nuevo, el primer acceso puede tardar. Los resultados de optimización y los datasets cargados se guardan en el disco local del servicio, que no debe considerarse persistente entre reinicios o despliegues. Para una exposición, usa el dataset incluido y ejecuta la optimización antes de presentar.
+
+---
+
+## 6. Base de datos sintética reproducible
+
+El archivo `DB/simulacion_academica.json` se genera de forma determinista con **semilla `42`**:
+- **120 estudiantes ficticios** (`EST-001` a `EST-120`, `is_synthetic: true`), cursando entre 4 y 6 asignaturas cada uno (595 matrículas totales).
+- **15 asignaturas** con créditos entre 2 y 5 e índices históricos de retiro entre `0.06` y `0.31`.
+- **12 docentes** y **20 grupos / parciales** con duraciones de 90 o 120 minutos y porcentajes de evaluación entre 20% y 35%.
+- Cada parcial posee un dominio autorizado $D_i$ compuesto exclusivamente por sus sesiones habituales de clase dentro de la ventana de exámenes (`2026-11-16` a `2026-12-05`) y espacios de sábado explícitamente autorizados (`authorized_saturday`).
+
+---
+
+## 7. Pruebas automatizadas
+
+### Pruebas matemáticas y de API (Backend)
+Desde `backend/`:
+```bash
+python -m pytest -p no:hydra -v
+```
+Verifica exactitud de $W_i$, $B$, $A = B^\top B$, $P(\Delta)$, $H_{ij}$, $K_{ij}$, función objetivo $F$, restricciones duras, equivalencia exacta entre $\Delta F_i(t)$ incremental y evaluación completa, enumeración exhaustiva en instancia pequeña vs. Búsqueda Local y OR-Tools, manejo de infactibilidad y endpoints REST.
+
+### Pruebas de interfaz y compilación (Frontend)
+Desde `frontend/`:
+>>>>>>> 28faf5c6ae8a3dc654ec47f531a3cde2cf5a2b68
 ```bash
 npm test
 npm run build

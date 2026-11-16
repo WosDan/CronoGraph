@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     app_name: str = "CronoGraph API"
     app_version: str = "1.0.0"
     env: str = "development"
-    host: str = "127.0.0.1"
+    host: str = "0.0.0.0"
     port: int = 8000
     cors_origins_raw: str = Field(
         default="http://localhost:5173,http://127.0.0.1:5173",
