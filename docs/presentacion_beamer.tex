@@ -35,7 +35,7 @@
 \setbeamertemplate{itemize item}{\color{acento}\large\textbullet}
 \setbeamertemplate{blocks}[rounded][shadow=false]
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}{\leavevmode\hbox{\begin{beamercolorbox}[wd=.78\paperwidth,ht=2.5ex,dp=1.2ex,leftskip=8mm]{page number in head/foot}\scriptsize CronoGraph \textcolor{menta}{\,\textbullet\,} Matemáticas Discretas\end{beamercolorbox}\begin{beamercolorbox}[wd=.22\paperwidth,ht=2.5ex,dp=1.2ex,rightskip=8mm plus 1fil]{page number in head/foot}\hfill\scriptsize\insertframenumber{} / \inserttotalframenumber\end{beamercolorbox}}}
+\setbeamertemplate{footline}{\leavevmode\hbox{\begin{beamercolorbox}[wd=.78\paperwidth,ht=2.5ex,dp=1.2ex,leftskip=8mm]{page number in head/foot}\scriptsize CronoGraph \textcolor{menta}{\,\textbullet\,} Matemáticas Discretas \textcolor{menta}{\,\textbullet\,} 8 minutos\end{beamercolorbox}\begin{beamercolorbox}[wd=.22\paperwidth,ht=2.5ex,dp=1.2ex,rightskip=8mm plus 1fil]{page number in head/foot}\hfill\scriptsize\insertframenumber{} / \inserttotalframenumber\end{beamercolorbox}}}
 \hypersetup{colorlinks=true,urlcolor=acento}
 \title{CronoGraph}
 \subtitle{Optimización de calendarios de parciales mediante grafos}
@@ -53,11 +53,11 @@
     {\usebeamercolor[fg]{subtitle}\large Optimización de calendarios de parciales mediante grafos\par}
     \vspace{0.55cm}
     {\usebeamercolor[fg]{author}\small\setlength{\baselineskip}{1.35\baselineskip}
+    Daniel Alejandro Rincón Navarro\par
+    Matías Guarín Rueda\par
     Manuel David Polo Salgado\par
     Andrés David Issa Camargo\par
-    Daniel Alejandro Rincón Navarro\par
-    Cristian Camilo Fuentes Sánchez\par
-    Matías Guarín Rueda\par}
+    Cristian Camilo Fuentes Sánchez\par}
     \vspace{0.45cm}
     {\usebeamercolor[fg]{institute}\small\setlength{\baselineskip}{1.35\baselineskip}
     Universidad del Norte\par
@@ -69,101 +69,113 @@
   \end{minipage}
 \end{frame}
 
-\begin{frame}{El problema y por qué lo elegimos}
-  \begin{block}{La situación}
-    Un estudiante puede tener varios parciales próximos, aunque no coincidan a la misma hora.
+
+\begin{frame}{El problema y el objetivo}
+  \begin{block}{Evitar choques no basta}
+    Varios parciales cercanos pueden afectar a los mismos estudiantes, aunque sus horas no coincidan.
   \end{block}
-  \vspace{0.3cm}
   \begin{itemize}
-    \item Coordinar fechas manualmente se vuelve difícil cuando muchos estudiantes comparten materias.
-    \item Elegimos el problema por su relación con la carga académica y porque se puede modelar con grafos.
-    \item Objetivo: proponer calendarios con menor concentración, respetando la disponibilidad registrada.
+    \item Objetivo: reducir el costo de proximidad entre evaluaciones compartidas.
+    \item Cada propuesta debe respetar franjas, duración y recursos disponibles.
+    \item Los datos de demostración son ficticios: 120 estudiantes y 20 parciales.
   \end{itemize}
+  \vfill\footnotesize Antecedentes: Carter et al. (1994); Qu et al. (2009); Siew et al. (2024).
 \end{frame}
 
-\begin{frame}{Datos y representación con grafos}
+\begin{frame}{De matrículas a un grafo de conflictos}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.52\textwidth}
-      {\color{menta}\textbf{Datos de demostración}}\par\medskip
-      120 estudiantes ficticios\\ 15 asignaturas y 12 docentes\\ 20 parciales con franjas autorizadas
-      \medskip\par Cada matrícula conecta un estudiante con sus parciales.
+    \begin{column}{.48\textwidth}
+      \textbf{Grafo bipartito}\par\medskip
+      Estudiantes y parciales. Una arista indica quién presenta cada evaluación.
+      \[B_{si}=\begin{cases}1&\text{si $s$ presenta $i$},\\0&\text{en otro caso.}\end{cases}\]
     \end{column}
-    \begin{column}{0.44\textwidth}
-      {\color{acento}\textbf{Dos grafos}}\par\medskip
-      1. Bipartito: estudiantes y parciales.\par\medskip
-      2. Conflictos: parciales conectados por estudiantes compartidos.
+    \begin{column}{.48\textwidth}
+      \textbf{Grafo de parciales}\par\medskip
       \[A=B^{\mathsf T}B\]
-      \small $A_{ij}$ cuenta los estudiantes que presentan ambos parciales.
+      $A_{ij}$ cuenta estudiantes compartidos.\par\medskip
+      Un nodo es un parcial; existe arista si $A_{ij}>0$.
     \end{column}
   \end{columns}
+  \vfill\small La diagonal de $A$ cuenta inscritos; no se suma en el costo.
 \end{frame}
 
-\begin{frame}{Cómo medimos la concentración}
+\begin{frame}{El costo que buscamos reducir}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.48\textwidth}
-      {\color{menta}\textbf{Peso académico}}
-      \[W_i=C_i p_i\left(1+\frac{r_i}{2}\right)\]
-      \small Créditos $C_i$, porcentaje del parcial $p_i$ e índice de retiro $r_i$.
+    \begin{column}{.49\textwidth}
+      \textbf{Importancia propuesta}
+      \[V_i=C_i p_i,\quad W_i=V_i(1+r_i/2)\]
+      \small Créditos, proporción de nota y retiro histórico.\par\medskip
+      Un crédito: 48 horas por período, no solo preparación del parcial.
     \end{column}
-    \begin{column}{0.48\textwidth}
-      {\color{acento}\textbf{Proximidad}}
+    \begin{column}{.47\textwidth}
+      \textbf{Proximidad temporal}
       \[P(\Delta)=\max(0,4-\Delta)\]
-      \small Se penalizan parciales separados por 0 a 3 días calendario.
+      \small Penaliza 0--3 días; desde 4 días vale cero.
+      \[H_{ij}=A_{ij}\frac{W_i+W_j}{2}\]
     \end{column}
   \end{columns}
-  \vspace{0.15cm}
-  \[\min F=\sum_{i<j}A_{ij}P(\Delta_{ij})\frac{W_i+W_j}{2}\]
-  \centering\small Los pesos son decisiones del modelo; no miden directamente el estrés.
+  \[K_{ij}=H_{ij}P(\Delta_{ij}),\qquad \min F=\sum_{i<j}K_{ij}\]
+  \small Pesos y ventana elegidos por el equipo; retiro no implica causalidad.
 \end{frame}
 
-\begin{frame}{Cómo construimos una propuesta}
-  \begin{enumerate}
-    \item Partimos de un calendario y de las franjas autorizadas para cada parcial.
-    \item Nuestra búsqueda prueba cambios factibles y conserva mejoras; usa varios puntos de partida.
-    \item Las centralidades ayudan a ordenar algunos puntos de partida y a desempatar movimientos.
-    \item Opcionalmente, CP-SAT intenta mejorar o verificar la propuesta.
-  \end{enumerate}
-  \vspace{0.2cm}
-  \begin{block}{Restricciones}
-    Franjas autorizadas; máximo 14 días de cambio; sin solapamientos de estudiantes, docentes o aulas.
-  \end{block}
-\end{frame}
-
-\begin{frame}{Demostración del simulador}
-  \begin{enumerate}
-    \item Abrir \href{https://crono-graph.vercel.app/}{crono-graph.vercel.app} y revisar el calendario inicial.
-    \item Ejecutar la optimización y comparar el horario propuesto.
-    \item Seleccionar un parcial para revisar su franja autorizada.
-    \item Abrir \textbf{Estudiantes} y comparar los pares de parciales cercanos.
-  \end{enumerate}
-  \vspace{0.25cm}
-  \footnotesize La demostración utiliza datos ficticios. Cada resultado corresponde a la ejecución mostrada.
-\end{frame}
-
-\begin{frame}{Alcances y cómo podría crecer CronoGraph}
+\begin{frame}{Algoritmos y factibilidad}
   \small
-  \renewcommand{\arraystretch}{1.35}
-  \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
-    {\color{acento}\textbf{Línea}} & {\color{acento}\textbf{Hoy}} & {\color{menta}\textbf{Con datos, apoyo e investigación}}\\
-    \hline
-    \textbf{Datos reales} & Datos ficticios de 120 estudiantes. & Matrículas, franjas y aulas del registro académico, anonimizadas.\\
-    \textbf{Modelo} & Penaliza pares de parciales según los días entre ellos. & Medir la carga de toda la semana: tres o más parciales, entregas y proyectos.\\
-    \textbf{Pesos} & $W_i$ y $P(\Delta)$ definidos por el equipo. & Calibrarlos con encuestas, notas y retiros históricos.\\
-    \textbf{Algoritmos} & Búsqueda local sin garantía de mínimo global. & Comparar con coloreo de grafos, recocido simulado, búsqueda tabú y CP-SAT.\\
-    \textbf{Uso real} & Simulador web de demostración. & Herramienta para coordinadores, con preferencias de estudiantes y docentes.\\
-  \end{tabular}
-\end{frame}
-
-\begin{frame}{Conclusiones}
   \begin{itemize}
-    \item Los grafos permiten identificar relaciones entre matrículas y conflictos de fechas.
-    \item CronoGraph genera propuestas factibles y, si el calendario inicial es factible, conserva un costo igual o menor según el modelo.
-    \item El simulador genera propuestas sujetas a las restricciones; su calidad debe medirse en instancias representativas.
-    \item Con datos institucionales e investigación, puede convertirse en un apoyo para planear cada semestre.
+    \item \textbf{Método propio:} búsqueda local de mejor mejora con reinicios aleatorios y construcción voraz aleatorizada.
+    \item Prioridad: reducir $F$. Grado ponderado e intermediación orientan inicios y desempates; intermediación usa $1/H_{ij}$. Cercanía es visual.
+    \item \textbf{CP-SAT:} OR-Tools corre en Railway, sin API de Google. \texttt{OPTIMAL} certifica el modelo redondeado a escala $10^4$.
+    \item \textbf{Combinado:} usa nuestra propuesta como punto de partida y elige el factible de menor costo original.
   \end{itemize}
-  \vfill
-  \small Repositorio: \url{https://github.com/WosDan/CronoGraph}\\
-  Aplicación: \url{https://crono-graph.vercel.app/}
+  \begin{block}{Restricciones ya implementadas}
+    Una franja autorizada por parcial, duración suficiente, cambio máximo de $\pm14$ días y sin solapamientos de estudiantes, docentes ni aulas.
+  \end{block}
+  \footnotesize El docente autoriza la viabilidad de contenidos. La búsqueda local no certifica mínimo global.
 \end{frame}
 
+\begin{frame}{CronoGraph en funcionamiento}
+  \begin{block}{Demostración de Daniel}
+    \href{https://crono-graph.vercel.app/}{\textbf{crono-graph.vercel.app}}
+  \end{block}
+  \begin{enumerate}
+    \item Calendario inicial y propuesta: búsqueda local, semilla 42, 15 reinicios.
+    \item Comparar propuesta, costo y validación de restricciones.
+    \item Revisar un parcial y su franja; abrir \textbf{Estudiantes}.
+  \end{enumerate}
+  \small Rojo: 0--1 días; ámbar: 2--3; verde: $\geq4$; gris: sin otro parcial.
+  \vfill\footnotesize Respaldo reproducible: 3401,1572 $\rightarrow$ 571,0577; 16 parciales cambiaron.\par
+  Corrida local del mismo motor sobre datos ficticios; no es un certificado de óptimo.
+\end{frame}
+
+\begin{frame}{Resultados e interpretación}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \begin{block}{Corrida documentada}
+        20 parciales, semilla 42, 15 reinicios.\par\medskip
+        Costo: 3401,1572 $\rightarrow$ 571,0577.\par
+        Reducción del indicador: \textbf{83,21\%}.\par
+        Ambos calendarios factibles.
+      \end{block}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \textbf{Pares cercanos por estudiante}\par\medskip
+      120 personas con menos pares;\par
+      0 con igual cantidad;\par
+      0 con más pares.\par\medskip
+      Misma asignación al repetir parámetros y versión.
+    \end{column}
+  \end{columns}
+  \vfill\small Una instancia sintética demuestra funcionamiento; no demuestra menor estrés, mayor rendimiento ni mínimo global.
+\end{frame}
+
+\begin{frame}{Conclusiones y próximos pasos}
+  \begin{itemize}
+    \item El modelo redujo el costo un 83,21\% en la instancia sintética, con ambos calendarios factibles.
+    \item Potencial educativo: hacer visibles los conflictos y apoyar decisiones coordinadas y transparentes.
+    \item Validar pesos y umbrales, y realizar pilotos con datos reales y participación de la comunidad académica.
+    \item Menor costo no demuestra bienestar ni óptimo global; falta comparar métodos bajo iguales condiciones.
+  \end{itemize}
+  \vfill\footnotesize Lecturas: Caramia et al. (2008), búsqueda local; Liborius et al. (2019), tiempo de estudio; OR-Tools, CP-SAT. Referencias completas en los informes.\par\medskip
+  \url{https://github.com/WosDan/CronoGraph}\par
+  \url{https://crono-graph.vercel.app/}
+\end{frame}
 \end{document}

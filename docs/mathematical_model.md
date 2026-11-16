@@ -1,8 +1,8 @@
 # Modelo Matemático de CronoGraph
 
-## 1. Grafo bipartito e incidencia
+## 1. Grafo bipartito y matriz de biadyacencia
 
-Sean $S$ el conjunto de estudiantes y $E$ el conjunto de evaluaciones parciales. El grafo bipartito no dirigido se define como $G_B = (S \cup E, M)$, cuya matriz de incidencia binaria $B \in \{0,1\}^{|S| \times |E|}$ cumple:
+Sean $S$ el conjunto de estudiantes y $E$ el conjunto de evaluaciones parciales. El grafo bipartito no dirigido se define como $G_B = (S \cup E, M)$, cuya matriz binaria de biadyacencia $B \in \{0,1\}^{|S| \times |E|}$ cumple:
 
 $$B_{si} = \begin{cases} 1 & \text{si el estudiante } s \in S \text{ presenta el parcial } i \in E, \\ 0 & \text{en caso contrario.} \end{cases}$$
 
@@ -19,12 +19,14 @@ $$A = B^\top B \in \mathbb{Z}_{\ge 0}^{|E| \times |E|}, \qquad A_{ij} = \sum_{s 
 
 Cada parcial $i \in E$ recibe un peso académico determinista:
 
-$$W_i = C_i \cdot p_i \cdot \left(1 + \frac{r_i}{2}\right)$$
+$$V_i=C_i p_i, \qquad W_i = V_i \left(1 + \frac{r_i}{2}\right)$$
 
 donde:
 - $C_i \in \mathbb{Z}$, $C_i \geq 1$: créditos académicos de la asignatura.
 - $p_i \in (0, 1]$: porcentaje de evaluación del parcial respecto a la nota definitiva.
 - $r_i \in [0, 1]$: índice histórico de retiro de la asignatura, expresado como proporción.
+
+Un crédito equivale a 48 horas de carga formal durante el período, incluidas actividades distintas de la preparación del parcial. El producto $C_i p_i$ es una decisión metodológica proporcional, no una fórmula legal. El retiro es un factor contextual de priorización, no una medida causal de dificultad ni evidencia de que las fechas provoquen retiros. El incremento máximo del 50 % requiere calibración.
 
 ---
 
@@ -53,6 +55,8 @@ El grafo de conflictos $G_C = (E, \mathcal{A})$ contiene una arista $\{i, j\} \i
 - **Componente dinámico** (dependiente de las fechas asignadas):
   $$K_{ij} = H_{ij} \cdot P(\Delta_{ij}) = A_{ij} \cdot P(\Delta_{ij}) \cdot \frac{W_i + W_j}{2}$$
 
+El promedio de pesos es una elección simétrica del proyecto para representar la importancia conjunta del par.
+
 Las aristas con $A_{ij} > 0$ nunca se eliminan del grafo cuando $K_{ij} = 0$, ya que conservan su relación estructural $H_{ij} > 0$.
 
 ---
@@ -77,13 +81,31 @@ Para identificar estructuralmente qué evaluaciones concentran mayor acoplamient
 
 1. **Centralidad de Grado Ponderado normalizada ($C_D^{(w)}(i)$)**:
    $$S_i = \sum_{j \in N(i)} H_{ij}, \qquad C_D^{(w)}(i) = \frac{S_i}{\max_{k \in E} S_k}$$
-   Mide la presión estructural total que el parcial $i$ ejerce sobre sus vecinos antes de considerar la distancia temporal.
+   Mide la intensidad estructural total de sus conexiones antes de considerar las fechas. Es una variante ponderada normalizada por el máximo observado; no es la centralidad no ponderada deg(i)/(n−1) definida en clase. Si el máximo es cero, la implementación devuelve cero.
 
 2. **Centralidad de Intermediación ($C_B(i)$)**:
    Calculada con `nx.betweenness_centrality(G_C, weight="centrality_distance", normalized=True)`, usando distancia `1 / H_ij` para que una relación de conflicto más fuerte corresponda a una distancia más corta:
-   $$C_B(i) = \frac{2}{(|E|-1)(|E|-2)} \sum_{s \neq i \neq t} \frac{\sigma_{st}(i)}{\sigma_{st}}$$
+   $$C_B(i) = \frac{2}{(|E|-1)(|E|-2)} \sum_{\substack{s<t \\ s,t\ne i}} \frac{\sigma_{st}(i)}{\sigma_{st}}$$
    Identifica evaluaciones que aparecen en caminos más cortos entre otros parciales según esas distancias. Esta medida por sí sola no garantiza que reprogramarlas mejore el calendario.
 
 3. **Centralidad de Cercanía ($C_C(i)$)**:
    Calculada con `nx.closeness_centrality(G_C)`:
-   Para un grafo conexo, $C_C(i) = \frac{|E| - 1}{\sum_{j \neq i} \text{dist}(i, j)}$. NetworkX aplica un ajuste cuando el grafo es desconexo. Esta medida usa distancias sin ponderar y resume la cercanía al resto de la red de conflictos.
+   Para un grafo conexo, $C_C(i) = \frac{|E| - 1}{\sum_{j \neq i} \text{dist}(i, j)}$. NetworkX aplica el ajuste predeterminado Wasserman–Faust cuando el grafo es desconexo: si la componente tiene c nodos y la red N, multiplica la cercanía calculada dentro de la componente por (c−1)/(N−1). Los nodos aislados reciben cero; no se usa la variante armónica. Esta medida usa distancias sin ponderar y resume la cercanía al resto de la red de conflictos.
+
+## 7. Interpretación transparente y proyección educativa
+
+La penalización de 0–3 días, con cero desde cuatro días, es un parámetro del proyecto; no es un umbral universal demostrado. La factibilidad y la calidad se evalúan por separado: dos parciales el mismo día pueden ser factibles si sus horas no se solapan y aun así recibir penalización.
+
+Los docentes deben autorizar fechas en las que los contenidos y la preparación sean académicamente viables; el avance de temas no se comprueba automáticamente. Sin identificador de aula tampoco se pueden detectar sus choques. Intermediación y grado ponderado orientan algunos inicios y desempates; cercanía es visual. Ninguna centralidad sustituye la evaluación de F.
+
+Hacer explícitas estas decisiones permite discutir calendarios con estudiantes y docentes y analizar qué recomendaciones cambian al variar los parámetros. Ese es el potencial educativo propuesto: apoyar coordinación y decisiones revisables. La reducción de F no demuestra por sí sola bienestar, menor estrés o mejor rendimiento.
+
+## 8. Validación y extensión no implementada
+
+Se propone observar horas reales de preparación con diarios, contrastarlas con estimaciones docentes y usar calificaciones o reprobación como indicadores complementarios. Spearman permitiría evaluar asociación monotónica con horas observadas, sin inferir causalidad. Deben calibrarse pesos y umbrales mediante sensibilidad y datos reales.
+
+Una extensión futura es:
+
+$$F^*=\sum_{i<j}K_{ij}+\lambda\sum_i|d_i-d_i^0|+\mu B_{\max}.$$
+
+Busca estabilidad y menor concentración individual. Requiere definir Bmax y calibrar los coeficientes; **no forma parte del objetivo implementado**. Las restricciones obligatorias de disponibilidad, duración, ±14 días y solapamientos ya están implementadas. Véanse las [referencias y delimitación de afirmaciones](references.md).

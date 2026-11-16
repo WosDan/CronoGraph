@@ -31,7 +31,7 @@ Una aplicación interactiva para visualizar y optimizar la programación de parc
 ## ✨ El equipo detrás de CronoGraph
 
 **Ingeniería de Sistemas · Universidad del Norte**  
-Proyecto de Matemáticas Discretas · Barranquilla, Colombia
+MAT 4021: Matemáticas Discretas · MSc. Iván Gómez · Barranquilla, Colombia
 
 <table>
   <tr>
@@ -63,6 +63,14 @@ Proyecto de Matemáticas Discretas · Barranquilla, Colombia
 ## ✦ El proyecto
 
 CronoGraph transforma los registros de matrícula en grafos de conflicto para ayudar a construir calendarios de parciales con menos choques entre estudiantes. La aplicación compara una programación inicial con alternativas optimizadas, respetando las franjas autorizadas para cada examen.
+
+### Aporte educativo y transparencia
+
+Consideramos que CronoGraph tiene potencial para contribuir a entornos educativos con una planificación más coordinada: hace visibles los conflictos entre evaluaciones y permite discutir alternativas con criterios explícitos entre estudiantes, docentes y coordinadores. Su utilidad institucional deberá contrastarse con pilotos, datos reales y participación de la comunidad académica. La herramienta apoya el juicio pedagógico y la decisión institucional.
+
+La transparencia consiste en poder revisar **qué datos entraron, qué criterio se minimizó, qué restricciones se comprobaron, qué cambió y qué garantía tiene el resultado**. La aplicación ofrece calendarios inicial y propuesto, costos, validación, explicaciones de cambios y horarios individuales. Estas explicaciones describen el modelo: no identifican causas de retiro ni demuestran efectos sobre estrés, bienestar o rendimiento. La validación automática tampoco acredita la veracidad de los datos ni el avance de los contenidos.
+
+Los créditos representan carga académica formal del período; un crédito equivale a 48 horas, que no son exclusivamente preparación de un examen. El producto créditos × proporción de nota, el ajuste por retiro de hasta 50 % y la ventana de 0–3 días son decisiones metodológicas pendientes de calibración. Un menor costo significa una mejora según ese criterio, no una medida universal de calidad educativa.
 
 ### Lo que puedes hacer
 
@@ -122,6 +130,25 @@ Estas guías explican cómo funciona CronoGraph y están disponibles para cualqu
 - [Diccionario de datos](docs/data_dictionary.md): estructura y campos del dataset.
 - [Arquitectura](docs/architecture.md): componentes de la aplicación.
 
+## Informes, resultados y presentación
+
+Los informes mantienen la misma formulación, resultados y conclusiones en dos formatos:
+
+- [Informe APA · LaTeX](docs/informe_apa.tex) y [PDF](docs/informe_apa.pdf): versión para la guía académica, 15 páginas.
+- [Informe IEEE · LaTeX](docs/informe_ieee.tex) y [PDF](docs/informe_ieee.pdf): versión adicional en dos columnas.
+- [Presentación Beamer · LaTeX](docs/presentacion_beamer.tex) y [PDF](docs/presentacion_beamer.pdf): ocho diapositivas, preparadas para una exposición de ocho minutos con participación equitativa de cinco integrantes y demostración de la aplicación.
+- [Referencias y alcance de la evidencia](docs/references.md).
+
+La corrida documentada usa el conjunto sintético de 20 parciales y 120 estudiantes, búsqueda local, semilla 42 y 15 reinicios. El costo pasó de **3401,1572 a 571,0577 (83,21 % de reducción)**, con ambos calendarios factibles y 16 parciales reprogramados. Las 120 personas tuvieron menos pares a 0–3 días en esta instancia. Esto demuestra funcionamiento en el caso evaluado; no generalización, superioridad entre algoritmos, óptimo global ni mejora de bienestar.
+
+La [evidencia de la corrida](docs/evidencia_simulador/ejecucion_2026-11-16.json) incluye versiones, huella del dataset, asignaciones, métricas y reportes. Como material complementario de comprobación se adjunta [reproducir_informe.py](scripts/reproducir_informe.py). Con las dependencias del backend instaladas, desde la raíz:
+
+```bash
+python scripts/reproducir_informe.py
+```
+
+El script verifica el dataset, repite la búsqueda y contrasta el costo con un cálculo independiente. Escribe `DB/results/evidencia_informe.json`; no activa ni sustituye el dataset de la aplicación. No es un algoritmo adicional ni una prueba de que se haya demostrado la página en vivo. El guion de exposición y la guía de preguntas se mantienen fuera del repositorio.
+
 ## Estructura del proyecto
 
 ```text
@@ -130,7 +157,7 @@ CronoGraph/
 ├── frontend/                Aplicación React + TypeScript
 ├── DB/                      Dataset académico y datos de ejecución
 ├── docs/                    Documentación del proyecto
-├── scripts/                 Generación y validación del dataset
+├── scripts/                 Generación, validación y verificación reproducible
 ├── Dockerfile               Imagen de despliegue de la API
 ├── railway.json             Configuración de Railway
 └── frontend/vercel.json     Configuración de Vercel
